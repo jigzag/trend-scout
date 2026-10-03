@@ -38,9 +38,10 @@
 ## 次にやること（優先順）
 1. 1週間ほど（〜10/11）運用し、候補の精度を見て `config.yaml` の `genre`（特に「対象外」）を調整する。ソースの入れ替えも検討する
 2. **Ver.1 記事生成**（SPEC §1）：
-   - 入力：`data/candidates/日付.json` ＋ KJのメモ（受け取り方は未定。LINEの返信を受けるには Webhook と常時動くエンドポイントが必要なので、まずは手でメモファイルを置く方式が現実的）
+   - 入力：`data/candidates/日付.json`（＋任意のKJメモ）。メモは LINE 返信で受けたい（KJ希望）→ Cloudflare Workers で Webhook を受けて repository_dispatch で Actions を起動する案。まず記事生成本体を作り、そのあとつなぐ
    - 検索：Brave Search API か Tavily（Bing / Google CSE は使えない）
-   - 参考3件から事実・論点・出典をJSONで抽出 → 構成 → 執筆（メモを核にする）→ 校閲 → 元記事との類似度チェック → HTMLを出力
+   - 参考2〜3件から事実・論点・出典をJSONで抽出 → 構成 → 執筆（【想定シナリオ】で具体性を出す。メモがあれば「運営者の感想」として足す）→ 校閲 → 元記事との類似度チェック → HTMLを出力
+   - 想定シナリオは架空だと明記する。試していないことを「試した」と書かない（SPEC §7）
 3. サイト立ち上げ（`docs/SITE_SETUP.md` の手順で KJ が契約・設定）→ Ver.2 下書き投稿
 4. ASP登録 / Amazonアソシエイト → Ver.3 商品DBとリンク挿入
 

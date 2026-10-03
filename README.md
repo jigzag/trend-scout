@@ -88,6 +88,6 @@ python main.py --dry-run     # LINEに送らず、通知文を画面に出す
 ## 次の工程（Ver.1 以降）
 
 ```
-data/candidates/日付.json ＋ LINEで返信した「自分メモ」
+data/candidates/日付.json ＋（任意）LINEで返信した「自分メモ」
   → 参考記事3件の取得・事実抽出 → 構成 → 執筆 → 校閲・類似度チェック → WordPress下書き
 ```
