@@ -124,6 +124,12 @@ def fetch_producthunt(limit: int) -> list[Item]:
     return [Item("ProductHunt", d["title"], d["link"], clean_text(d["summary"])) for d in feed[:limit]]
 
 
+def fetch_rss(url: str, label: str, limit: int) -> list[Item]:
+    """config.yaml で url を指定した任意のRSS/Atom。"""
+    feed = parse_feed(_get(url).text)
+    return [Item(label, d["title"], d["link"], clean_text(d["summary"])) for d in feed[:limit]]
+
+
 FETCHERS = {
     "hatena": fetch_hatena,
     "zenn": fetch_zenn,

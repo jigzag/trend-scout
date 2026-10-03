@@ -54,6 +54,7 @@ def fake_get(url, **kw):
     if "producthunt" in url: return Resp(PH)
     if "zenn" in url: return Resp(js=ZENN)
     if "algolia" in url: return Resp(js=HN)
+    if "itmedia" in url: return Resp(PH.replace("VoiceForge - AI voice cloning API", "ChatGPTに新機能").replace("producthunt.com/products/voiceforge", "itmedia.co.jp/aiplus/x.html"))
     raise AssertionError(url)
 
 def fake_llm(prompt, cfg, max_tokens=4000):

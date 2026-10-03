@@ -19,7 +19,7 @@ import yaml
 from history import History, dedupe
 from notifier import build_message, send_line
 from scorer import add_details, pick_diverse, score_all
-from sources import FETCHERS
+from sources import FETCHERS, fetch_rss
 
 BASE = Path(__file__).parent
 JST = timezone(timedelta(hours=9))
@@ -35,7 +35,10 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml") -> str:
         if not opt.get("enabled", True):
             continue
         try:
-            got = FETCHERS[name](opt.get("limit", 20))
+            if opt.get("url"):
+                got = fetch_rss(opt["url"], opt.get("label", name), opt.get("limit", 20))
+            else:
+                got = FETCHERS[name](opt.get("limit", 20))
             for idx, it in enumerate(got):  # ソース内の順位 → 話題度 0〜10
                 it.extra["buzz"] = round(10 * (1 - idx / max(len(got), 1)), 1)
             items += got

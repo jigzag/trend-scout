@@ -2,11 +2,17 @@
 
 # サイトのジャンル（AIの採点基準になる。ここを書き換えればジャンル変更できる）
 genre: |
-  AI動画生成・音声合成(TTS)・業務自動化ツールの「実際に試してみた」系ブログ。
-  対象: MiniMax, Remotion, ElevenLabs, Runway, Kling, n8n, Make, Dify, Claude, ChatGPT,
-  Python自動化, 動画編集の効率化 など。
-  読者: 動画やコンテンツ制作をAIで効率化したい個人・中小企業の担当者。
-  運営者は研修動画をAIで量産するパイプラインを自作しており、実際に触って検証できる。
+  【読者】コードを書かない人。動画・資料・SNS発信などの制作や事務作業を、AIで楽にしたい
+  個人事業主・中小企業の担当者・研修/人事担当。プログラミングの知識は前提にしない。
+  【扱う】ブラウザやアプリで使えるAIツール・SaaSの新機能、新サービスの使ってみた／比較。
+  例: AI動画生成(Runway, Kling, Hailuo/MiniMax, Sora, Veo)、AI音声・ナレーション(ElevenLabs等)、
+  スライド・資料作成(Gamma等)、ChatGPT/Claude/Geminiの新機能、ノーコード自動化(Zapier, Make)、
+  Canva・CapCut・Premiereなど制作ツールのAI機能、AIを使った業務効率化の事例。
+  【対象外（関連度は0〜2にする）】コードを書く前提の話（SDK・API実装・CLI・ライブラリ・
+  プログラミング言語・開発環境・エディタ拡張・エージェント開発フレームワーク）、
+  インフラ・セキュリティ・クラウド運用、研究論文、資金調達や人事などの業界ニュースのみの話。
+  【検証できる】とは、運営者がブラウザやアプリで実際に触って、画面付きで手順や結果を示せること。
+  コードを書かないと試せないものは低くする。
 
 # 採点の重み（合計1.0）
 weights:
@@ -26,6 +32,8 @@ sources:
   qiita:       { enabled: true, limit: 20 }   # Qiita 人気記事
   hackernews:  { enabled: true, limit: 30 }   # Hacker News フロントページ
   producthunt: { enabled: true, limit: 20 }   # Product Hunt 新着
+  # 非エンジニア向けのAIニュース（任意のRSS/Atomを url で追加できる）
+  itmedia_ai:  { enabled: true, limit: 20, label: "ITmedia AI+", url: "https://rss.itmedia.co.jp/rss/2.0/aiplus.xml" }
 
 # AI設定（provider: anthropic か openai。APIキーは環境変数で渡す）
 llm:
