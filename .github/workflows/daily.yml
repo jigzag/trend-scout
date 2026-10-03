@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "0 22 * * *"   # UTC 22:00 = 日本時間 毎朝7:00（GitHub側の混雑で数分〜十数分遅れることあり）
   workflow_dispatch:        # Actions画面から手動実行も可
+    inputs:
+      mode:
+        description: "run=通常実行 / test-line=LINEテスト送信のみ"
+        default: run
+        type: choice
+        options: [run, test-line]
 
 permissions:
   contents: write           # data/ の履歴をコミットするため
@@ -23,8 +29,10 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
           LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
-        run: python main.py
+        run: |
+          if [ "${{ inputs.mode }}" = "test-line" ]; then python main.py --test-line; else python main.py; fi
       - name: Save history
+        if: ${{ inputs.mode != 'test-line' }}
         run: |
           git config user.name "trend-scout-bot"
           git config user.email "trend-scout-bot@users.noreply.github.com"

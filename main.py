@@ -79,7 +79,12 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml") -> str:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--test-line", action="store_true", help="LINEにテスト送信だけ行う")
     args = ap.parse_args()
+    if args.test_line:
+        send_line("【話題検知】テスト送信です。これが届けばLINE設定はOKです。")
+        print("[notify] テスト送信OK")
+        return
     try:
         run(dry_run=args.dry_run)
     except Exception:  # 失敗したこと自体をLINEで知らせる
@@ -88,8 +93,8 @@ def main() -> None:
         if not args.dry_run:
             try:
                 send_line("【話題検知】実行エラー\n" + err[-1500:])
-            except Exception:  # noqa: BLE001
-                pass
+            except Exception as e:  # noqa: BLE001
+                print(f"[notify] LINEへのエラー通知も失敗: {e}", file=sys.stderr)
         sys.exit(1)
 
 

@@ -44,8 +44,13 @@ def build_message(today: date, top: list[dict], stats: dict) -> str:
 
 
 def send_line(text: str) -> None:
-    token = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
-    user_id = os.environ["LINE_USER_ID"]
+    token = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN", "").strip()
+    user_id = os.environ.get("LINE_USER_ID", "").strip()
+    if not token or not user_id:
+        raise RuntimeError("LINE_CHANNEL_ACCESS_TOKEN / LINE_USER_ID が未設定（Secretの名前を確認）")
+    if not user_id.startswith("U"):
+        raise RuntimeError(f"LINE_USER_ID が U で始まっていません（先頭: {user_id[:2]}…）。"
+                           "チャネル基本設定の『あなたのユーザーID』を使ってください")
     r = requests.post(
         LINE_PUSH_URL,
         headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
