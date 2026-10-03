@@ -14,13 +14,20 @@ from sources import Item
 
 
 # ---------- LLM 呼び出し ----------
+def _check(r: requests.Response, name: str) -> None:
+    """エラー時にAPIの返した理由をそのまま出す（401=キー不正, 400 credit=残高不足 など）。"""
+    if r.status_code >= 300:
+        raise RuntimeError(f"{name} API error {r.status_code}: {r.text[:500]}")
+
+
+
 def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000) -> str:
     provider = cfg.get("provider", "anthropic")
     if provider == "anthropic":
         r = requests.post(
             "https://api.anthropic.com/v1/messages",
             headers={
-                "x-api-key": os.environ["ANTHROPIC_API_KEY"],
+                "x-api-key": os.environ.get("ANTHROPIC_API_KEY", "").strip(),
                 "anthropic-version": "2023-06-01",
                 "content-type": "application/json",
             },
@@ -31,12 +38,12 @@ def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000) -> str:
             },
             timeout=120,
         )
-        r.raise_for_status()
+        _check(r, "Anthropic")
         return "".join(b.get("text", "") for b in r.json()["content"])
     if provider == "openai":
         r = requests.post(
             "https://api.openai.com/v1/chat/completions",
-            headers={"Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}"},
+            headers={"Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY', '').strip()}"},
             json={
                 "model": cfg["openai_model"],
                 "max_tokens": max_tokens,
@@ -44,7 +51,7 @@ def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000) -> str:
             },
             timeout=120,
         )
-        r.raise_for_status()
+        _check(r, "OpenAI")
         return r.json()["choices"][0]["message"]["content"]
     raise ValueError(f"unknown provider: {provider}")
 
