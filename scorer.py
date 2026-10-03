@@ -175,3 +175,48 @@ def pick_diverse(scored: list[dict], n: int, min_relevance: int) -> list[dict]:
         if len(picked) >= n:
             break
     return picked
+
+
+# ---------- セール検知 ----------
+SALE_PROMPT = """あなたはブログ編集者です。以下の読者向けブログで紹介する価値のある
+「セール・キャンペーン情報」だけを選んでください。
+
+# 読者とブログ
+{genre}
+
+# 対象にするセール
+{focus}
+
+# 候補
+{items}
+
+# 出力
+対象になるものだけを、価値が高い順に最大{n}件、JSON配列で出力してください。該当なしなら [] 。
+- what: 何がどうお得か（例「Adobe CC 年間プラン 最大40%OFF」）。候補の文面にない割引率や価格は書かない。
+- period: 期間（文面に書かれている場合のみ。不明なら空文字）
+- why: この読者にとっての意味（1文）
+[{{"id": 0, "what": "", "period": "", "why": ""}}]
+"""
+
+
+def keyword_hit(it: Item, keywords: list[str]) -> bool:
+    text = f"{it.title} {it.summary}".lower()
+    return any(k.lower() in text for k in keywords)
+
+
+def judge_sales(items: list[Item], genre: str, focus: str, n: int, llm_cfg: dict) -> list[dict]:
+    if not items:
+        return []
+    lines = [f"[{i}] ({it.source}) {it.title} — {it.summary[:150]}" for i, it in enumerate(items)]
+    raw = call_llm(SALE_PROMPT.format(genre=genre.strip(), focus=focus.strip(),
+                                      items="\n".join(lines), n=n), llm_cfg)
+    out = []
+    for d in extract_json(raw):
+        try:
+            i = int(d["id"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if 0 <= i < len(items):
+            out.append({"item": items[i], "what": d.get("what", ""),
+                        "period": d.get("period", ""), "why": d.get("why", "")})
+    return out[:n]

@@ -17,7 +17,7 @@ def clean_url(url: str) -> str:
     return urlunsplit((p.scheme, p.netloc, p.path, urlencode(q), p.fragment))
 
 
-def build_message(today: date, top: list[dict], stats: dict) -> str:
+def build_message(today: date, top: list[dict], stats: dict, sales: list[dict] | None = None) -> str:
     wd = "月火水木金土日"[today.weekday()]
     lines = [f"【今日の記事候補】{today.month}/{today.day}({wd})", ""]
     if not top:
@@ -42,6 +42,17 @@ def build_message(today: date, top: list[dict], stats: dict) -> str:
         if d.get("products"):
             lines.append("紹介候補: " + "、".join(d["products"]))
         lines += [clean_url(it.url), ""]
+    if sales:
+        lines.append("【セール・キャンペーン】")
+        for x in sales:
+            head = "・" + (x.get("what") or x["item"].title)
+            if x.get("period"):
+                head += f"（{x['period']}）"
+            lines.append(head)
+            if x.get("why"):
+                lines.append(f"  {x['why']}")
+            lines.append(f"  {clean_url(x['item'].url)}")
+        lines.append("")
     foot = f"取得{stats['fetched']}件 → 新規{stats['new']}件を採点 → 上位{len(top)}件"
     if stats.get("failed"):
         foot += f"\n取得失敗: {', '.join(stats['failed'])}"

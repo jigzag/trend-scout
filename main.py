@@ -18,20 +18,16 @@ import yaml
 
 from history import History, dedupe
 from notifier import build_message, send_line
-from scorer import add_details, pick_diverse, score_all
+from scorer import add_details, judge_sales, keyword_hit, pick_diverse, score_all
 from sources import FETCHERS, fetch_rss
 
 BASE = Path(__file__).parent
 JST = timezone(timedelta(hours=9))
 
 
-def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml") -> str:
-    cfg = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    today = datetime.now(JST).date()
-
-    # 1. 取得（1ソース落ちても続行）
+def fetch_all(sources: dict) -> tuple[list, list]:
     items, failed = [], []
-    for name, opt in cfg["sources"].items():
+    for name, opt in sources.items():
         if not opt.get("enabled", True):
             continue
         try:
@@ -46,7 +42,18 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml") -> str:
         except Exception as e:  # noqa: BLE001
             failed.append(name)
             print(f"[fetch] {name}: 失敗 {e}", file=sys.stderr)
+    return items, failed
+
+
+def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml") -> str:
+    cfg = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    today = datetime.now(JST).date()
+
+    # 1. 取得（1ソース落ちても続行）
+    items, failed = fetch_all(cfg["sources"])
     fetched = len(items)
+
+    all_items = list(items)
 
     # 2. 重複除去・既出除外
     history = History(BASE / "data" / "seen.json", cfg.get("recheck_days", 14))
@@ -62,8 +69,25 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml") -> str:
         if top:
             top = add_details(top, cfg["genre"], cfg["llm"])
 
+    # 3b. セール検知（別枠）
+    sales = []
+    sw = cfg.get("sale_watch") or {}
+    if sw.get("enabled"):
+        sale_items, sale_failed = fetch_all(sw.get("sources", {}))
+        stats["failed"] += sale_failed
+        top_urls = {r["item"].url for r in top}
+        pool = [it for it in history.filter_new(dedupe(all_items + sale_items), today)
+                if it.url not in top_urls and keyword_hit(it, sw.get("keywords", []))]
+        print(f"[sale] キーワード一致 {len(pool)}件")
+        try:
+            sales = judge_sales(pool[:80], cfg["genre"], sw.get("focus", ""),
+                                sw.get("max_items", 3), cfg["llm"])
+        except Exception as e:  # noqa: BLE001  セール判定の失敗で本体を止めない
+            stats["failed"].append("sale_judge")
+            print(f"[sale] 判定失敗 {e}", file=sys.stderr)
+
     # 4. 通知
-    text = build_message(today, top, stats)
+    text = build_message(today, top, stats, sales)
     if dry_run:
         print("\n" + text)
         return text
@@ -71,7 +95,7 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml") -> str:
     print("[notify] LINE送信完了")
 
     # 5. 記録（次工程=記事生成の入力にもなる）
-    history.mark([r["item"] for r in top], today)
+    history.mark([r["item"] for r in top] + [x["item"] for x in sales], today)
     history.save()
     out = BASE / "data" / "candidates" / f"{today.isoformat()}.json"
     out.parent.mkdir(parents=True, exist_ok=True)

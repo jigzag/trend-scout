@@ -40,6 +40,16 @@ ZENN = {"articles": [{"title": "Remotionで字幕付き動画を量産する", "
 HN = {"hits": [{"title": "Show HN: Open-source TTS beats ElevenLabs", "url": "https://github.com/x/tts", "points": 512, "objectID": "1"},
                {"title": "Ask HN: Who is hiring?", "url": None, "points": 300, "objectID": "2"}]}
 
+GORI = """<?xml version="1.0"?><rss version="2.0"><channel><title>gori.me</title>
+<item><title>Amazonプライム感謝祭、10月18日から開催決定</title><link>https://gori.me/amazon/1</link>
+<description>先行セールは16日から</description></item>
+<item><title>Amazonで食品が半額セール</title><link>https://gori.me/amazon/2</link><description>お米が特価</description></item>
+<item><title>新型iPhoneレビュー</title><link>https://gori.me/iphone/3</link><description>カメラが良い</description></item>
+</channel></rss>"""
+PRT = """<?xml version="1.0"?><rdf:RDF xmlns="http://purl.org/rss/1.0/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<item rdf:about="https://prtimes.jp/a"><title>動画生成AI「Foo」年額プラン30%OFFキャンペーン開始</title><link>https://prtimes.jp/a</link>
+<description>10月末まで</description></item></rdf:RDF>"""
+
 class Resp:
     def __init__(self, text=None, js=None, status=200):
         self.text = text if text is not None else json.dumps(js)
@@ -54,10 +64,18 @@ def fake_get(url, **kw):
     if "producthunt" in url: return Resp(PH)
     if "zenn" in url: return Resp(js=ZENN)
     if "algolia" in url: return Resp(js=HN)
+    if "gori.me" in url: return Resp(GORI)
+    if "prtimes" in url: return Resp(PRT)
     if "itmedia" in url: return Resp(PH.replace("VoiceForge - AI voice cloning API", "ChatGPTに新機能").replace("producthunt.com/products/voiceforge", "itmedia.co.jp/aiplus/x.html"))
     raise AssertionError(url)
 
 def fake_llm(prompt, cfg, max_tokens=4000):
+    if "セール・キャンペーン情報" in prompt:
+        cands = prompt.split("# 候補")[1].split("# 出力")[0].strip().splitlines()
+        assert not any("iPhoneレビュー" in c for c in cands)  # キーワードで一次ふるい済み
+        out = [{"id": int(c[1:c.index("]")]), "what": c.split(") ", 1)[1][:30], "period": "", "why": "制作に関係"}
+               for c in cands if "食品" not in c]
+        return json.dumps(out, ensure_ascii=False)
     if "relevance" in prompt and "[0]" in prompt and "summary" not in prompt.split("# 出力")[1]:
         # 1段目: タイトルにキーワードがあれば高得点
         out = []
@@ -112,11 +130,13 @@ def test_full_run(tmp_path=Path("/tmp/ts_run")):
     assert "Qiita" in text  # 重複したMiniMax記事に also_on が付く
     assert not ("TTS beats" in text and "VoiceForge" in text)  # 同じ話題は1件だけ
     assert "utm_source" not in text
+    assert "【セール・キャンペーン】" in text and "プライム感謝祭" in text and "30%OFF" in text
+    assert "食品" not in text
     assert len(text) < 5000
     files = list((tmp_path / "data" / "candidates").glob("*.json"))
     assert len(files) == 1 and len(json.loads(files[0].read_text())) == 3
     seen = json.loads((tmp_path / "data" / "seen.json").read_text())
-    assert len(seen) == 3
+    assert len(seen) == 5  # 候補3 + セール2
     print(text)
 
 def test_source_failure():

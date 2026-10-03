@@ -35,6 +35,27 @@ sources:
   # 非エンジニア向けのAIニュース（任意のRSS/Atomを url で追加できる）
   itmedia_ai:  { enabled: true, limit: 20, label: "ITmedia AI+", url: "https://rss.itmedia.co.jp/rss/2.0/aiplus.xml" }
 
+# ===== セール検知（毎朝の候補3件とは別枠で、最大3行を通知の末尾に付ける） =====
+sale_watch:
+  enabled: true
+  max_items: 3
+  # 読者に関係あるセールの範囲（AIの判定基準）
+  focus: |
+    AI・制作系のツール/SaaS（Adobe, Canva, ElevenLabs, Runway, Kling, Gamma, Notion, ChatGPT等）の
+    割引・無料期間延長・キャンペーン。動画/配信/資料制作に使う機材（マイク、Webカメラ、照明、
+    SSD、PC、モニター、オーディオインターフェース）のセール。
+    Amazonの大型セール（プライム感謝祭、ブラックフライデー、初売り、新生活、プライムデー等）の
+    日程発表・開始・先行セール情報。
+    食品・ファッション・日用品だけのセール、ゲームの値引き、クーポン配布だけの話は対象外。
+  # まずこの語を含むものだけAIに渡す（費用節約のための一次ふるい）
+  keywords: [セール, 割引, 値下げ, 半額, "%OFF", "% off", オフ, キャンペーン, 無料期間, 特価, 期間限定,
+             プライム感謝祭, プライムデー, ブラックフライデー, サイバーマンデー, 初売り, タイムセール,
+             sale, discount, deal, "black friday", "cyber monday", "prime day", lifetime, coupon]
+  # セール情報が多いサイト（取得失敗しても他は続行）
+  sources:
+    gorime:  { enabled: true, limit: 30, label: "gori.me", url: "https://gori.me/feed" }
+    prtimes: { enabled: true, limit: 50, label: "PR TIMES", url: "https://prtimes.jp/index.rdf" }
+
 # AI設定（provider: anthropic か openai。APIキーは環境変数で渡す）
 llm:
   provider: openai
