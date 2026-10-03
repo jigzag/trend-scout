@@ -12,10 +12,10 @@
 - 返答は日本語で簡潔に。結論を先に書く
 
 ## 環境
-- ローカル: `C:\Users\sekin\source\repos\trend-scout`（Windows）
+- ローカル: `C:\Users\sekin\Desktop\cloudecode\trend-scout`（Windows）
 - リモート: `https://github.com/jigzag/trend-scout`（Private）、ブランチは `main`
 - push は KJ が PowerShell で `git push` する（Claude 側には GitHub の認証情報がない場合がある）
-- テスト: `python tests/test_offline.py`（ネット不要。変更したら必ず実行し、テストも更新する）
+- テスト: `python tests/test_offline.py`（ネット不要。変更したら必ず実行し、テストも更新する。Windows でも動くよう、一時フォルダは `tempfile`、ファイル読み書きは `encoding="utf-8"` を指定する）
 - 試運転: `python main.py --dry-run`（APIキーが必要。LINEには送らない）
 
 ## 現在の状態（2026-10-04 時点）
@@ -45,6 +45,7 @@
 5. ASP登録 / Amazonアソシエイト → Ver.3 商品DBとリンク挿入
 
 ## ハマりどころ（実際に起きたこと）
+- **Actions が毎朝 `data/` を自動コミットするので、ローカルから push すると `rejected (fetch first)` になる。** push の前に必ず `git pull --rebase` を実行する
 - **Actions の「Re-run jobs」は、その実行が最初に使ったコミットで再実行する。** コードを修正した後は、必ず「Run workflow」で新しく実行する
 - Secretが `null` になる原因：1つのSecretに3つまとめて登録した / Variables タブに登録した / Environment secrets に登録した / 名前のタイプミス
 - `x-api-key header is required` や `OPENAI_API_KEY が空です` は、キーが**空**という意味（名前違いや未登録）。401 で invalid と出るのは、キーの中身が違う場合

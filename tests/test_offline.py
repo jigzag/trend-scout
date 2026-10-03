@@ -1,7 +1,7 @@
 """ネットに出ずに全工程を通すテスト（各ソースの実フォーマットを模したサンプル + LLM/LINEモック）。
 実行: python -m pytest tests -q   または  python tests/test_offline.py
 """
-import json, sys, os
+import json, sys, os, tempfile
 from datetime import date
 from pathlib import Path
 from unittest import mock
@@ -100,7 +100,7 @@ def test_parsers():
         hn = sources.fetch_hackernews(10); assert hn[1].url.endswith("id=2")
         assert sources.fetch_producthunt(10)[0].title.startswith("VoiceForge")
 
-def test_dedupe_and_history(tmp_path=Path("/tmp/ts_test")):
+def test_dedupe_and_history(tmp_path=Path(tempfile.gettempdir()) / "ts_test"):
     tmp_path.mkdir(exist_ok=True)
     a = sources.Item("A", "Same Title!", "https://www.x.com/p/?utm_source=a")
     b = sources.Item("B", "same title", "https://other.com/q")
@@ -114,7 +114,7 @@ def test_dedupe_and_history(tmp_path=Path("/tmp/ts_test")):
     assert hs2.filter_new([c], date(2026, 10, 10)) == []
     assert len(hs2.filter_new([c], date(2026, 10, 20))) == 1
 
-def test_full_run(tmp_path=Path("/tmp/ts_run")):
+def test_full_run(tmp_path=Path(tempfile.gettempdir()) / "ts_run"):
     import shutil
     shutil.rmtree(tmp_path, ignore_errors=True); tmp_path.mkdir()
     sent = {}
@@ -134,8 +134,8 @@ def test_full_run(tmp_path=Path("/tmp/ts_run")):
     assert "食品" not in text
     assert len(text) < 5000
     files = list((tmp_path / "data" / "candidates").glob("*.json"))
-    assert len(files) == 1 and len(json.loads(files[0].read_text())) == 3
-    seen = json.loads((tmp_path / "data" / "seen.json").read_text())
+    assert len(files) == 1 and len(json.loads(files[0].read_text(encoding="utf-8"))) == 3
+    seen = json.loads((tmp_path / "data" / "seen.json").read_text(encoding="utf-8"))
     assert len(seen) == 5  # 候補3 + セール2
     print(text)
 
