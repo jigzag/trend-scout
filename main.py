@@ -18,7 +18,7 @@ import yaml
 
 from history import History, dedupe
 from notifier import build_message, send_line
-from scorer import add_details, score_all
+from scorer import add_details, pick_diverse, score_all
 from sources import FETCHERS
 
 BASE = Path(__file__).parent
@@ -36,6 +36,8 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml") -> str:
             continue
         try:
             got = FETCHERS[name](opt.get("limit", 20))
+            for idx, it in enumerate(got):  # ソース内の順位 → 話題度 0〜10
+                it.extra["buzz"] = round(10 * (1 - idx / max(len(got), 1)), 1)
             items += got
             print(f"[fetch] {name}: {len(got)}件")
         except Exception as e:  # noqa: BLE001
@@ -53,7 +55,7 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml") -> str:
     top = []
     if items:
         scored = score_all(items, cfg["genre"], cfg["weights"], cfg["llm"])
-        top = [r for r in scored if r["relevance"] >= cfg.get("min_relevance", 5)][: cfg.get("top_n", 3)]
+        top = pick_diverse(scored, cfg.get("top_n", 3), cfg.get("min_relevance", 5))
         if top:
             top = add_details(top, cfg["genre"], cfg["llm"])
 

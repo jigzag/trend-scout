@@ -5,9 +5,16 @@ import os
 from datetime import date
 
 import requests
+from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
 
 LINE_PUSH_URL = "https://api.line.me/v2/bot/message/push"
 MAX_LEN = 5000  # テキストメッセージの上限
+
+
+def clean_url(url: str) -> str:
+    p = urlsplit(url)
+    q = [(k, v) for k, v in parse_qsl(p.query) if not k.startswith("utm_")]
+    return urlunsplit((p.scheme, p.netloc, p.path, urlencode(q), p.fragment))
 
 
 def build_message(today: date, top: list[dict], stats: dict) -> str:
@@ -22,7 +29,7 @@ def build_message(today: date, top: list[dict], stats: dict) -> str:
             src += " / " + "・".join(it.extra["also_on"])
         lines += [
             f"■{n}. {it.title}",
-            f"[{src}] スコア{r['total']}（関連{r['relevance']} 検証{r['testable']} 収益{r['monetizable']}）",
+            f"[{src}] スコア{r['total']}（関連{r['relevance']} 検証{r['testable']} 収益{r['monetizable']} 話題{r.get('buzz', '-')}）",
         ]
         if d.get("summary"):
             lines.append(f"概要: {d['summary']}")
@@ -34,7 +41,7 @@ def build_message(today: date, top: list[dict], stats: dict) -> str:
             lines.append(f"タイトル案: {d['angle']}")
         if d.get("products"):
             lines.append("紹介候補: " + "、".join(d["products"]))
-        lines += [it.url, ""]
+        lines += [clean_url(it.url), ""]
     foot = f"取得{stats['fetched']}件 → 新規{stats['new']}件を採点 → 上位{len(top)}件"
     if stats.get("failed"):
         foot += f"\n取得失敗: {', '.join(stats['failed'])}"

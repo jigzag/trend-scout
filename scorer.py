@@ -92,13 +92,15 @@ SCORE_PROMPT = """あなたはブログ編集長です。以下のジャンル�
 - relevance: ジャンルとの関連度。無関係なら0〜2。
 - testable: 運営者が実際に触って検証・体験談を書けるか。ニュースや論評だけで手を動かせないなら低く。
 - monetizable: 記事内で紹介できる有料ツール・サービス・商品（アフィリエイト案件になりそうなもの）があるか。
+  無料OSSや、紹介報酬制度がなさそうな製品だけなら低く。
+- topic: 何の話題か（製品名・機能名レベルの短いラベル。例「Claude Code Mods」）。同じ話題の候補には同じラベルを付ける。
 
 # 候補
 {items}
 
 # 出力
 全候補について、次の形式のJSON配列だけを出力してください。説明文は不要です。
-[{{"id": 0, "relevance": 0, "testable": 0, "monetizable": 0}}, ...]
+[{{"id": 0, "relevance": 0, "testable": 0, "monetizable": 0, "topic": ""}}, ...]
 """
 
 
@@ -116,10 +118,11 @@ def score_all(items: list[Item], genre: str, weights: dict, llm_cfg: dict) -> li
     for i, it in enumerate(items):
         s = scores.get(i, {})
         rel, tst, mon = (int(s.get(k, 0)) for k in ("relevance", "testable", "monetizable"))
+        buzz = float(it.extra.get("buzz", 5))
         total = round((rel * weights["relevance"] + tst * weights["testable"]
-                       + mon * weights["monetizable"]) * 10)
-        results.append({"item": it, "relevance": rel, "testable": tst,
-                        "monetizable": mon, "total": total})
+                       + mon * weights["monetizable"] + buzz * weights.get("buzz", 0)) * 10)
+        results.append({"item": it, "relevance": rel, "testable": tst, "monetizable": mon,
+                        "buzz": buzz, "topic": str(s.get("topic", "")).strip(), "total": total})
     # 同点なら、はてブ数などの反応が大きい方を優先
     results.sort(key=lambda r: (r["total"], r["item"].signal or 0), reverse=True)
     return results
@@ -155,3 +158,20 @@ def add_details(top: list[dict], genre: str, llm_cfg: dict) -> list[dict]:
     for i, r in enumerate(top):
         r["detail"] = details.get(i, {})
     return top
+
+
+def pick_diverse(scored: list[dict], n: int, min_relevance: int) -> list[dict]:
+    """同じ話題（topic）は1件だけにして上位n件を選ぶ。"""
+    picked, seen = [], set()
+    for r in scored:
+        if r["relevance"] < min_relevance:
+            continue
+        key = re.sub(r"[\s\W_]+", "", r.get("topic", "").lower())
+        if key and key in seen:
+            continue
+        picked.append(r)
+        if key:
+            seen.add(key)
+        if len(picked) >= n:
+            break
+    return picked

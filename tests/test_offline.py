@@ -63,7 +63,9 @@ def fake_llm(prompt, cfg, max_tokens=4000):
         for line in prompt.split("# 候補")[1].split("# 出力")[0].strip().splitlines():
             i = int(line[1:line.index("]")])
             hit = any(k in line for k in ("MiniMax", "TTS", "voice", "n8n", "Remotion"))
-            out.append({"id": i, "relevance": 9 if hit else 1, "testable": 8 if hit else 2, "monetizable": 6 if hit else 0})
+            topic = "音声合成" if ("TTS" in line or "voice" in line) else line[:20]
+            out.append({"id": i, "relevance": 9 if hit else 1, "testable": 8 if hit else 2,
+                        "monetizable": 6 if hit else 0, "topic": topic})
         return "```json\n" + json.dumps(out) + "\n```"
     n = prompt.count("\nURL: ")
     return json.dumps([{"id": i, "summary": f"要約{i}", "why": f"理由{i}", "try": f"手順{i}",
@@ -107,6 +109,8 @@ def test_full_run(tmp_path=Path("/tmp/ts_run")):
     assert "Kubernetes" not in text and "hiring" not in text
     assert text.count("■") == 3
     assert "Qiita" in text  # 重複したMiniMax記事に also_on が付く
+    assert not ("TTS beats" in text and "VoiceForge" in text)  # 同じ話題は1件だけ
+    assert "utm_source" not in text
     assert len(text) < 5000
     files = list((tmp_path / "data" / "candidates").glob("*.json"))
     assert len(files) == 1 and len(json.loads(files[0].read_text())) == 3
