@@ -43,15 +43,24 @@ LINE Notify は2025年3月に終了しているため、Messaging API を使い�
 ### 3. GitHub で毎朝動かす（PCの電源が切れていても動きます）
 
 1. GitHub で **Private** リポジトリを作り、このフォルダの中身をすべてpushする
-2. リポジトリの Settings → Secrets and variables → Actions → New repository secret で、以下を登録する
+2. Secretを**3つ別々に**登録する（1つにまとめて入れると動きません）
 
-   | 名前 | 値 |
-   |---|---|
-   | `ANTHROPIC_API_KEY` | ClaudeのAPIキー（OpenAI利用時は `OPENAI_API_KEY`） |
-   | `LINE_CHANNEL_ACCESS_TOKEN` | 手順1-4のトークン |
-   | `LINE_USER_ID` | 手順1-5のユーザーID |
+   Settings → 左メニュー「Secrets and variables」→「**Actions**」→「**Secrets**」タブ →「**New repository secret**」
 
-3. Actions タブ → `daily-trend-scout` → **Run workflow** で手動実行し、LINEに届くか確認する
+   ここで「Nameに名前を1つ、Secretに値を1つ入れて Add secret」を**3回繰り返す**。
+
+   | 回 | Name（そのままコピー） | Secret（値だけ。`名前=` や改行は入れない） |
+   |---|---|---|
+   | 1回目 | `ANTHROPIC_API_KEY` | `sk-ant-api03-...` のキー（OpenAI利用時は名前を `OPENAI_API_KEY`） |
+   | 2回目 | `LINE_CHANNEL_ACCESS_TOKEN` | 手順1-4のトークン |
+   | 3回目 | `LINE_USER_ID` | 手順1-5の `U` で始まるID |
+
+   登録後、「Repository secrets」の一覧に名前が3つ並んでいればOK。
+   「Variables」タブや「Environment secrets」に入れても読まれません。
+
+3. Actions タブ → `daily-trend-scout` → **Run workflow**
+   - まず mode = `test-line` で実行 → LINEに「テスト送信です」が届けばLINE設定OK
+   - 次に mode = `run` で通常実行
 
 以後は毎朝7時（日本時間）に自動で実行されます。
 
