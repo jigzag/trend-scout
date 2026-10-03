@@ -14,7 +14,7 @@
 ## 環境
 - ローカル: `C:\Users\sekin\Desktop\cloudecode\trend-scout`（Windows）
 - リモート: `https://github.com/jigzag/trend-scout`（Private）、ブランチは `main`
-- push：このPC（`Desktop\cloudecode	rend-scout`）では Claude から `git pull --rebase` → `git push` できる（2026-10-04 確認）。別の環境では認証情報がない場合があるので、そのときは KJ が PowerShell で push する
+- push：このPC（`Desktop\cloudecode\trend-scout`）では Claude から `git pull --rebase` → `git push` できる（2026-10-04 確認）。別の環境では認証情報がない場合があるので、そのときは KJ が PowerShell で push する
 - テスト: `python tests/test_offline.py`（ネット不要。変更したら必ず実行し、テストも更新する。Windows でも動くよう、一時フォルダは `tempfile`、ファイル読み書きは `encoding="utf-8"` を指定する）
 - 試運転: `python main.py --dry-run`（APIキーが必要。LINEには送らない）
 
