@@ -28,6 +28,6 @@ sources:
 
 # AI設定（provider: anthropic か openai。APIキーは環境変数で渡す）
 llm:
-  provider: anthropic
+  provider: openai
   anthropic_model: claude-sonnet-4-5
-  openai_model: gpt-4.1-mini
+  openai_model: gpt-5-mini

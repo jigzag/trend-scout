@@ -14,6 +14,13 @@ from sources import Item
 
 
 # ---------- LLM 呼び出し ----------
+def _require(name: str) -> str:
+    v = os.environ.get(name, "").strip()
+    if not v:
+        raise RuntimeError(f"{name} が空です（GitHub Secretの名前を確認）")
+    return v
+
+
 def _check(r: requests.Response, name: str) -> None:
     """エラー時にAPIの返した理由をそのまま出す（401=キー不正, 400 credit=残高不足 など）。"""
     if r.status_code >= 300:
@@ -27,7 +34,7 @@ def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000) -> str:
         r = requests.post(
             "https://api.anthropic.com/v1/messages",
             headers={
-                "x-api-key": os.environ.get("ANTHROPIC_API_KEY", "").strip(),
+                "x-api-key": _require("ANTHROPIC_API_KEY"),
                 "anthropic-version": "2023-06-01",
                 "content-type": "application/json",
             },
@@ -41,18 +48,25 @@ def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000) -> str:
         _check(r, "Anthropic")
         return "".join(b.get("text", "") for b in r.json()["content"])
     if provider == "openai":
+        key = os.environ.get("OPENAI_API_KEY", "").strip()
+        if not key:
+            raise RuntimeError("OPENAI_API_KEY が空です（GitHub Secretの名前を確認）")
+        body = {
+            "model": cfg["openai_model"],
+            # gpt-5系は推論トークンもこの上限に含まれるため多めに取る
+            "max_completion_tokens": max(max_tokens, 16000),
+            "messages": [{"role": "user", "content": prompt}],
+        }
+        if cfg["openai_model"].startswith(("gpt-5", "o")):
+            body["reasoning_effort"] = cfg.get("openai_reasoning_effort", "low")
         r = requests.post(
             "https://api.openai.com/v1/chat/completions",
-            headers={"Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY', '').strip()}"},
-            json={
-                "model": cfg["openai_model"],
-                "max_tokens": max_tokens,
-                "messages": [{"role": "user", "content": prompt}],
-            },
-            timeout=120,
+            headers={"Authorization": f"Bearer {key}"},
+            json=body,
+            timeout=300,
         )
         _check(r, "OpenAI")
-        return r.json()["choices"][0]["message"]["content"]
+        return r.json()["choices"][0]["message"]["content"] or ""
     raise ValueError(f"unknown provider: {provider}")
 
 
