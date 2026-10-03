@@ -33,7 +33,7 @@
 - 読者は**非エンジニア**。Qiita / Zenn / HN は残しているが、1週間ほど運用してから止めるかを判断する（KJの判断待ち）
 - セール情報は記事候補とは**別枠**。Amazonの本格連携（Creators API）は、サイトとアソシエイトの準備ができてから
 - AIは OpenAI（KJがキーを登録済み）。Anthropic のキーはまだない
-- サイトはまだない（WordPress を想定。ドメインやサーバーは未定）
+- 掲載先は**独自ドメインの WordPress ＋ エックスサーバー（スタンダード）＋ Cocoon**に決定（2026-10-04、KJから一任）。理由と手順は `docs/SITE_SETUP.md`。サイト名・ドメイン名は未定
 
 ## 次にやること（優先順）
 1. 1週間ほど（〜10/11）運用し、候補の精度を見て `config.yaml` の `genre`（特に「対象外」）を調整する。ソースの入れ替えも検討する
@@ -41,11 +41,12 @@
    - 入力：`data/candidates/日付.json` ＋ KJのメモ（受け取り方は未定。LINEの返信を受けるには Webhook と常時動くエンドポイントが必要なので、まずは手でメモファイルを置く方式が現実的）
    - 検索：Brave Search API か Tavily（Bing / Google CSE は使えない）
    - 参考3件から事実・論点・出典をJSONで抽出 → 構成 → 執筆（メモを核にする）→ 校閲 → 元記事との類似度チェック → HTMLを出力
-3. サイト立ち上げ（WordPress）→ Ver.2 下書き投稿
+3. サイト立ち上げ（`docs/SITE_SETUP.md` の手順で KJ が契約・設定）→ Ver.2 下書き投稿
 4. ASP登録 / Amazonアソシエイト → Ver.3 商品DBとリンク挿入
 
 ## ハマりどころ（実際に起きたこと）
 - **Actions が毎朝 `data/` を自動コミットするので、ローカルから push すると `rejected (fetch first)` になる。** push の前に必ず `git pull --rebase` を実行する
+- **エックスサーバーは初期状態で国外IPからの REST API を拒否する。** GitHub Actions は海外から動くので、Ver.2 の投稿が 403 になる。サーバーパネル →「WordPressセキュリティ設定」→「国外アクセス制限設定」→「REST API アクセス制限」を OFF にする（SITE_SETUP 手順2）
 - **Actions の「Re-run jobs」は、その実行が最初に使ったコミットで再実行する。** コードを修正した後は、必ず「Run workflow」で新しく実行する
 - Secretが `null` になる原因：1つのSecretに3つまとめて登録した / Variables タブに登録した / Environment secrets に登録した / 名前のタイプミス
 - `x-api-key header is required` や `OPENAI_API_KEY が空です` は、キーが**空**という意味（名前違いや未登録）。401 で invalid と出るのは、キーの中身が違う場合
