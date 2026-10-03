@@ -1,86 +1,92 @@
 [
   {
-    "relevance": 8,
-    "testable": 7,
-    "monetizable": 5,
-    "total": 70,
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 8,
+    "buzz": 5.0,
+    "topic": "ChatGPT-virtual-tryon",
+    "total": 82,
     "detail": {
       "id": 0,
-      "summary": "Anthropicの「Claude」が高速化された背景と、開発者があえて実装しなかった設計判断について解説する記事の要約。Webサービス版ClaudeやCode機能の進化と自律的なコード作業の事例に触れている。",
-      "why": "自作パイプラインでAPI選定やレスポンス速度が重要な動画・研修コンテンツ量産者にとって、モデルの速度・挙動方針は直接影響するため検証報告価値が高い。",
-      "try": "Claude（Web/API）とChatGPT（gpt-4o/4）で同じコード修正タスク・テスト生成タスクを与え、応答時間・出力品質（テスト通過率や手戻り）を比較してログを残す。さらに自律実行（goal-oriented）を許可した場合の安全フィルタや不要操作の発生を確認する。",
-      "angle": "Claude高速化を検証：実務パイプラインで速度と挙動はどう変わる？（試してみた）",
+      "summary": "OpenAIがChatGPTにバーチャル試着（自身の写真に服やアクセサリーを合成）や、お気に入り保存機能、さらにiOSアプリで連続撮影した書類を自動で1つのPDFにまとめるスキャン機能を追加したという話題です。",
+      "why": "コード不要で試せ、個人事業主や広報担当が商品ページや資料作成で実務的に使える新機能のため、読者にとって導入判断や活用アイデアを示せる価値が高いです。",
+      "try": "iOS版ChatGPTアプリを最新に更新し、商品情報カードで自分の写真をアップしてバーチャル試着を試す。続けてアプリで複数ページの書類を連続撮影し、PDF化の出力を保存して画質やトリミングを確認する。",
+      "angle": "ChatGPT試着と書類スキャンを実務で試した結果",
       "products": [
-        "Anthropic Claude",
-        "OpenAI ChatGPT (gpt-4系列)",
-        "自作CI/テスト環境（pytest等）"
+        "ChatGPT（OpenAI公式iOSアプリ）",
+        "ChatGPT Plus / Enterprise（機能アクセスによって必要な場合）"
       ]
     },
     "item": {
-      "source": "はてブ",
-      "title": "「Claude」3倍高速化の裏で、Anthropic開発者が「あえてしなかったこと」：899th Lap",
-      "url": "https://kn.itmedia.co.jp/kn/article/2610/02/2000001932/",
-      "summary": "開発支援ツール「Claude Code」は、コードの作成だけでなく、既存コードの調査や修正、テストまでこなすようになっている。最近では、人間が細かな作業を一つずつ指示しなくても、与えられた目標に向けて自ら作業を進めるケースも報告されている。 そんな中、「Claude」の開発元であるAnthropicは、Webサービス版「claud...",
-      "signal": 7,
-      "signal_label": "7users",
-      "extra": {}
+      "source": "ITmedia AI+",
+      "title": "ChatGPTにAIでバーチャル試着機能とカメラでの書類スキャン→PDF化機能",
+      "url": "https://www.itmedia.co.jp/news/article/2610/02/2000001945/",
+      "summary": "OpenAIは、ChatGPTにバーチャル試着やお気に入り保存などの新機能を追加した。商品情報カードから自身の写真を使って服やアクセサリーを着用した姿を生成できる。気になった商品の整理機能も備える。また、iOSアプリに、連続撮影した書類を自動で1つのPDFにまとめて送信できるスキャン機能も導入した。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 5.0
+      }
     }
   },
   {
-    "relevance": 7,
+    "relevance": 9,
     "testable": 8,
-    "monetizable": 3,
-    "total": 65,
+    "monetizable": 7,
+    "buzz": 7.0,
+    "topic": "OpenAI-DevDay-2026",
+    "total": 81,
     "detail": {
       "id": 1,
-      "summary": "日本語のAI生成文を構造レベルで読みやすくするスキル『yomiyasu（よみやす）』を作ったという紹介記事。AI特有の“なんかAIっぽい”表現を文構造で直すアプローチが特徴。",
-      "why": "研修動画のスクリプトや字幕は“自然さ”が重要で、翻案コストを下げるための日本語推敲ツールは即戦力になるため、実践検証が有益。",
-      "try": "自作研修用スクリプト10本をyomiyasuで推敲し、未加工のAI生成文と比較して読みやすさ・時間削減（編集に要した分数）を計測する。さらにTTS（例：ElevenLabs）で朗読させて違和感を確認する。",
-      "angle": "AI文章を自然にする『yomiyasu』を試したら研修スクリプトが何分で直る？",
+      "summary": "OpenAI DevDay 2026の発表まとめ。新モデルや機能、製品ロードマップやマルチモーダル改善、開発者向けの新サービスなどDevDayで発表された主要ポイントを整理した内容です。",
+      "why": "DevDayの発表はChatGPTや関連AIツールの機能方針に直結するため、非エンジニアの制作・業務担当者向けに『実務で何が変わるか』を噛み砕いて伝えると有益です。",
+      "try": "発表の公式資料や要点まとめ（Zenn記事）を読み、業務で直ちに関係ありそうな機能（画像編集、動画生成、長文コンテキストなど）をピックアップして、自分の業務フローに当てはめて影響を箇条書きにする。",
+      "angle": "DevDay 2026で業務が変わる？非エンジニア向け要点整理",
       "products": [
-        "yomiyasu（公開されている場合の実装）",
-        "ElevenLabs（TTS）",
-        "Claude / ChatGPT（校正比較用）"
+        "ChatGPT（OpenAI）",
+        "GPTs / カスタムGPT（企業向けカスタマイズ機能）",
+        "OpenAIの新モデル・サービス（発表内容に準拠）"
       ]
     },
     "item": {
       "source": "Zenn",
-      "title": "AI-Slopな日本語を構造レベルで読みやすくするSkill『yomiyasu（よみやす）』を作りました",
-      "url": "https://zenn.dev/algoartis/articles/0b1c731881b25c",
+      "title": "OpenAI DevDay 2026 発表まとめ",
+      "url": "https://zenn.dev/schroneko/articles/openai-devday-2026",
       "summary": "",
-      "signal": 464,
-      "signal_label": "464いいね",
-      "extra": {}
+      "signal": 105,
+      "signal_label": "105いいね",
+      "extra": {
+        "buzz": 7.0
+      }
     }
   },
   {
-    "relevance": 7,
+    "relevance": 9,
     "testable": 8,
-    "monetizable": 3,
-    "total": 65,
+    "monetizable": 7,
+    "buzz": 7.3,
+    "topic": "Gemini-access-limits",
+    "total": 81,
     "detail": {
       "id": 2,
-      "summary": "話題の日本語推敲スキル『yomiyasu』と、Claudeを使った日本語推敲スキル3種を比較検証したQiita記事のまとめ。各スキルの違いや得意分野が具体例で示されている。",
-      "why": "複数の推敲プロンプト／スキルを比較することで、どの手法を研修スクリプトの自動化パイプラインに組み込むべきか判断できるため、読者の実務導入に直結する。",
-      "try": "同一のAI生成原稿に対して『yomiyasu』『プロンプトA（例：丁寧化）』『プロンプトB（簡潔化）』をClaudeとChatGPTで実行し、変更箇所の割合・意図保存率・編集時間を比較して事例を作る。",
-      "angle": "yomiyasu vs Claudeプロンプト3種を実地比較：研修台本に最適なのはどれ？（試してみた）",
+      "summary": "GoogleのGeminiモデル利用に関するアクセスと利用制限の変更についての公式ヘルプ。モデルごとに『low/medium/high』の努力レベル選択が可能になり、応答の詳細度や処理能力が調整できる旨が説明されています。",
+      "why": "Geminiを業務で使う際のコストや応答品質の調整方法、使い分けルールを具体的に示すことで、非技術者にも運用ポリシーやコスト最適化策を提案できるため有益です。",
+      "try": "Gemini搭載アプリやGoogleのAIサービスにログインし、利用可能なモデルと『effort level（low/medium/high）』の選択肢を確認。実際に同じ問い合わせを各レベルで投げ比べて応答の長さ・正確さ・料金表示の違いを比較する。",
+      "angle": "Geminiの“努力レベル”を比べて業務コストを下げる方法",
       "products": [
-        "yomiyasu",
-        "Anthropic Claude",
-        "OpenAI ChatGPT"
+        "Google Gemini（Gemini Advancedなど）",
+        "Google Workspace（Gemini組み込みのプロダクト利用時）"
       ]
     },
     "item": {
       "source": "はてブ",
-      "title": "新しい日本語推敲スキル「yomiyasu」がバズっていたので、Claudeで日本語推敲スキル3つを比べてみた - Qiita",
-      "url": "https://qiita.com/inoyu-qiita/items/0ffe6e74ecaf3aaa8b14",
-      "summary": "はじめに Xで@oga_aiichiroさんが公開された、新しい日本語推敲スキル「yomiyasu」が話題になっていました。AIが書いた文章の「なんかAIっぽい」を、単語の置き換えではなく文の構造から直すスキルらしいです。 ちょうど自分もQiitaを書くとき、AIに文章の校正を頼んだあとで「整っているけど自分が書いた感じがしないな...",
-      "signal": 408,
-      "signal_label": "408users",
+      "title": "Changes to Gemini model access and limits - Gemini Apps Help",
+      "url": "https://support.google.com/gemini/answer/17004136?hl=en",
+      "summary": "Tips: For each available model, you can also select the model’s effort level from low, medium, and high. This will increase the model’s ability to complete tasks and provide more thorough answers to q",
+      "signal": 6,
+      "signal_label": "6users",
       "extra": {
-        "also_on": [
-          "Qiita"
-        ]
+        "buzz": 7.3
       }
     }
   }
