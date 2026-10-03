@@ -85,7 +85,28 @@ python main.py --dry-run     # LINEに送らず、通知文を画面に出す
 - **ソースを止める**：`sources.xxx.enabled: false`
 - **ソースが取得失敗**：通知の末尾に「取得失敗: xxx」と出ます。他のソースはそのまま続行します。全体が落ちた場合は、エラー内容がLINEに届きます
 
-## 次の工程（Ver.1 以降）
+## 記事の下書きを作る（Ver.1/2）
+
+LINEで届いた候補から1つ選んで、記事の下書きを作ります。
+
+1. Actions タブ → `write-article` → **Run workflow**
+2. 「候補番号」に LINE の ■ の番号（1〜3）を選ぶ
+3. 「運営者メモ」は任意。試した感想があれば一言（例：無料版は3回まで、日本語はいまいち）
+4. 緑の **Run workflow** を押す → 数分で LINE に「下書きができました」と編集画面のURLが届く
+
+記事は、参考記事2〜3件から事実を抜き出して新しく書き、【想定シナリオ】（架空の人物での使い方の例）を入れます。
+WordPress には**下書き**で入るだけで、公開はしません。内容を確認してから公開してください。
+
+使うための Secret（README の手順と同じ画面で、1つずつ登録）：
+
+| Name | 値 | ないとき |
+|---|---|---|
+| `TAVILY_API_KEY` | [Tavily](https://app.tavily.com/) で発行したキー（`tvly-` で始まる。無料・カード不要） | 元記事1件だけで書く |
+| `WP_URL` | `https://nocode-ai.net` | WordPress に投稿せず、GitHub の data/articles/ に保存だけ |
+| `WP_USER` | WordPress のユーザー名 | 同上 |
+| `WP_APP_PASSWORD` | WordPress のアプリケーションパスワード（`docs/SITE_SETUP.md` 手順5） | 同上 |
+
+## 次の工程
 
 ```
 data/candidates/日付.json ＋（任意）LINEで返信した「自分メモ」

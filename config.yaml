@@ -58,6 +58,23 @@ sale_watch:
     gorime:  { enabled: true, limit: 30, label: "gori.me", url: "https://gori.me/feed" }
     prtimes: { enabled: true, limit: 50, label: "PR TIMES", url: "https://prtimes.jp/index.rdf" }
 
+# ===== 記事生成（Ver.1: python article.py --n 候補番号） =====
+article:
+  max_sources: 3       # 参考記事の最大数（候補の元記事 + 別サイトの関連記事）
+  max_chars: 6000      # 参考記事1件あたり、AIに渡す最大文字数
+  max_results: 8       # Tavily 検索で取る件数（この中から別サイトのものを選ぶ）
+  time_range: month    # 関連記事を探す期間（day / week / month / year）
+  country: japan       # 検索で優先する国
+  min_chars: 3000      # 本文の目安（下限）
+  max_chars_body: 4000 # 本文の目安（上限）
+  # 類似度チェック（参考記事と12文字以上の一致が続く長さ・割合）
+  max_run: 40          # 連続一致がこの文字数以上の段落は書き直す
+  max_ratio: 0.08      # 記事全体の一致率の上限
+  rewrite_rounds: 2
+  # 記事用のAI設定（llm の値を上書き。空なら llm と同じ）
+  llm:
+    openai_reasoning_effort: medium
+
 # AI設定（provider: anthropic か openai。APIキーは環境変数で渡す）
 llm:
   provider: openai

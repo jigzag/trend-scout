@@ -1,0 +1,61 @@
+name: write-article
+
+on:
+  workflow_dispatch:        # Actions画面から実行（候補番号とメモを入力）
+    inputs:
+      n:
+        description: "候補番号（LINEの■1〜■3）"
+        default: "1"
+        type: choice
+        options: ["1", "2", "3"]
+      memo:
+        description: "運営者メモ（任意。試した感想があれば一言）"
+        required: false
+        default: ""
+      date:
+        description: "候補の日付 YYYY-MM-DD（空ならいちばん新しい日）"
+        required: false
+        default: ""
+  repository_dispatch:      # LINEの返信から起動する用（Cloudflare Workers 経由。client_payload: n, memo）
+    types: [write-article]
+
+permissions:
+  contents: write           # data/articles/ をコミットするため
+
+concurrency:
+  group: write-article
+  cancel-in-progress: false
+
+jobs:
+  write:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Write article
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          # メモは環境変数で渡す（スクリプトに直接埋め込まない）
+          ARG_N: ${{ inputs.n || github.event.client_payload.n || '1' }}
+          ARG_MEMO: ${{ inputs.memo || github.event.client_payload.memo || '' }}
+          ARG_DATE: ${{ inputs.date || github.event.client_payload.date || '' }}
+        run: python article.py --n "$ARG_N" --memo "$ARG_MEMO" --date "$ARG_DATE"
+      - name: Save article
+        if: always()
+        run: |
+          git config user.name "trend-scout-bot"
+          git config user.email "trend-scout-bot@users.noreply.github.com"
+          git add data/articles/ || true
+          git diff --cached --quiet || git commit -m "article: $(date -u +%F)"
+          git pull --rebase && git push

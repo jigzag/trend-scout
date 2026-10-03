@@ -1,16 +1,16 @@
 # trend-scout 仕様書
 
-最終更新: 2026-10-04 / 対象バージョン: Ver.0（話題検知 + セール検知）
+最終更新: 2026-10-04 / 対象バージョン: Ver.0（話題検知 + セール検知）、Ver.1/2（記事生成 + WordPress下書き。§9）
 
 ## 1. 目的と全体像
 
 アフィリエイトブログの記事制作を、ネタ探しから公開まで段階的に自動化するシステム。
-このリポジトリは**その最初の工程（ネタ探し）**を担う。
+このリポジトリはネタ探し（Ver.0）と記事の下書き作成（Ver.1/2）を担う。
 
 ```
-[Ver.0 ← いまここ] 話題検知・セール検知 → LINE通知
-[Ver.1] 候補（＋任意の運営者メモ） → 参考記事2〜3件の取得・事実抽出 → 構成（想定シナリオ付き） → 執筆 → 校閲・類似度チェック → 記事HTML
-[Ver.2] WordPress 下書き投稿（REST API）
+[Ver.0 運用中] 話題検知・セール検知 → LINE通知
+[Ver.1 実装済み・本番未確認] 候補（＋任意の運営者メモ） → 参考記事2〜3件の取得・事実抽出 → 構成（想定シナリオ付き） → 執筆 → 校閲・類似度チェック → 記事HTML
+[Ver.2 実装済み・本番未確認] WordPress 下書き投稿（REST API）
 [Ver.3] アフィリエイトリンク挿入（商品DB / ASP / Amazon Creators API）
 [Ver.4] 公開後の順位・CTR計測 → 自動リライト判断
 ```
@@ -28,6 +28,7 @@
 |---|---|
 | 実行 | GitHub Actions（`jigzag/trend-scout`、Private）、毎朝 7:00 JST（cron `0 22 * * *` UTC） |
 | 手動実行 | Actions → daily-trend-scout → Run workflow（mode: `run` / `test-line`） |
+| 記事生成 | Actions → write-article → Run workflow（候補番号・メモ・日付）。`repository_dispatch`（type `write-article`）でも起動できる |
 | 言語 | Python 3.12、依存は `requests` と `PyYAML` のみ |
 | AI | OpenAI `gpt-5-mini`（`config.yaml` の `llm.provider` で anthropic に切り替え可能） |
 | 通知 | LINE Messaging API の push（LINE Notify は2025年3月に終了済み）。無料枠は月200通 |
@@ -37,6 +38,7 @@
 - `OPENAI_API_KEY`（Anthropicに切り替える場合は `ANTHROPIC_API_KEY`）
 - `LINE_CHANNEL_ACCESS_TOKEN`（Messaging API設定タブの、長期のチャネルアクセストークン）
 - `LINE_USER_ID`（チャネル基本設定タブの「あなたのユーザーID」。`U`で始まる）
+- 記事生成用（任意。なくても動くが機能が減る）：`TAVILY_API_KEY`（関連記事の検索。なければ元記事だけで書く）、`WP_URL` / `WP_USER` / `WP_APP_PASSWORD`（なければ WordPress に投稿せず data/articles/ に保存だけ）
 
 ## 3. 処理フロー（main.py `run()`）
 
@@ -69,6 +71,12 @@
 | `main.py` | `fetch_all`、`run`、CLI |
 | `tests/test_offline.py` | ネットに出ない E2E テスト（各フィードのサンプル、LLM・LINEのモック）。`python tests/test_offline.py` |
 | `.github/workflows/daily.yml` | 定期実行、手動実行（mode選択）、data/ のコミット |
+| `research.py` | Ver.1：Tavily で関連記事を検索・本文抽出（`gather`）。Tavily がなければ requests で元記事だけ取得 |
+| `writer.py` | Ver.1：事実抽出 → 構成 → 執筆 → 校閲のプロンプト、類似度チェックと書き直し、機械チェック（体験表現・想定シナリオ・文字数） |
+| `wordpress.py` | Ver.2：`post_draft`（REST API、アプリケーションパスワード、status=draft 固定） |
+| `article.py` | Ver.1/2 の CLI：候補の読み込み → 生成 → data/articles/ に保存 → WordPress 下書き → LINE 通知 |
+| `tests/test_article.py` | 記事生成のオフラインテスト（Tavily・LLM・WordPress・LINE はモック） |
+| `.github/workflows/article.yml` | 記事生成の手動実行（候補番号・メモ・日付）と repository_dispatch、data/articles/ のコミット |
 
 ## 5. ソース
 
@@ -96,7 +104,7 @@ Qiita / Zenn / HN はエンジニア向けの記事が中心で、読者とず�
 - **架空の人物の体験を、実体験のように書かない。** 想定シナリオは見出しに【想定シナリオ】と付け、「〜できそうです」「〜という使い方が考えられます」の形で書く。運営者が試していないことを「試した」「使ってみた」と書かない（読者の誤認、景品表示法の優良誤認、ASP規約への抵触を避けるため）
 - ステマ規制（2023/10〜）への対応として、記事に「PR」表記を自動で入れる（Ver.2以降）
 - Amazon: PA-API 5.0 は廃止済み（403が返る）で、後継は Creators API。価格はAPIから取得した値だけを表示する。利用には売上実績などの条件がある見込み
-- 検索API: Bing Search API は2025/8に終了、Google Custom Search JSON API は2027/1に終了予定。Ver.1 では Brave Search API / Tavily などを使う
+- 検索API: Bing Search API は2025/8に終了、Google Custom Search JSON API は2027/1に終了予定。Ver.1 は **Tavily**（無料で月1,000クレジット、カード不要。1記事あたり検索1＋抽出1の約2クレジット）。Brave は2026年に無料プランが終わり、月5ドル分のクレジット制になった
 - 公開は当面「下書き」まで。品質ゲートが安定してから自動公開を検討する
 
 ## 8. 既知の制約・未実装
@@ -104,3 +112,26 @@ Qiita / Zenn / HN はエンジニア向けの記事が中心で、読者とず�
 - 紹介候補の製品名に、無関係なものが混ざることがある
 - セール検知はキーワードでふるっているため、英語の表現ゆれは取りこぼしうる
 - 通知は1日1通で、5000字を超えた分は切り捨てる
+
+## 9. 記事生成 Ver.1 ＋ WordPress 下書き Ver.2（article.py）
+
+```
+1. load_candidate          data/candidates/日付.json の n 番目（日付省略時はいちばん新しいファイル）
+2. research.gather         元記事の本文（Tavily Extract → 失敗なら requests で直接取得）
+                           ＋ Tavily Search（topic＋タイトル、直近1か月、日本優先）から別ドメインの記事を足して最大3件
+                           600字未満の本文は使わない。1件あたり6000字で切る
+3. writer.extract_facts    参考記事から事実・手順・注意点・不明点をJSONで抜き出す（言い換え、推測なし）
+4. writer.make_outline     タイトル・slug・抜粋・想定シナリオの人物・h2構成
+5. writer.write_body       HTML本文（3000〜4000字）。h2/h3/p/ul/ol/li/strong/table のみ
+6. writer.review           事実メモにない数字の削除、体験表現の修正、想定シナリオの書き方、誤字
+7. writer.fix_similarity   参考記事と12文字単位で照合。連続一致40字以上の段落を最大2回書き直す
+                           （全体の一致率が8%を超えても段落を特定できない場合は警告だけ出す）
+8. writer.check_rules      機械チェック：体験表現（運営者メモの囲みの外）、【想定シナリオ】の有無、文字数
+9. assemble                先頭に PR 表記、末尾に「参考にした情報」（出典リンク）を付ける
+10. 保存 → 投稿 → 通知     data/articles/日付-n.html / .json、WordPress に下書き（公開はしない）、LINE に編集URLと警告
+```
+
+- AI の呼び出しは1記事あたり4〜6回。モデルは `llm` と同じ（`article.llm` で上書き。初期値は reasoning_effort=medium）
+- 運営者メモがあるときだけ `<div class="operator-note"><h2>運営者のひとこと</h2>…</div>` を入れる。この囲みの中だけ体験表現を許す
+- 失敗したらトレースバックを LINE に送る。data/articles/ はワークフローの最後に必ずコミットする
+- LINE の返信から起動する部分（Cloudflare Workers → repository_dispatch）は未実装。payload は `{"n": "1", "memo": "…", "date": ""}`
