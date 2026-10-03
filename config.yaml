@@ -1,0 +1,33 @@
+# ===== 話題検知 Ver.0 設定 =====
+
+# サイトのジャンル（AIの採点基準になる。ここを書き換えればジャンル変更できる）
+genre: |
+  AI動画生成・音声合成(TTS)・業務自動化ツールの「実際に試してみた」系ブログ。
+  対象: MiniMax, Remotion, ElevenLabs, Runway, Kling, n8n, Make, Dify, Claude, ChatGPT,
+  Python自動化, 動画編集の効率化 など。
+  読者: 動画やコンテンツ制作をAIで効率化したい個人・中小企業の担当者。
+  運営者は研修動画をAIで量産するパイプラインを自作しており、実際に触って検証できる。
+
+# 採点の重み（合計1.0）
+weights:
+  relevance: 0.45    # ジャンルとの関連度
+  testable: 0.35     # 運営者が実際に触って検証できるか（一次情報が出せるか）
+  monetizable: 0.20  # 紹介できる有料ツール・商品・アフィリエイト案件がありそうか
+
+min_relevance: 5   # 関連度がこれ未満は候補から除外（0-10）
+top_n: 3           # 毎朝通知する件数
+recheck_days: 14   # 一度出したURLを再度候補にしない日数
+
+# 各ソースから取得する最大件数
+sources:
+  hatena:      { enabled: true, limit: 30 }   # はてブ テクノロジー人気
+  zenn:        { enabled: true, limit: 20 }   # Zenn デイリートレンド
+  qiita:       { enabled: true, limit: 20 }   # Qiita 人気記事
+  hackernews:  { enabled: true, limit: 30 }   # Hacker News フロントページ
+  producthunt: { enabled: true, limit: 20 }   # Product Hunt 新着
+
+# AI設定（provider: anthropic か openai。APIキーは環境変数で渡す）
+llm:
+  provider: anthropic
+  anthropic_model: claude-sonnet-4-5
+  openai_model: gpt-4.1-mini

@@ -1,0 +1,33 @@
+name: daily-trend-scout
+
+on:
+  schedule:
+    - cron: "0 22 * * *"   # UTC 22:00 = 日本時間 毎朝7:00（GitHub側の混雑で数分〜十数分遅れることあり）
+  workflow_dispatch:        # Actions画面から手動実行も可
+
+permissions:
+  contents: write           # data/ の履歴をコミットするため
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Run
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+        run: python main.py
+      - name: Save history
+        run: |
+          git config user.name "trend-scout-bot"
+          git config user.email "trend-scout-bot@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "data: $(date -u +%F)"
+          git push
