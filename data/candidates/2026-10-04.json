@@ -1,82 +1,87 @@
 [
   {
-    "relevance": 9,
-    "testable": 9,
-    "monetizable": 7,
-    "total": 86,
+    "relevance": 8,
+    "testable": 7,
+    "monetizable": 5,
+    "total": 70,
     "detail": {
       "id": 0,
-      "summary": "AnthropicのClaude Codeに「Mods」が追加され、Jevなどを使ってモデルルーター的な仕組みを構築できる話。公式ドキュメントを元に実装例や動作確認を解説している。",
-      "why": "Claude Codeの拡張で自作パイプラインに組み込めるなら研修動画生成ワークフローのモデル切替やカスタムルール適用が捗るため、実地検証価値が高い。",
-      "try": "Claude CodeのModsドキュメントを読み、Jev（または同等のルーティングツール）経由で簡単なルール（例：英語はモデルA、日本語はモデルB）を実装してリクエストを振り分け、応答品質とレイテンシを比較する。ログ出力とエラーハンドリングを確認して本番取り込み可否を判断する。",
-      "angle": "Claude Code Modsでモデルルーターを試してみた：Jev連携検証",
+      "summary": "Anthropicの「Claude」が高速化された背景と、開発者があえて実装しなかった設計判断について解説する記事の要約。Webサービス版ClaudeやCode機能の進化と自律的なコード作業の事例に触れている。",
+      "why": "自作パイプラインでAPI選定やレスポンス速度が重要な動画・研修コンテンツ量産者にとって、モデルの速度・挙動方針は直接影響するため検証報告価値が高い。",
+      "try": "Claude（Web/API）とChatGPT（gpt-4o/4）で同じコード修正タスク・テスト生成タスクを与え、応答時間・出力品質（テスト通過率や手戻り）を比較してログを残す。さらに自律実行（goal-oriented）を許可した場合の安全フィルタや不要操作の発生を確認する。",
+      "angle": "Claude高速化を検証：実務パイプラインで速度と挙動はどう変わる？（試してみた）",
       "products": [
         "Anthropic Claude",
-        "Jev",
-        "Claude Code (Mods)",
-        "Runway (参考)"
+        "OpenAI ChatGPT (gpt-4系列)",
+        "自作CI/テスト環境（pytest等）"
       ]
     },
     "item": {
-      "source": "Qiita",
-      "title": "Claude Code ModsとJevでモデルルーターを構築（サブスクで使えるゾ！！）",
-      "url": "https://qiita.com/moritalous/items/8b663db633dde3c49d62?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
-      "summary": "Claude CodeにModsというものが追加されました。 公式ドキュメントはこちら 何やらいろんなことができそうです。 頼んでみた ドキュメントもろくに読まず、Claude Codeに聞いてみました。 Claude Code Mods（ https://...",
-      "signal": null,
-      "signal_label": "",
+      "source": "はてブ",
+      "title": "「Claude」3倍高速化の裏で、Anthropic開発者が「あえてしなかったこと」：899th Lap",
+      "url": "https://kn.itmedia.co.jp/kn/article/2610/02/2000001932/",
+      "summary": "開発支援ツール「Claude Code」は、コードの作成だけでなく、既存コードの調査や修正、テストまでこなすようになっている。最近では、人間が細かな作業を一つずつ指示しなくても、与えられた目標に向けて自ら作業を進めるケースも報告されている。 そんな中、「Claude」の開発元であるAnthropicは、Webサービス版「claud...",
+      "signal": 7,
+      "signal_label": "7users",
       "extra": {}
     }
   },
   {
-    "relevance": 9,
-    "testable": 9,
-    "monetizable": 6,
-    "total": 84,
+    "relevance": 7,
+    "testable": 8,
+    "monetizable": 3,
+    "total": 65,
     "detail": {
       "id": 1,
-      "summary": "Claude Codeのmod（Mods）機能を自分で一つ実装してベンチし、公式の対応バージョン表記と実際の互換性について検証したレポート。",
-      "why": "公式告知と実装の齟齬は現場でハマりやすく、実際に何が動くかを明示することで同じ手を使うエンジニア／制作担当の導入コストを下げられる。",
-      "try": "記事の通りにmodを1本実装して古いバージョンと新しいバージョンで動作を比較（回帰テスト）し、APIレスポンスやエラーメッセージ、互換性のポイントをログ付きで記録する。結果をテンプレート化して読者が真似できる手順を提供する。",
-      "angle": "Claude Codeのmodを1本書いて検証してみた：互換性チェックの手順",
+      "summary": "日本語のAI生成文を構造レベルで読みやすくするスキル『yomiyasu（よみやす）』を作ったという紹介記事。AI特有の“なんかAIっぽい”表現を文構造で直すアプローチが特徴。",
+      "why": "研修動画のスクリプトや字幕は“自然さ”が重要で、翻案コストを下げるための日本語推敲ツールは即戦力になるため、実践検証が有益。",
+      "try": "自作研修用スクリプト10本をyomiyasuで推敲し、未加工のAI生成文と比較して読みやすさ・時間削減（編集に要した分数）を計測する。さらにTTS（例：ElevenLabs）で朗読させて違和感を確認する。",
+      "angle": "AI文章を自然にする『yomiyasu』を試したら研修スクリプトが何分で直る？",
       "products": [
-        "Anthropic Claude",
-        "Claude Code (Mods)"
-      ]
-    },
-    "item": {
-      "source": "Qiita",
-      "title": "Claude Code の mod を1本書いて測った。公式が言う対応版は、実際には1つ前から動く",
-      "url": "https://qiita.com/suwa_nobu/items/981419874758372f65eb?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
-      "summary": "Claude Code 2.1.287（2026-10-01）で mod が入りました。changelog の1行目はこれです。 Added Claude Mods: plugins may now modify deeper behavior mod はプラグインの中...",
-      "signal": null,
-      "signal_label": "",
-      "extra": {}
-    }
-  },
-  {
-    "relevance": 9,
-    "testable": 9,
-    "monetizable": 5,
-    "total": 82,
-    "detail": {
-      "id": 2,
-      "summary": "Windowsで再生中の音声をリアルタイムにWhisperで文字起こしするMeetilyの仕組みを、約100行未満のRustで再現した実装紹介。システム音声キャプチャ→STTの流れを解説している。",
-      "why": "社内研修や動画編集で画面録音の自動文字起こしをローカルで完結させたいケースが多く、軽量実装を自分のパイプラインに組み込む価値が高い。",
-      "try": "記事のRust実装をクローンしてWindows上でビルド、システム音声キャプチャの動作（既存のプレイヤー再生音を捕まえられるか）を確認し、Whisper系モデルで出力精度をチェック。必要ならPythonで同等処理を作り直して既存の自動化フローに組み込む。",
-      "angle": "Windows音声をWhisperで即文字起こしする軽量Rust実装を試す",
-      "products": [
-        "OpenAI Whisper（またはWhisperX）",
-        "ElevenLabs（音声合成の補足用途）"
+        "yomiyasu（公開されている場合の実装）",
+        "ElevenLabs（TTS）",
+        "Claude / ChatGPT（校正比較用）"
       ]
     },
     "item": {
       "source": "Zenn",
-      "title": "Windowsで再生中の音声をWhisperで文字起こしする：Meetilyの仕組みを100行未満のRustで再現する",
-      "url": "https://zenn.dev/tmtk/articles/edc992e6a24b65",
+      "title": "AI-Slopな日本語を構造レベルで読みやすくするSkill『yomiyasu（よみやす）』を作りました",
+      "url": "https://zenn.dev/algoartis/articles/0b1c731881b25c",
       "summary": "",
-      "signal": 1,
-      "signal_label": "1いいね",
+      "signal": 464,
+      "signal_label": "464いいね",
       "extra": {}
+    }
+  },
+  {
+    "relevance": 7,
+    "testable": 8,
+    "monetizable": 3,
+    "total": 65,
+    "detail": {
+      "id": 2,
+      "summary": "話題の日本語推敲スキル『yomiyasu』と、Claudeを使った日本語推敲スキル3種を比較検証したQiita記事のまとめ。各スキルの違いや得意分野が具体例で示されている。",
+      "why": "複数の推敲プロンプト／スキルを比較することで、どの手法を研修スクリプトの自動化パイプラインに組み込むべきか判断できるため、読者の実務導入に直結する。",
+      "try": "同一のAI生成原稿に対して『yomiyasu』『プロンプトA（例：丁寧化）』『プロンプトB（簡潔化）』をClaudeとChatGPTで実行し、変更箇所の割合・意図保存率・編集時間を比較して事例を作る。",
+      "angle": "yomiyasu vs Claudeプロンプト3種を実地比較：研修台本に最適なのはどれ？（試してみた）",
+      "products": [
+        "yomiyasu",
+        "Anthropic Claude",
+        "OpenAI ChatGPT"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "新しい日本語推敲スキル「yomiyasu」がバズっていたので、Claudeで日本語推敲スキル3つを比べてみた - Qiita",
+      "url": "https://qiita.com/inoyu-qiita/items/0ffe6e74ecaf3aaa8b14",
+      "summary": "はじめに Xで@oga_aiichiroさんが公開された、新しい日本語推敲スキル「yomiyasu」が話題になっていました。AIが書いた文章の「なんかAIっぽい」を、単語の置き換えではなく文の構造から直すスキルらしいです。 ちょうど自分もQiitaを書くとき、AIに文章の校正を頼んだあとで「整っているけど自分が書いた感じがしないな...",
+      "signal": 408,
+      "signal_label": "408users",
+      "extra": {
+        "also_on": [
+          "Qiita"
+        ]
+      }
     }
   }
 ]
