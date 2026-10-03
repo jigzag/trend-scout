@@ -1,7 +1,10 @@
 # 話題検知 Ver.0（trend-scout）
 
-毎朝7時に、はてブ・Zenn・Qiita・Hacker News・Product Hunt から話題を集め、
+毎朝7時に、はてブ・Zenn・Qiita・Hacker News・Product Hunt・ITmedia AI+ から話題を集め、
 AIが「このブログで記事にすべきか」を採点して、上位3件をLINEに送ります。
+あわせて、読者に関係のあるセール・キャンペーン情報を最大3件、別枠で付けます。
+
+詳しい仕様は `docs/SPEC.md`、Claude Code への引き継ぎは `CLAUDE.md` を参照。
 
 ```
 取得（5ソース）→ 重複除去 → 既出除外（14日）→ AI一括採点 → 上位3件の詳細生成 → LINE → 記録
