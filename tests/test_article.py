@@ -92,6 +92,8 @@ def test_check_rules():
     assert any("体験" in x for x in w) and any("想定シナリオ" in x for x in w)
     ok = writer.check_rules(f'<h2>【想定シナリオ】</h2><div class="{writer.NOTE_CLASS}"><p>使ってみた感想</p></div>' + "<p>あ</p>" * 3000, "メモ")
     assert ok == []
+    leak = writer.check_rules("<h2>【想定シナリオ】</h2><p>事実メモによると無料です。</p>", "")
+    assert any("指示の言葉" in x for x in leak)
 
 
 def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
@@ -114,9 +116,12 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert "参考にした情報" in art["content"] and "https://other.example/c" in art["content"]
     assert "itmedia.co.jp/b/2" not in art["content"]          # 同じドメインは1件だけ
     assert "下書きができました" in sent["text"] and "post=42" in sent["text"]
-    saved = json.loads((tmp / "data" / "articles" / "2026-10-04-1.json").read_text(encoding="utf-8"))
+    files = list((tmp / "data" / "articles").glob("2026-10-04-1-*.json"))
+    assert len(files) == 1
+    saved = json.loads(files[0].read_text(encoding="utf-8"))
     assert saved["wordpress"]["id"] == 42 and saved["memo"] == "無料版は3回まで"
-    assert (tmp / "data" / "articles" / "2026-10-04-1.html").exists()
+    assert files[0].with_suffix(".html").exists()
+    assert not any("参考記事が1件" in w for w in saved["warnings"])
     print(sent["text"])
 
 
@@ -137,6 +142,7 @@ def test_without_tavily_and_wp(tmp=Path(tempfile.gettempdir()) / "ts_article2"):
          mock.patch.object(article, "BASE", tmp):
         art = article.run(1, dry_run=True, config_path=Path(article.__file__).parent / "config.yaml")
     assert art["wordpress"] is None and len(art["sources"]) == 1
+    assert any("参考記事が1件" in w for w in art["warnings"])
 
 
 if __name__ == "__main__":

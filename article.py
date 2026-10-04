@@ -62,6 +62,8 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     body = writer.review(body, facts, memo, lc)
     body, sim = writer.fix_similarity(body, sources, opt, lc)
     warnings = writer.check_rules(body, memo, opt.get("min_chars", 3000))
+    if len(sources) < 2:
+        warnings.append("参考記事が1件だけ（関連記事が見つからなかった）。事実が少ないので内容を確認してください")
     if not sim["ok"]:
         warnings.append(f"参考記事との類似が高い（一致率{sim['ratio']:.1%}、最長{sim['longest']}字）")
     return {
@@ -97,7 +99,7 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
 
     out_dir = BASE / "data" / "articles"
     out_dir.mkdir(parents=True, exist_ok=True)
-    stem = f"{cand_day}-{n}"
+    stem = f"{cand_day}-{n}-{datetime.now(JST):%H%M%S}"  # 同じ候補で作り直しても上書きしない
     (out_dir / f"{stem}.html").write_text(art["content"], encoding="utf-8")
 
     wp = None
