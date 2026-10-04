@@ -1,93 +1,93 @@
 [
   {
-    "relevance": 9,
-    "testable": 8,
-    "monetizable": 7,
-    "buzz": 7.5,
-    "topic": "ChatGPT 利用制限リセット",
-    "total": 82,
+    "relevance": 6,
+    "testable": 6,
+    "monetizable": 4,
+    "buzz": 5.7,
+    "topic": "Hatena × ChatGPT/Claude integration",
+    "total": 57,
     "detail": {
       "id": 0,
-      "summary": "OpenAIがChatGPTの有料ユーザー向けに、利用制限（レート/リクエスト枠）のリセットを行うと発表した話。実施日は日本時間で10月3日に予定されている。",
-      "why": "有料ユーザーの利用感に直結する変更で、業務でChatGPTを使う読者にとって影響度が高く、実務運用や料金プランの見直しに役立つため。",
-      "try": "自分の有料アカウントでリセット実施後に同じワークフロー（例：長文要約や連続プロンプト）を複数回実行して、レスポンス時間・回数制限の変化を比較してスクリーンショットを残す。サポートやFAQで変更内容の公式説明を確認して要点を記事にまとめる。",
-      "angle": "有料プラン利用者が知るべきChatGPTの利用枠リセット影響",
+      "summary": "はてな匿名ダイアリーがChatGPTやClaudeから検索・閲覧・投稿できるようになり、AIが本文要約や判定を行って読む手間を減らす動きが出ているという話題です。",
+      "why": "読者がSNSや資料発信で扱う“短時間で中身を把握する”ワークフローに直結する機能変化で、現場での情報収集やネタ発掘のやり方が変わるため記事化の価値が高いです。",
+      "try": "ChatGPTとClaudeのいずれかではてな匿名ダイアリー連携機能にアクセスし、特定のトピックを検索→AIによる要約・種別判定（例：意見／まとめ／ノウハウ）を比較して、要約の精度と便利さをスクショで記録する。",
+      "angle": "AI連携で変わるはてな匿名ダイアリー活用法：情報収集を半分にする手順",
       "products": [
-        "ChatGPT (Plus/有料プラン)"
+        "OpenAI ChatGPT",
+        "Anthropic Claude"
       ]
     },
     "item": {
-      "source": "ITmedia AI+",
-      "title": "ChatGPTの“利用制限”リセットへ　有料ユーザー向け",
-      "url": "https://www.itmedia.co.jp/aiplus/article/2610/02/2000001961/",
-      "summary": "米OpenAIのプロダクト責任者ティボー・ソティオ氏は、「ChatGPT」の全有料ユーザーを対象に、利用制限枠をリセットすると発表した。日本時間10月3日午前2時の実施を予定している。",
-      "signal": null,
-      "signal_label": "",
+      "source": "はてブ",
+      "title": "AI増田判定、便利すぎて本文を読まなくて済むようになってる",
+      "url": "https://anond.hatelabo.jp/20261003152005",
+      "summary": "AI増田判定、便利すぎて本文を読まなくて済むようになってる 9月30日、はてな匿名ダイアリーがChatGPTから検索、閲覧、投稿できるようになった。10月2日にはClaudeからも使えるようになった。 はてな匿名ダイアリーがChatGPTから使えるようになりました はてな匿名ダイアリーがClaudeからも使えるようになりました 案の...",
+      "signal": 9,
+      "signal_label": "9users",
       "extra": {
-        "buzz": 7.5
-      }
-    }
-  },
-  {
-    "relevance": 9,
-    "testable": 6,
-    "monetizable": 8,
-    "buzz": 6.5,
-    "topic": "MAI-Transcribe-2-Streaming / MAI-Voice-2.1",
-    "total": 76,
-    "detail": {
-      "id": 1,
-      "summary": "Microsoftが低遅延ストリーミング文字起こしモデル「MAI-Transcribe-2-Streaming」と音声合成「MAI-Voice-2.1」などを発表し、音声エージェントやリアルタイム文字起こしの用途を想定したプレビュー提供を開始したという話。",
-      "why": "会議のリアルタイム文字起こしや多言語ナレーション生成を非エンジニアでも導入できれば、制作や事務効率化に直結するため。",
-      "try": "Microsoft Foundryのプレビューにアクセスできるか確認し、短い会議音源（数分）を使ってストリーミング文字起こしを試し、認識精度・遅延・言語切替の挙動をスクリーン録画で記録する。音声合成はトーンや多言語のサンプルを作成して比較メモを作る。",
-      "angle": "会議と動画制作を速くする低遅延文字起こしと多言語音声の実務導入ポイント",
-      "products": [
-        "Microsoft Foundry / MAI",
-        "Azure Speech Services",
-        "Descript",
-        "Otter.ai"
-      ]
-    },
-    "item": {
-      "source": "ITmedia AI+",
-      "title": "Microsoft、初のストリーミング文字起こしモデル「MAI-Transcribe-2-Streaming」公開　音声合成「MAI-Voice-2.1」と高速版も",
-      "url": "https://www.itmedia.co.jp/news/article/2610/02/2000001950/",
-      "summary": "Microsoft AIは、ストリーミング文字起こしモデル「MAI-Transcribe-2-Streaming」と音声合成モデル群を発表した。低遅延な逐次認識や声のトーンを保った多言語合成に対応し、音声エージェント構築を想定する。Microsoft Foundryでプレビュー提供を始め、複合デモも公開した。",
-      "signal": null,
-      "signal_label": "",
-      "extra": {
-        "buzz": 6.5
+        "buzz": 5.7
       }
     }
   },
   {
     "relevance": 6,
     "testable": 7,
-    "monetizable": 3,
-    "buzz": 9.7,
-    "topic": "Grokで画像検索（ネジ発見）",
-    "total": 64,
+    "monetizable": 2,
+    "buzz": 3.7,
+    "topic": "macOS Full Disk Access changes",
+    "total": 54,
     "detail": {
-      "id": 2,
-      "summary": "ユーザーが地面に落としたネジを画像系AI（Grok）に探してもらったらすぐ見つかった、という実用エピソードを紹介する投稿のまとめ記事。",
-      "why": "非エンジニアの読者がスマホ写真だけで物体検出や視覚検索を活用できることを示す良い事例になり、現場での小物捜索や資料作成時の画像活用法につながるため。",
-      "try": "スマホで床や作業場の写真を数枚撮り、Grok (Xの画像機能) やGoogle Lens、Runwayのビジュアル検索で同一または類似物を検索して、検出精度と使いやすさを比較し、スクリーンショットと所要時間を記録する。",
-      "angle": "スマホ写真で瞬時に発見：物の発見を助ける画像AIの使い分けガイド",
+      "id": 1,
+      "summary": "AppleがAIエージェントのリスク対策として、macOSのフルディスクアクセスへの制限を新たに導入すると発表しました。エージェントがローカルデータに無制限アクセスすることへの制約です。",
+      "why": "Mac上で動くAI搭載ツールやノーコード自動化を使う読者（動画編集補助アプリ、アシスタント系SaaSなど）にとって、設定変更や動作影響を事前に把握して対策を示せるため有用です。",
+      "try": "自分のMacで「システム環境設定→セキュリティとプライバシー→フルディスクアクセス」を開き、常用しているAIツール（例：Raycastや他の補助アプリ）がどう表示されるか確認して、制限後に期待される挙動（アクセスの拒否や許可ダイアログ）をスクショで残す。",
+      "angle": "Macで使うAIツール、フルディスク制限で何が変わるかと現場の対処法",
       "products": [
-        "Grok (Xの画像機能)",
-        "Google Lens",
-        "Runway"
+        "macOS（Apple）",
+        "Raycast",
+        "Alfred"
       ]
     },
     "item": {
       "source": "はてブ",
-      "title": "地面に落としたネジをGrokに探してもらったらすぐ見つけてくれた話…画像処理におけるAIは強すぎる",
-      "url": "https://togetter.com/li/2753759",
-      "summary": "Togetter編集部 X（旧Twitter）に日々流れる情報の中から、編集部がさまざまなポストを選び出し、わかりやすい形でお届けすることを大切にしています。新たな視点や世間の反応を添えることで、読者の皆様にとって安心・安全で価値あるコンテンツとすることを目指しています。詳しくは編集方針をご覧ください。 あわせて...",
-      "signal": 24,
-      "signal_label": "24users",
+      "title": "AppleがAIエージェントのリスクを鑑みMacのフルディスクアクセスに制限を設ける",
+      "url": "https://gigazine.net/news/20261003-apple-limit-mac-full-disk-access-ai-agents-risk/",
+      "summary": "現地時間の2026年10月2日、AppleはAIエージェントがもたらすリスクに対応するため、macOSにおけるフルディスクアクセスに新たな制限を導入すると発表しました。 Updates to Full Disk Access in macOS - Latest News - Apple Developer https://developer.apple.com/news/?id=p6zjojqw ",
+      "signal": 20,
+      "signal_label": "20users",
       "extra": {
-        "buzz": 9.7
+        "buzz": 3.7
+      }
+    }
+  },
+  {
+    "relevance": 7,
+    "testable": 4,
+    "monetizable": 3,
+    "buzz": 5.0,
+    "topic": "Anthropic best practices for human+agents",
+    "total": 52,
+    "detail": {
+      "id": 2,
+      "summary": "Anthropicが「人とAIエージェントの最強チームを作るベストプラクティス」を公開し、エージェントとの役割分担やワークフロー設計の指針を示しています。",
+      "why": "人事・研修担当や業務効率化を狙う個人事業主が、社内ルールや研修教材としてすぐ取り入れられる実務的なヒントが得られるため、実践的なガイド記事に向きます。",
+      "try": "記事のベストプラクティスから1〜2項目（例：エージェントの権限設計、エスカレーションルール）を選び、自分の業務フロー（資料作成やSNS投稿）に当てはめた簡単な運用ルール案を作成し、実際にChatGPTやClaudeに運用ルールのテンプレを作らせて検証する。",
+      "angle": "研修で使える：AIエージェントと人の役割分担ルール作成ガイド",
+      "products": [
+        "Anthropic Claude",
+        "OpenAI ChatGPT",
+        "Slack"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "「DMに逃げる理由は秘密保持ではない」　人とAIエージェントの“最強チーム”を作るベストプラクティス",
+      "url": "https://atmarkit.itmedia.co.jp/ait/articles/2610/02/news009.html",
+      "summary": "Anthropicは、人間とAIエージェントによる効果的なチームを構築するためのベストプラクティスをまとめたブログ記事を公開した。Slack社の最高製品責任者（CPO）へのインタビューに基づいている。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 5.0
       }
     }
   }
