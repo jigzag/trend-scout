@@ -1,28 +1,22 @@
 {
-  "title": "はてな匿名ダイアリー、ChatGPTとClaudeの連携まとめ",
-  "slug": "hatena-anon-diary-chatgpt-claude",
-  "excerpt": "はてな匿名ダイアリーがChatGPT（9/30対応）とClaude（10/2対応）から検索・閲覧・投稿可能になった経緯と、接続手順や注意点を整理します。実験的導入である点にも触れます。",
-  "persona": "社内ニュースやSNS投稿をAIで効率化したい中小企業の広報担当のBさん",
-  "chars": 2124,
+  "title": "はてな匿名ダイアリーのAI連携で増えた反応と対応ポイント",
+  "slug": "hatena-anond-ai-reactions",
+  "excerpt": "はてな匿名ダイアリーが外部AI（ChatGPT/Claude）からの検索・閲覧・投稿に対応した変化を整理。AIか人かの判定が増えた影響と、確認すべき点を分かりやすく解説します。",
+  "persona": "匿名掲示板の投稿や反応を監視する広報担当のBさん",
+  "chars": 2172,
   "similarity": {
-    "ratio": 0.031,
-    "longest": 25,
+    "ratio": 0.002,
+    "longest": 15,
     "ok": true
   },
-  "warnings": [],
+  "warnings": [
+    "本文が短い（2172字）"
+  ],
   "memo": "",
   "sources": [
     {
       "title": "AI増田判定、便利すぎて本文を読まなくて済むようになってる",
       "url": "https://anond.hatelabo.jp/20261003152005"
-    },
-    {
-      "title": "はてなブックマーク - 新着エントリー - テクノロジー - はてなブログ（テクノロジー）",
-      "url": "https://b.hatena.ne.jp/entrylist/it/%E3%81%AF%E3%81%A6%E3%81%AA%E3%83%96%E3%83%AD%E3%82%B0%EF%BC%88%E3%83%86%E3%82%AF%E3%83%8E%E3%83%AD%E3%82%B8%E3%83%BC%EF%BC%89"
-    },
-    {
-      "title": "「ChatGPT」ニュースまとめ2026-10-02（51記事）｜ChatGPT部 Produced by NOB DATA",
-      "url": "https://note.com/chatgpt_nobdata/n/n1f3cd3c9ac69"
     }
   ],
   "candidate": {
@@ -30,9 +24,9 @@
     "url": "https://anond.hatelabo.jp/20261003152005"
   },
   "wordpress": {
-    "id": 22,
-    "link": "https://nocode-ai.net/?p=22",
-    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=22&action=edit"
+    "id": 23,
+    "link": "https://nocode-ai.net/?p=23",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=23&action=edit"
   },
-  "created_at": "2026-10-04T10:44:49+09:00"
+  "created_at": "2026-10-04T10:49:31+09:00"
 }
