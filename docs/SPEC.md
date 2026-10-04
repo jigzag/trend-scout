@@ -73,7 +73,8 @@
 | `.github/workflows/daily.yml` | 定期実行、手動実行（mode選択）、data/ のコミット |
 | `research.py` | Ver.1：Tavily で関連記事を検索・本文抽出（`gather`）。Tavily がなければ requests で元記事だけ取得 |
 | `writer.py` | Ver.1：事実抽出 → 構成 → 執筆 → 校閲のプロンプト、類似度チェックと書き直し、機械チェック（体験表現・想定シナリオ・文字数） |
-| `wordpress.py` | Ver.2：`post_draft`（REST API、アプリケーションパスワード、status=draft 固定） |
+| `wordpress.py` | Ver.2：`upload_media`、`post_draft`（REST API、アプリケーションパスワード、status=draft 固定） |
+| `images.py` | 記事画像の生成（OpenAI Images API、`config.yaml` の `image`）、本文への挿入 |
 | `article.py` | Ver.1/2 の CLI：候補の読み込み → 生成 → data/articles/ に保存 → WordPress 下書き → LINE 通知 |
 | `tests/test_article.py` | 記事生成のオフラインテスト（Tavily・LLM・WordPress・LINE はモック） |
 | `.github/workflows/article.yml` | 記事生成の手動実行（候補番号・メモ・日付）と repository_dispatch、data/articles/ のコミット |
@@ -128,7 +129,10 @@ Qiita / Zenn / HN はエンジニア向けの記事が中心で、読者とず�
                            （全体の一致率が8%を超えても段落を特定できない場合は警告だけ出す）
 8. writer.check_rules      機械チェック：体験表現（運営者メモの囲みの外）、【想定シナリオ】の有無、文字数
 9. assemble                先頭に PR 表記、末尾に「参考にした情報」（出典リンク）を付ける
-10. 保存 → 投稿 → 通知     data/articles/日付-n.html / .json、WordPress に下書き（公開はしない）、LINE に編集URLと警告
+10. 画像（images.py）       OpenAI の画像生成でアイキャッチ1枚＋【想定シナリオ】の見出し下に1枚。メディアに上げて featured_media に設定
+                           イラスト調・文字/ロゴ/実在の画面/実在の人物なし。本文の画像には「イメージ画像（AI生成）」のキャプション
+                           WordPress に投稿するときだけ作る。失敗しても記事は止めず、LINE の警告に出す
+11. 保存 → 投稿 → 通知     data/articles/日付-n-時刻.html / .json、WordPress に下書き（公開はしない）、LINE に編集URLと警告
 ```
 
 - AI の呼び出しは1記事あたり4〜6回。モデルは `llm` と同じ（`article.llm` で上書き。初期値は reasoning_effort=medium）

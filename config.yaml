@@ -79,6 +79,14 @@ article:
   llm:
     openai_reasoning_effort: medium
 
+# ===== 記事の画像（OpenAI の画像生成。WordPress 投稿時だけ作る） =====
+image:
+  enabled: true
+  model: gpt-image-2   # OpenAI の画像モデル（使えない場合はエラー内容が LINE の警告に出る）
+  quality: low         # low / medium / high（low で1枚数円〜十数円）
+  size: 1536x1024      # 横長（アイキャッチ向き）
+  body_image: true     # 想定シナリオの見出しの下にも1枚入れる
+
 # AI設定（provider: anthropic か openai。APIキーは環境変数で渡す）
 llm:
   provider: openai

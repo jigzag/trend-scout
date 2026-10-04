@@ -18,6 +18,7 @@ from pathlib import Path
 
 import yaml
 
+import images
 import research
 import wordpress
 import writer
@@ -69,7 +70,8 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     return {
         "title": outline.get("title") or item["title"], "slug": outline.get("slug", ""),
         "excerpt": outline.get("excerpt", ""), "persona": outline.get("persona", ""),
-        "content": writer.assemble(body, sources), "chars": len(writer.plain(body)),
+        "body": body, "_sources": sources, "chars": len(writer.plain(body)),
+        "image_prompts": {"featured": outline.get("image_featured", ""), "scenario": outline.get("image_scenario", "")},
         "similarity": sim, "warnings": warnings, "memo": memo,
         "sources": [{"title": s["title"], "url": s["url"]} for s in sources],
         "candidate": {"title": item["title"], "url": item["url"]},
@@ -79,7 +81,8 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
 def message(art: dict, wp: dict | None) -> str:
     lines = ["【下書きができました】", art["title"], "",
              f"本文 {art['chars']}字 / 参考記事 {len(art['sources'])}件 / "
-             f"類似度 一致率{art['similarity']['ratio']:.1%}・最長{art['similarity']['longest']}字"]
+             f"類似度 一致率{art['similarity']['ratio']:.1%}・最長{art['similarity']['longest']}字 / "
+             f"画像 {len(art.get('images', {}).get('media', []))}枚"]
     if art["warnings"]:
         lines += ["", "確認してほしい点:"] + [f"・{w}" for w in art["warnings"]]
     lines.append("")
@@ -90,12 +93,40 @@ def message(art: dict, wp: dict | None) -> str:
     return "\n".join(lines)
 
 
+def add_images(art: dict, opt: dict) -> dict:
+    """画像を作って WordPress に上げ、本文に挿入する。失敗しても記事は止めない（警告に入れる）。
+    返り値: {"featured": メディアID or None, "media": [ID...]}"""
+    out = {"featured": None, "media": []}
+    prompts = art["image_prompts"]
+    jobs = [("featured", prompts.get("featured") or art["title"])]
+    if opt.get("body_image", True):
+        jobs.append(("scenario", prompts.get("scenario") or art.get("persona") or art["title"]))
+    for kind, prompt in jobs:
+        try:
+            data = images.generate(prompt, opt)
+            m = wordpress.upload_media(data, f"{art['slug'] or 'article'}-{kind}.jpg", art["title"])
+        except Exception as e:  # noqa: BLE001
+            art["warnings"].append(f"画像（{'アイキャッチ' if kind == 'featured' else '本文'}）を作れなかった: {str(e)[:150]}")
+            continue
+        out["media"].append(m["id"])
+        if kind == "featured":
+            out["featured"] = m["id"]
+        else:
+            art["body"] = images.insert_after_scenario(art["body"], images.figure(m["url"], art.get("persona", "")))
+    return out
+
+
 def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
         config_path: Path = BASE / "config.yaml") -> dict:
     cfg = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     cand_day, cand = load_candidate(n, day)
     print(f"[article] {cand_day} 候補{n}: {cand['item']['title']}")
     art = build(cfg, cand, memo.strip())
+    use_wp = not dry_run and wordpress.configured()
+    img_opt = cfg.get("image") or {}
+    pics = add_images(art, img_opt) if use_wp and img_opt.get("enabled") else {"featured": None, "media": []}
+    art["content"] = writer.assemble(art.pop("body"), art.pop("_sources"))
+    art["images"] = pics
 
     out_dir = BASE / "data" / "articles"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -103,8 +134,8 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
     (out_dir / f"{stem}.html").write_text(art["content"], encoding="utf-8")
 
     wp = None
-    if not dry_run and wordpress.configured():
-        wp = wordpress.post_draft(art["title"], art["content"], art["slug"], art["excerpt"])
+    if use_wp:
+        wp = wordpress.post_draft(art["title"], art["content"], art["slug"], art["excerpt"], pics["featured"])
         print(f"[article] WordPress 下書き: {wp['edit_url']}")
     meta = {k: v for k, v in art.items() if k != "content"}
     meta["wordpress"] = wp

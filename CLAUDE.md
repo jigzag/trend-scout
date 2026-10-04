@@ -41,6 +41,8 @@
    - KJ の作業待ち：Tavily のAPIキー発行 → Secret `TAVILY_API_KEY`、WordPress のアプリケーションパスワード → Secret `WP_URL` / `WP_USER` / `WP_APP_PASSWORD`（SITE_SETUP 手順5）
    - その後 Actions → write-article で試運転し、記事の質（事実の正確さ・想定シナリオ・文字数・類似度）を KJ と確認する
    - 想定シナリオは架空だと明記する。試していないことを「試した」と書かない（SPEC §7）
+   - 画像（アイキャッチ＋本文1枚）を 2026-10-04 に追加。モデルは `image.model`（gpt-image-2）。OpenAI の画像モデルは組織認証（Verify Organization）が必要な場合があり、本番で未確認
+   - 2026-10-04 の試運転2本（はてな匿名ダイアリーの話題、WP下書き id 22/23）で、一覧ページの混入・短さ・指示語の混入などを修正済み。候補が弱い日だったので、良い候補の日に再確認する
 3. LINE の返信でメモを送って記事生成を起動する（KJ希望）：Cloudflare Workers で Webhook を受け、署名検証して repository_dispatch（type `write-article`）を呼ぶ。返信形式は「番号＋メモ」
 4. ASP登録 / Amazonアソシエイト → Ver.3 商品DBとリンク挿入
 

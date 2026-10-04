@@ -1,7 +1,7 @@
 """記事生成（Ver.1/2）のオフラインテスト。Tavily・LLM・WordPress・LINE はモック。
 実行: python tests/test_article.py
 """
-import json, os, shutil, sys, tempfile
+import base64, json, os, shutil, sys, tempfile
 from pathlib import Path
 from unittest import mock
 
@@ -39,10 +39,23 @@ def fake_post(url, **kw):
             {"title": "はてなブックマーク - 新着エントリー", "url": "https://b.hatena.ne.jp/entrylist/it", "raw_content": SRC_OTHER},
             {"title": "AIニュースまとめ（51記事）", "url": "https://note.com/x/n/1", "raw_content": SRC_OTHER},
             {"title": "試着機能の解説", "url": "https://other.example/c", "raw_content": SRC_OTHER}]})
+    if url == "https://api.openai.com/v1/images/generations":
+        assert "no text" in kw["json"]["prompt"].lower() and kw["json"]["output_format"] == "jpeg"
+        fake_post.images += 1
+        return Resp({"data": [{"b64_json": base64.b64encode(b"JPEGDATA").decode()}]})
+    if url.endswith("/wp-json/wp/v2/media"):
+        assert kw["data"] == b"JPEGDATA" and kw["headers"]["Content-Type"] == "image/jpeg"
+        fake_post.media += 1
+        mid = 100 + fake_post.media
+        return Resp({"id": mid, "source_url": f"https://nocode-ai.net/wp-content/uploads/{mid}.jpg"})
+    if "/wp-json/wp/v2/media/" in url:
+        return Resp({"id": 1})
     if url.endswith("/wp-json/wp/v2/posts"):
         assert kw["json"]["status"] == "draft" and kw["auth"] == ("nonpro", "xxxx xxxx")
+        assert kw["json"]["featured_media"] == 101
         return Resp({"id": 42, "link": "https://nocode-ai.net/?p=42"})
     raise AssertionError(url)
+fake_post.images = fake_post.media = 0
 
 
 BODY = ("<p>ChatGPTに試着機能が加わりました。この記事では、できることと注意点をまとめます。</p>"
@@ -99,7 +112,8 @@ def test_check_rules():
 def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     _setup(tmp)
     os.environ.update({"TAVILY_API_KEY": "tvly-x", "WP_URL": "https://nocode-ai.net/", "WP_USER": "nonpro",
-                       "WP_APP_PASSWORD": "xxxx xxxx", "LINE_CHANNEL_ACCESS_TOKEN": "t", "LINE_USER_ID": "U1"})
+                       "WP_APP_PASSWORD": "xxxx xxxx", "LINE_CHANNEL_ACCESS_TOKEN": "t", "LINE_USER_ID": "U1",
+                       "OPENAI_API_KEY": "sk-test"})
     sent = {}
     fake_llm.with_memo = True
     def no_net(url, **kw): raise AssertionError(f"ネットに出ようとした: {url}")
@@ -122,6 +136,9 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert saved["wordpress"]["id"] == 42 and saved["memo"] == "無料版は3回まで"
     assert files[0].with_suffix(".html").exists()
     assert not any("参考記事が1件" in w for w in saved["warnings"])
+    assert fake_post.images == 2 and saved["images"] == {"featured": 101, "media": [101, 102]}
+    assert "uploads/102.jpg" in art["content"] and "AI生成" in art["content"]
+    assert art["content"].index("uploads/102.jpg") > art["content"].index("想定シナリオ")
     print(sent["text"])
 
 
