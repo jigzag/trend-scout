@@ -61,7 +61,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     body = writer.write_body(cfg["genre"], outline, facts, memo, opt, lc)
     body = writer.review(body, facts, memo, lc)
     body, sim = writer.fix_similarity(body, sources, opt, lc)
-    warnings = writer.check_rules(body, memo)
+    warnings = writer.check_rules(body, memo, opt.get("min_chars", 3000))
     if not sim["ok"]:
         warnings.append(f"参考記事との類似が高い（一致率{sim['ratio']:.1%}、最長{sim['longest']}字）")
     return {

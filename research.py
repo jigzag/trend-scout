@@ -84,6 +84,14 @@ def search(query: str, opt: dict) -> list[dict]:
             for r in js.get("results", [])]
 
 
+def usable(r: dict, opt: dict) -> bool:
+    """関連記事として使えるか。一覧ページ・まとめページ・SNSは使わない（config の article.exclude_*）。"""
+    dom = _domain(r["url"])
+    if any(dom == d or dom.endswith("." + d) for d in opt.get("exclude_domains", [])):
+        return False
+    return not any(w in (r.get("title") or "") for w in opt.get("exclude_title_words", []))
+
+
 def gather(candidate: dict, opt: dict) -> list[dict]:
     """候補の元記事 + 別ドメインの関連記事で、最大 max_sources 件の参考記事を返す。
     返り値: [{title, url, text}]（text は max_chars で切る）"""
@@ -108,7 +116,7 @@ def gather(candidate: dict, opt: dict) -> list[dict]:
     for r in found:
         if len(sources) >= max_sources:
             break
-        if _domain(r["url"]) in used or len(r["text"]) < MIN_TEXT:
+        if _domain(r["url"]) in used or len(r["text"]) < MIN_TEXT or not usable(r, opt):
             continue
         sources.append(r)
         used.add(_domain(r["url"]))

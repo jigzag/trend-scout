@@ -25,7 +25,8 @@ RULES = """# 守ること
 - 運営者はこのツールを試していない。「試してみた」「使ってみた」「実際に使うと」など、体験したかのような表現は禁止
 - 【想定シナリオ】の節では、架空の人物（例：研修担当のAさん）の使い方の例を書く。
   見出しに【想定シナリオ】を付け、冒頭で架空の例だと断り、「〜できそうです」「〜という使い方が考えられます」の形で書く。
-  架空の人物の感想・結果・数字（「30分短縮できた」など）は書かない"""
+  架空の人物の感想・結果・数字（「30分短縮できた」など）は書かない
+- 日付は「9月30日」「2026年10月2日」の形で書く（「2026-09-30」は使わない）"""
 
 
 def _join_sources(sources: list[dict]) -> str:
@@ -95,7 +96,9 @@ WRITE_PROMPT = """あなたはブログライターです。構成と事実メ�
 # 書き方
 - 本文は {min_chars}〜{max_chars} 文字
 - HTMLだけを出力する。使ってよいタグは h2, h3, p, ul, ol, li, strong, table, tr, th, td のみ（h1・タイトル・コードフェンスは出さない）
-- 冒頭（最初のh2の前）に、この記事で分かることを2〜3文で書く
+- 冒頭（最初のh2の前）に、この記事で分かることを2〜3文で書く。見出しに「導入」「はじめに」は使わない
+- 【想定シナリオ】は、架空の人物1人について「困っていること → この機能をどの場面でどう使うか（手順に沿って）→ 期待できること」を3〜5段落の文章で書く（箇条書きで人物を並べない）。冒頭に「以下は架空の人物を想定した使い方の例です」と書く
+- 本文が {min_chars} 文字に届かないときは、事実メモの範囲で「どんな人に向いているか」「似たツールとの違い」「よくある疑問」を足す
 - 運営者メモがあるときだけ、<div class="{note_class}"><h2>運営者のひとこと</h2>…</div> を【想定シナリオ】の後に入れ、メモの内容を運営者の言葉として書く（メモにないことは足さない）
 - 参考記事の一覧や出典リンクは書かない（あとで自動で付ける）
 """
@@ -241,7 +244,7 @@ def fix_similarity(article: str, sources: list[dict], opt: dict, cfg: dict) -> t
 
 
 # ---------- 機械チェック ----------
-def check_rules(article: str, memo: str) -> list[str]:
+def check_rules(article: str, memo: str, min_chars: int = 3000) -> list[str]:
     warnings = []
     outside = re.sub(rf'(?s)<div class="{NOTE_CLASS}">.*?</div>', "", article)
     words = sorted(set(EXPERIENCE_WORDS.findall(outside)))
@@ -252,7 +255,7 @@ def check_rules(article: str, memo: str) -> list[str]:
     if not memo and NOTE_CLASS in article:
         warnings.append("運営者メモがないのに『運営者のひとこと』がある")
     n = len(plain(article))
-    if n < 2000:
+    if n < min_chars * 0.8:
         warnings.append(f"本文が短い（{n}字）")
     return warnings
 

@@ -65,6 +65,10 @@ article:
   max_results: 8       # Tavily 検索で取る件数（この中から別サイトのものを選ぶ）
   time_range: month    # 関連記事を探す期間（day / week / month / year）
   country: japan       # 検索で優先する国
+  # 関連記事として使わないもの（一覧ページ・まとめ・SNS。候補の元記事には適用しない）
+  exclude_domains: [b.hatena.ne.jp, news.google.com, x.com, twitter.com, youtube.com, facebook.com,
+                    instagram.com, tiktok.com, togetter.com, posfie.com]
+  exclude_title_words: [新着エントリー, 人気エントリー, ニュースまとめ, まとめサイト, ランキング]
   min_chars: 3000      # 本文の目安（下限）
   max_chars_body: 4000 # 本文の目安（上限）
   # 類似度チェック（参考記事と12文字以上の一致が続く長さ・割合）

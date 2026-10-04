@@ -36,6 +36,8 @@ def fake_post(url, **kw):
         return Resp({"results": [
             {"title": "同じサイトの別記事", "url": "https://itmedia.co.jp/b/2", "raw_content": SRC_OTHER},
             {"title": "短すぎる記事", "url": "https://short.example/x", "raw_content": "短い"},
+            {"title": "はてなブックマーク - 新着エントリー", "url": "https://b.hatena.ne.jp/entrylist/it", "raw_content": SRC_OTHER},
+            {"title": "AIニュースまとめ（51記事）", "url": "https://note.com/x/n/1", "raw_content": SRC_OTHER},
             {"title": "試着機能の解説", "url": "https://other.example/c", "raw_content": SRC_OTHER}]})
     if url.endswith("/wp-json/wp/v2/posts"):
         assert kw["json"]["status"] == "draft" and kw["auth"] == ("nonpro", "xxxx xxxx")
@@ -88,7 +90,7 @@ def test_similarity_detects_copy():
 def test_check_rules():
     w = writer.check_rules("<p>実際に使ってみると便利でした。</p>", "")
     assert any("体験" in x for x in w) and any("想定シナリオ" in x for x in w)
-    ok = writer.check_rules(f'<h2>【想定シナリオ】</h2><div class="{writer.NOTE_CLASS}"><p>使ってみた感想</p></div>' + "<p>あ</p>" * 2000, "メモ")
+    ok = writer.check_rules(f'<h2>【想定シナリオ】</h2><div class="{writer.NOTE_CLASS}"><p>使ってみた感想</p></div>' + "<p>あ</p>" * 3000, "メモ")
     assert ok == []
 
 
