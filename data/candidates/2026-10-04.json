@@ -1,92 +1,93 @@
 [
   {
     "relevance": 9,
-    "testable": 9,
-    "monetizable": 8,
-    "buzz": 5.0,
-    "topic": "ChatGPT-virtual-tryon",
+    "testable": 8,
+    "monetizable": 7,
+    "buzz": 7.5,
+    "topic": "ChatGPT 利用制限リセット",
     "total": 82,
     "detail": {
       "id": 0,
-      "summary": "OpenAIがChatGPTにバーチャル試着（自身の写真に服やアクセサリーを合成）や、お気に入り保存機能、さらにiOSアプリで連続撮影した書類を自動で1つのPDFにまとめるスキャン機能を追加したという話題です。",
-      "why": "コード不要で試せ、個人事業主や広報担当が商品ページや資料作成で実務的に使える新機能のため、読者にとって導入判断や活用アイデアを示せる価値が高いです。",
-      "try": "iOS版ChatGPTアプリを最新に更新し、商品情報カードで自分の写真をアップしてバーチャル試着を試す。続けてアプリで複数ページの書類を連続撮影し、PDF化の出力を保存して画質やトリミングを確認する。",
-      "angle": "ChatGPT試着と書類スキャンを実務で試した結果",
+      "summary": "OpenAIがChatGPTの有料ユーザー向けに、利用制限（レート/リクエスト枠）のリセットを行うと発表した話。実施日は日本時間で10月3日に予定されている。",
+      "why": "有料ユーザーの利用感に直結する変更で、業務でChatGPTを使う読者にとって影響度が高く、実務運用や料金プランの見直しに役立つため。",
+      "try": "自分の有料アカウントでリセット実施後に同じワークフロー（例：長文要約や連続プロンプト）を複数回実行して、レスポンス時間・回数制限の変化を比較してスクリーンショットを残す。サポートやFAQで変更内容の公式説明を確認して要点を記事にまとめる。",
+      "angle": "有料プラン利用者が知るべきChatGPTの利用枠リセット影響",
       "products": [
-        "ChatGPT（OpenAI公式iOSアプリ）",
-        "ChatGPT Plus / Enterprise（機能アクセスによって必要な場合）"
+        "ChatGPT (Plus/有料プラン)"
       ]
     },
     "item": {
       "source": "ITmedia AI+",
-      "title": "ChatGPTにAIでバーチャル試着機能とカメラでの書類スキャン→PDF化機能",
-      "url": "https://www.itmedia.co.jp/news/article/2610/02/2000001945/",
-      "summary": "OpenAIは、ChatGPTにバーチャル試着やお気に入り保存などの新機能を追加した。商品情報カードから自身の写真を使って服やアクセサリーを着用した姿を生成できる。気になった商品の整理機能も備える。また、iOSアプリに、連続撮影した書類を自動で1つのPDFにまとめて送信できるスキャン機能も導入した。",
+      "title": "ChatGPTの“利用制限”リセットへ　有料ユーザー向け",
+      "url": "https://www.itmedia.co.jp/aiplus/article/2610/02/2000001961/",
+      "summary": "米OpenAIのプロダクト責任者ティボー・ソティオ氏は、「ChatGPT」の全有料ユーザーを対象に、利用制限枠をリセットすると発表した。日本時間10月3日午前2時の実施を予定している。",
       "signal": null,
       "signal_label": "",
       "extra": {
-        "buzz": 5.0
+        "buzz": 7.5
       }
     }
   },
   {
     "relevance": 9,
-    "testable": 8,
-    "monetizable": 7,
-    "buzz": 7.0,
-    "topic": "OpenAI-DevDay-2026",
-    "total": 81,
+    "testable": 6,
+    "monetizable": 8,
+    "buzz": 6.5,
+    "topic": "MAI-Transcribe-2-Streaming / MAI-Voice-2.1",
+    "total": 76,
     "detail": {
       "id": 1,
-      "summary": "OpenAI DevDay 2026の発表まとめ。新モデルや機能、製品ロードマップやマルチモーダル改善、開発者向けの新サービスなどDevDayで発表された主要ポイントを整理した内容です。",
-      "why": "DevDayの発表はChatGPTや関連AIツールの機能方針に直結するため、非エンジニアの制作・業務担当者向けに『実務で何が変わるか』を噛み砕いて伝えると有益です。",
-      "try": "発表の公式資料や要点まとめ（Zenn記事）を読み、業務で直ちに関係ありそうな機能（画像編集、動画生成、長文コンテキストなど）をピックアップして、自分の業務フローに当てはめて影響を箇条書きにする。",
-      "angle": "DevDay 2026で業務が変わる？非エンジニア向け要点整理",
+      "summary": "Microsoftが低遅延ストリーミング文字起こしモデル「MAI-Transcribe-2-Streaming」と音声合成「MAI-Voice-2.1」などを発表し、音声エージェントやリアルタイム文字起こしの用途を想定したプレビュー提供を開始したという話。",
+      "why": "会議のリアルタイム文字起こしや多言語ナレーション生成を非エンジニアでも導入できれば、制作や事務効率化に直結するため。",
+      "try": "Microsoft Foundryのプレビューにアクセスできるか確認し、短い会議音源（数分）を使ってストリーミング文字起こしを試し、認識精度・遅延・言語切替の挙動をスクリーン録画で記録する。音声合成はトーンや多言語のサンプルを作成して比較メモを作る。",
+      "angle": "会議と動画制作を速くする低遅延文字起こしと多言語音声の実務導入ポイント",
       "products": [
-        "ChatGPT（OpenAI）",
-        "GPTs / カスタムGPT（企業向けカスタマイズ機能）",
-        "OpenAIの新モデル・サービス（発表内容に準拠）"
+        "Microsoft Foundry / MAI",
+        "Azure Speech Services",
+        "Descript",
+        "Otter.ai"
       ]
     },
     "item": {
-      "source": "Zenn",
-      "title": "OpenAI DevDay 2026 発表まとめ",
-      "url": "https://zenn.dev/schroneko/articles/openai-devday-2026",
-      "summary": "",
-      "signal": 105,
-      "signal_label": "105いいね",
+      "source": "ITmedia AI+",
+      "title": "Microsoft、初のストリーミング文字起こしモデル「MAI-Transcribe-2-Streaming」公開　音声合成「MAI-Voice-2.1」と高速版も",
+      "url": "https://www.itmedia.co.jp/news/article/2610/02/2000001950/",
+      "summary": "Microsoft AIは、ストリーミング文字起こしモデル「MAI-Transcribe-2-Streaming」と音声合成モデル群を発表した。低遅延な逐次認識や声のトーンを保った多言語合成に対応し、音声エージェント構築を想定する。Microsoft Foundryでプレビュー提供を始め、複合デモも公開した。",
+      "signal": null,
+      "signal_label": "",
       "extra": {
-        "buzz": 7.0
+        "buzz": 6.5
       }
     }
   },
   {
-    "relevance": 9,
-    "testable": 8,
-    "monetizable": 7,
-    "buzz": 7.3,
-    "topic": "Gemini-access-limits",
-    "total": 81,
+    "relevance": 6,
+    "testable": 7,
+    "monetizable": 3,
+    "buzz": 9.7,
+    "topic": "Grokで画像検索（ネジ発見）",
+    "total": 64,
     "detail": {
       "id": 2,
-      "summary": "GoogleのGeminiモデル利用に関するアクセスと利用制限の変更についての公式ヘルプ。モデルごとに『low/medium/high』の努力レベル選択が可能になり、応答の詳細度や処理能力が調整できる旨が説明されています。",
-      "why": "Geminiを業務で使う際のコストや応答品質の調整方法、使い分けルールを具体的に示すことで、非技術者にも運用ポリシーやコスト最適化策を提案できるため有益です。",
-      "try": "Gemini搭載アプリやGoogleのAIサービスにログインし、利用可能なモデルと『effort level（low/medium/high）』の選択肢を確認。実際に同じ問い合わせを各レベルで投げ比べて応答の長さ・正確さ・料金表示の違いを比較する。",
-      "angle": "Geminiの“努力レベル”を比べて業務コストを下げる方法",
+      "summary": "ユーザーが地面に落としたネジを画像系AI（Grok）に探してもらったらすぐ見つかった、という実用エピソードを紹介する投稿のまとめ記事。",
+      "why": "非エンジニアの読者がスマホ写真だけで物体検出や視覚検索を活用できることを示す良い事例になり、現場での小物捜索や資料作成時の画像活用法につながるため。",
+      "try": "スマホで床や作業場の写真を数枚撮り、Grok (Xの画像機能) やGoogle Lens、Runwayのビジュアル検索で同一または類似物を検索して、検出精度と使いやすさを比較し、スクリーンショットと所要時間を記録する。",
+      "angle": "スマホ写真で瞬時に発見：物の発見を助ける画像AIの使い分けガイド",
       "products": [
-        "Google Gemini（Gemini Advancedなど）",
-        "Google Workspace（Gemini組み込みのプロダクト利用時）"
+        "Grok (Xの画像機能)",
+        "Google Lens",
+        "Runway"
       ]
     },
     "item": {
       "source": "はてブ",
-      "title": "Changes to Gemini model access and limits - Gemini Apps Help",
-      "url": "https://support.google.com/gemini/answer/17004136?hl=en",
-      "summary": "Tips: For each available model, you can also select the model’s effort level from low, medium, and high. This will increase the model’s ability to complete tasks and provide more thorough answers to q",
-      "signal": 6,
-      "signal_label": "6users",
+      "title": "地面に落としたネジをGrokに探してもらったらすぐ見つけてくれた話…画像処理におけるAIは強すぎる",
+      "url": "https://togetter.com/li/2753759",
+      "summary": "Togetter編集部 X（旧Twitter）に日々流れる情報の中から、編集部がさまざまなポストを選び出し、わかりやすい形でお届けすることを大切にしています。新たな視点や世間の反応を添えることで、読者の皆様にとって安心・安全で価値あるコンテンツとすることを目指しています。詳しくは編集方針をご覧ください。 あわせて...",
+      "signal": 24,
+      "signal_label": "24users",
       "extra": {
-        "buzz": 7.3
+        "buzz": 9.7
       }
     }
   }
