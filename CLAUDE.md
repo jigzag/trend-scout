@@ -43,7 +43,7 @@
    - 想定シナリオは架空だと明記する。試していないことを「試した」と書かない（SPEC §7）
    - 画像（アイキャッチ＋本文1枚）を 2026-10-04 に追加。モデルは `image.model`（gpt-image-2）。OpenAI の画像モデルは組織認証（Verify Organization）が必要な場合があり、本番で未確認
    - 2026-10-04 の試運転2本（はてな匿名ダイアリーの話題、WP下書き id 22/23）で、一覧ページの混入・短さ・指示語の混入などを修正済み。候補が弱い日だったので、良い候補の日に再確認する
-3. LINE の返信でメモを送って記事生成を起動する（KJ希望）：Cloudflare Workers で Webhook を受け、署名検証して repository_dispatch（type `write-article`）を呼ぶ。返信形式は「番号＋メモ」
+3. LINE だけで操作（KJ希望）：2026-10-04 に実装（`worker/line_webhook.js`、`wp_command.py`、`wp-command.yml`）。KJ が `docs/LINE_SETUP.md` の設定（GitHub トークン、Cloudflare Worker、LINE Webhook）をしたら本番確認。返信は「1〜3 [メモ]」「公開」「削除」「ヘルプ」。GitHub トークンは1年で期限切れ（作り直しが必要）
 4. ASP登録 / Amazonアソシエイト → Ver.3 商品DBとリンク挿入
 
 ## ハマりどころ（実際に起きたこと）
@@ -52,7 +52,7 @@
 - **Actions の「Re-run jobs」は、その実行が最初に使ったコミットで再実行する。** コードを修正した後は、必ず「Run workflow」で新しく実行する
 - Secretが `null` になる原因：1つのSecretに3つまとめて登録した / Variables タブに登録した / Environment secrets に登録した / 名前のタイプミス
 - `x-api-key header is required` や `OPENAI_API_KEY が空です` は、キーが**空**という意味（名前違いや未登録）。401 で invalid と出るのは、キーの中身が違う場合
-- LINE：公式アカウントを友だち追加していないと届かない。Channel secret や Channel ID は使わない。チャネルの作成は Official Account Manager から行う（LINE Developers から直接ではない）
+- LINE：公式アカウントを友だち追加していないと届かない。Channel ID は使わない（Channel secret は LINE 操作の Worker でだけ使う）。チャネルの作成は Official Account Manager から行う（LINE Developers から直接ではない）
 - gpt-5系では `max_tokens` が使えないので `max_completion_tokens` を使う。推論トークンも上限に含まれるので、小さくしすぎると返答が空になる
 - Cowork などの Linux VM からこのフォルダで git を操作すると、`.git` に `HEAD.lock` や `tmp_obj_*` が残ることがある。残っていたら削除する（Windows 側の git が失敗する原因になる）
 

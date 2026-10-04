@@ -87,7 +87,9 @@ def message(art: dict, wp: dict | None) -> str:
         lines += ["", "確認してほしい点:"] + [f"・{w}" for w in art["warnings"]]
     lines.append("")
     if wp:
-        lines += ["編集画面:", wp["edit_url"]]
+        base = wp["edit_url"].split("/wp-admin/")[0]
+        lines += [f"プレビュー（ログインが必要）:", f"{base}/?p={wp['id']}&preview=true", "",
+                  f"よければ「公開」、ボツなら「削除」と返信（投稿ID {wp['id']}）"]
     else:
         lines.append("WordPress 未設定のため、GitHub の data/articles/ に保存しました")
     return "\n".join(lines)

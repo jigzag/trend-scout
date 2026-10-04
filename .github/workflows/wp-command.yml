@@ -1,0 +1,41 @@
+name: wp-command
+
+on:
+  repository_dispatch:      # LINE の「公開」「削除」から（Cloudflare Workers 経由。client_payload: action, id）
+    types: [wp-command]
+  workflow_dispatch:        # Actions画面からも実行できる
+    inputs:
+      action:
+        description: "publish=公開 / trash=ゴミ箱へ"
+        default: publish
+        type: choice
+        options: [publish, trash]
+      id:
+        description: "投稿ID（空ならいちばん新しく作った記事）"
+        required: false
+        default: ""
+
+concurrency:
+  group: write-article      # 記事生成と同時に動かさない（作成中の記事を公開しないため）
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Run
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          ARG_ACTION: ${{ inputs.action || github.event.client_payload.action }}
+          ARG_ID: ${{ inputs.id || github.event.client_payload.id || '' }}
+        run: python wp_command.py --action "$ARG_ACTION" --id "$ARG_ID"

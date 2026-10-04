@@ -74,6 +74,9 @@
 | `research.py` | Ver.1：Tavily で関連記事を検索・本文抽出（`gather`）。Tavily がなければ requests で元記事だけ取得 |
 | `writer.py` | Ver.1：事実抽出 → 構成 → 執筆 → 校閲のプロンプト、類似度チェックと書き直し、機械チェック（体験表現・想定シナリオ・文字数） |
 | `wordpress.py` | Ver.2：`upload_media`、`post_draft`（REST API、アプリケーションパスワード、status=draft 固定） |
+| `wp_command.py` | LINE の「公開」「削除」：WordPress の投稿を公開 / ゴミ箱へ |
+| `worker/line_webhook.js` | Cloudflare Workers に貼る中継（LINE Webhook → GitHub repository_dispatch） |
+| `.github/workflows/wp-command.yml` | 公開・削除の実行（repository_dispatch `wp-command` / 手動） |
 | `images.py` | 記事画像の生成（OpenAI Images API、`config.yaml` の `image`）、本文への挿入 |
 | `article.py` | Ver.1/2 の CLI：候補の読み込み → 生成 → data/articles/ に保存 → WordPress 下書き → LINE 通知 |
 | `tests/test_article.py` | 記事生成のオフラインテスト（Tavily・LLM・WordPress・LINE はモック） |
@@ -138,4 +141,10 @@ Qiita / Zenn / HN はエンジニア向けの記事が中心で、読者とず�
 - AI の呼び出しは1記事あたり4〜6回。モデルは `llm` と同じ（`article.llm` で上書き。初期値は reasoning_effort=medium）
 - 運営者メモがあるときだけ `<div class="operator-note"><h2>運営者のひとこと</h2>…</div>` を入れる。この囲みの中だけ体験表現を許す
 - 失敗したらトレースバックを LINE に送る。data/articles/ はワークフローの最後に必ずコミットする
-- LINE の返信から起動する部分（Cloudflare Workers → repository_dispatch）は未実装。payload は `{"n": "1", "memo": "…", "date": ""}`
+- LINE 操作（`worker/line_webhook.js`、設定手順は `docs/LINE_SETUP.md`）：Cloudflare Workers が LINE の Webhook を受け、
+  署名（X-Line-Signature, HMAC-SHA256）と送信者（LINE_USER_ID）を確認して GitHub の repository_dispatch を呼ぶ。受付はリプライで返す（push 枠を使わない）
+  - `1〜3 [メモ]` → `write-article` {n, memo, date}
+  - `公開 [ID]` / `削除 [ID]`（`ボツ` も可）→ `wp-command` {action: publish|trash, id}。ID 省略時は data/articles/ の created_at が最新の記事
+  - それ以外 → 使い方をリプライ
+- `wp_command.py`：公開済みの記事は LINE から削除しない。ゴミ箱の記事は公開しない。削除はゴミ箱への移動（完全削除しない）
+- `wp-command.yml` は `write-article` と同じ concurrency グループ（作成中の記事を先に公開しないため）

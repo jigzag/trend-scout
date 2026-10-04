@@ -129,7 +129,7 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert art["content"].startswith(writer.PR_NOTE)
     assert "参考にした情報" in art["content"] and "https://other.example/c" in art["content"]
     assert "itmedia.co.jp/b/2" not in art["content"]          # 同じドメインは1件だけ
-    assert "下書きができました" in sent["text"] and "post=42" in sent["text"]
+    assert "下書きができました" in sent["text"] and "?p=42&preview=true" in sent["text"] and "「公開」" in sent["text"]
     files = list((tmp / "data" / "articles").glob("2026-10-04-1-*.json"))
     assert len(files) == 1
     saved = json.loads(files[0].read_text(encoding="utf-8"))
@@ -160,6 +160,55 @@ def test_without_tavily_and_wp(tmp=Path(tempfile.gettempdir()) / "ts_article2"):
         art = article.run(1, dry_run=True, config_path=Path(article.__file__).parent / "config.yaml")
     assert art["wordpress"] is None and len(art["sources"]) == 1
     assert any("参考記事が1件" in w for w in art["warnings"])
+
+
+def test_wp_command(tmp=Path(tempfile.gettempdir()) / "ts_wpcmd"):
+    import wp_command
+    shutil.rmtree(tmp, ignore_errors=True)
+    (tmp / "data" / "articles").mkdir(parents=True)
+    for name, pid, created in (("a", 22, "2026-10-04T10:44:49+09:00"), ("b", 23, "2026-10-04T10:49:31+09:00"),
+                               ("c", None, "2026-10-04T11:00:00+09:00")):
+        (tmp / "data" / "articles" / f"{name}.json").write_text(json.dumps(
+            {"created_at": created, "wordpress": {"id": pid} if pid else None}), encoding="utf-8")
+    os.environ.update({"WP_URL": "https://nocode-ai.net", "WP_USER": "nonpro", "WP_APP_PASSWORD": "xxxx xxxx"})
+    state = {23: "draft", 30: "publish"}
+    calls = []
+    def get(url, **kw):
+        pid = int(url.rsplit("/", 1)[1])
+        return Resp({"id": pid, "status": state[pid], "link": f"https://nocode-ai.net/p{pid}/", "title": {"raw": f"記事{pid}"}})
+    def post(url, **kw):
+        pid = int(url.rsplit("/", 1)[1]); state[pid] = kw["json"]["status"]; calls.append(("post", pid))
+        return get(url)
+    def delete(url, **kw):
+        calls.append(("delete", int(url.rsplit("/", 1)[1]))); return Resp({"deleted": False})
+    with mock.patch.object(wordpress.requests, "get", get), mock.patch.object(wordpress.requests, "post", post), \
+         mock.patch.object(wordpress.requests, "delete", delete), mock.patch.object(wp_command, "BASE", tmp):
+        assert "公開しました" in wp_command.run("publish") and calls == [("post", 23)]   # 最新=23
+        assert "すでに公開済み" in wp_command.run("publish", "23")
+        assert "削除しません" in wp_command.run("trash", "30") and len(calls) == 1      # 公開済みは消さない
+        state[23] = "draft"
+        assert "ゴミ箱" in wp_command.run("trash", "23") and calls[-1] == ("delete", 23)
+
+
+def test_worker_parse():
+    """Cloudflare Worker の返信の読み取り（node があるときだけ）。"""
+    import subprocess
+    worker = Path(__file__).resolve().parents[1] / "worker" / "line_webhook.js"
+    js = (f"import {{ parseCommand as p }} from {json.dumps(worker.as_uri())};"
+          "console.log(JSON.stringify(['1','２ 無料版は3回まで','3：メモ\\n2行目','4','公開','公開 23','削除','ボツ　23','こんにちは'].map(p)));")
+    try:
+        out = subprocess.run(["node", "--input-type=module", "-e", js], capture_output=True, text=True,
+                             encoding="utf-8", timeout=30)
+    except FileNotFoundError:
+        print("  (node がないので省略)"); return
+    assert out.returncode == 0, out.stderr
+    r = json.loads(out.stdout)
+    assert r[0] == {"type": "write-article", "payload": {"n": "1", "memo": "", "date": ""}}
+    assert r[1]["payload"] == {"n": "2", "memo": "無料版は3回まで", "date": ""}
+    assert r[2]["payload"]["memo"] == "メモ\n2行目"
+    assert r[3]["type"] == "help" and r[8]["type"] == "help"
+    assert r[4] == {"type": "wp-command", "payload": {"action": "publish", "id": ""}}
+    assert r[5]["payload"]["id"] == "23" and r[6]["payload"]["action"] == "trash" and r[7]["payload"]["id"] == "23"
 
 
 if __name__ == "__main__":

@@ -42,6 +42,26 @@ def upload_media(data: bytes, filename: str, alt: str = "") -> dict:
     return {"id": js["id"], "url": js.get("source_url", "")}
 
 
+def _post_info(js: dict) -> dict:
+    return {"id": js["id"], "status": js.get("status", ""), "link": js.get("link", ""),
+            "title": (js.get("title") or {}).get("raw") or (js.get("title") or {}).get("rendered", "")}
+
+
+def get_post(post_id: int) -> dict:
+    return _post_info(_check(requests.get(f"{_base()}/wp-json/wp/v2/posts/{post_id}", auth=_auth(),
+                                          params={"context": "edit"}, timeout=60)))
+
+
+def set_status(post_id: int, status: str) -> dict:
+    return _post_info(_check(requests.post(f"{_base()}/wp-json/wp/v2/posts/{post_id}", auth=_auth(),
+                                           json={"status": status}, timeout=60)))
+
+
+def trash(post_id: int) -> None:
+    """ゴミ箱へ（完全削除はしない。管理画面のゴミ箱から戻せる）。"""
+    _check(requests.delete(f"{_base()}/wp-json/wp/v2/posts/{post_id}", auth=_auth(), timeout=60))
+
+
 def post_draft(title: str, content: str, slug: str = "", excerpt: str = "",
                featured_media: int | None = None) -> dict:
     """下書きとして投稿し {id, link, edit_url} を返す。公開はしない。"""

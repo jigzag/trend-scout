@@ -87,6 +87,9 @@ python main.py --dry-run     # LINEに送らず、通知文を画面に出す
 
 ## 記事の下書きを作る（Ver.1/2）
 
+**LINE で返信するだけで操作できます**（`1` で記事作成、`公開` で公開、`削除` でボツ）。設定は `docs/LINE_SETUP.md`。
+以下は GitHub の画面から操作する方法です。
+
 LINEで届いた候補から1つ選んで、記事の下書きを作ります。
 
 1. Actions タブ → `write-article` → **Run workflow**

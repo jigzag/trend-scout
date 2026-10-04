@@ -56,6 +56,8 @@ def build_message(today: date, top: list[dict], stats: dict, sales: list[dict] |
     foot = f"取得{stats['fetched']}件 → 新規{stats['new']}件を採点 → 上位{len(top)}件"
     if stats.get("failed"):
         foot += f"\n取得失敗: {', '.join(stats['failed'])}"
+    if top:
+        foot += "\n記事にするなら番号を返信（例: 1 / 1 無料版は3回まで）"
     lines.append(foot)
     text = "\n".join(lines)
     return text if len(text) <= MAX_LEN else text[: MAX_LEN - 20] + "\n…(省略)"
