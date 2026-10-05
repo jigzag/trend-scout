@@ -1,0 +1,102 @@
+[
+  {
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 5,
+    "buzz": 6.5,
+    "topic": "AI個人秘書（Claude Code）実践レビュー",
+    "total": 80,
+    "detail": {
+      "id": 0,
+      "summary": "個人でClaudeベースのAIエージェントを“秘書”として5日間運用し、メール整理や手続き代行などの日常タスクを任せた記録と気づきをまとめた実践レポート。",
+      "why": "コード不要で導入できるAIエージェントを日常業務や事務処理にどう組み込むかを、実際の運用記録から具体的に示せるため読者の導入ハードルを下げる。",
+      "try": "Claude（または類似のAIエージェント）に専用のプロンプトテンプレートを作り、メール要約・予定調整・定型文作成の3タスクを1日分委任して出力の品質と工数削減を比較する。",
+      "angle": "AI秘書でメール・予定・手続きを劇的に省力化する方法",
+      "products": [
+        "Claude",
+        "ChatGPT（ChatGPTプラス）",
+        "Google Gemini（有料プラン）",
+        "Notion",
+        "Gmail（＋自動化プラグイン）"
+      ]
+    },
+    "item": {
+      "source": "Qiita",
+      "title": "仕事が忙しいので、プライベートに AI 秘書を雇ってみた",
+      "url": "https://qiita.com/araom/items/83f8180524500f685416?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
+      "summary": "はじめに 本記事は、AI エージェント（Claude Code）を「秘書」にする取り組みを、プライベートで5日間（2026-09-29〜10-03）試した記録です。 業務では、すでに AI エージェントを開発作業に使っています。 ただ、メールや税金の手続きまで任せる「秘書...",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 6.5
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "testable": 8,
+    "monetizable": 6,
+    "buzz": 8.0,
+    "topic": "WaoN iOS/Mac 自動耳コピアプリ",
+    "total": 77,
+    "detail": {
+      "id": 1,
+      "summary": "長年開発された自動採譜ソフトWaoNがiOS/Macアプリとしてリリースされ、録音から音符抽出や再生などの機能をモバイルで利用可能になったニュースと特徴解説。",
+      "why": "音素材を扱う動画制作者やコンテンツ制作者にとって、非エンジニアでも使える自動採譜ツールは効果的な素材作りや字幕作成の効率化につながるため有用。",
+      "try": "WaoNのiOS/Macアプリをインストールし、手持ちの短い音源（30秒〜1分）を読み込んで採譜結果とMIDI出力、音再生の精度を比較・スクリーンショットで記録する。",
+      "angle": "スマホで楽譜化：WaoNで音声からノートを即取得する手順",
+      "products": [
+        "WaoN（iOS/Macアプリ）",
+        "GarageBand",
+        "Logic Pro",
+        "MuseScore"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "30年かけて育てた自動耳コピ「WaoN」がiOS/Macアプリに！AI時代にあえて挑む、0倍速でも音が鳴り続ける「わおん」",
+      "url": "https://www.dtmstation.com/archives/80372.html",
+      "summary": "録音された音楽から音符を取り出す「自動耳コピ」は、コンピュータと音楽の世界で昔から追い求められてきたテーマです。そうした中、物理学の研究者からプログラマーに転じた市來健吾（いちき けんご）さんが1996年に書き始め、GPLのオープンソースとして公開してきた採譜プログラム「WaoN」が、iPhone/iPad/Mac用のネイ...",
+      "signal": 113,
+      "signal_label": "113users",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 6,
+    "buzz": 2.0,
+    "topic": "Gemini モデル選択制限（個人向け）",
+    "total": 72,
+    "detail": {
+      "id": 2,
+      "summary": "Googleが個人向けGeminiアプリで利用できるモデルをプランに応じて制限し、無料ユーザーは『Flash-Lite』のみ利用可能になる方針変更を報告する記事。",
+      "why": "Geminiを含む大手生成AIのモデルポリシー変更は、個人事業主や研修担当がツール選定や社内利用ルールを見直す必要性を生むため、具体的な影響と対策を示す価値がある。",
+      "try": "自分のGeminiアプリで現在利用できるモデルを確認し、無料→有料で利用可能な差（回答の長さ・画像生成・高度推論など）を短い質問と画像生成で比較して画面キャプチャを残す。",
+      "angle": "Geminiの無料版で何が制限されるかと現場対応ガイド",
+      "products": [
+        "Google Gemini（Google AI 有料プラン）",
+        "ChatGPT（代替検討用）",
+        "Claude（代替検討用）"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "個人向けGeminiのモデル選択が厳格化　無料ユーザーが使えるのは「Flash-Lite」のみに",
+      "url": "https://www.itmedia.co.jp/news/article/2610/04/2000001987/",
+      "summary": "米Googleは10月初旬に更新したGeminiのサポートページで、個人向け「Gemini」アプリで利用できるAIモデルを、加入しているGoogle AIの契約プランに応じて変更すると告知した。Google AIの有料プランを契約していない無料ユーザーについては10月9日から変更を適用し、利用できるモデルは「Flash-Lite」のみになる。 変更...",
+      "signal": 249,
+      "signal_label": "249users",
+      "extra": {
+        "buzz": 2.0,
+        "also_on": [
+          "ITmedia AI+",
+          "ITmedia AI+"
+        ]
+      }
+    }
+  }
+]
