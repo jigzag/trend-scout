@@ -1,0 +1,103 @@
+[
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 9,
+    "buzz": 9.5,
+    "topic": "Spira Maxima (video-from-script model)",
+    "total": 88,
+    "detail": {
+      "id": 0,
+      "summary": "Spira（Product Hunt表記ではSpira Maxima）は、入力した台本からTikTokやInstagram向けの“バイラル風”短尺動画を自動生成するビデオモデル／サービスです。テンプレートやリール最適化オプションで短時間にSNS向け動画を作れる点が特徴。",
+      "why": "コード不要で短尺ソーシャル動画を素早く量産したい読者（個人事業主・SNS担当者）にとって、実運用の可否や画質・編集度の比較がすぐに役立つため。",
+      "try": "公式サイト／ProductHuntからアクセスしてアカウントを作成し、既存の短い台本（30〜60秒）を1つ入力。用意されたテンプレートを2種類試して書き出し、結果の尺・画質・字幕やBGMの自動配置をスクリーンショットで記録する。",
+      "angle": "台本から1分動画を量産する最短ルート：Spiraで見る品質と時間",
+      "products": [
+        "Runway",
+        "Kling",
+        "MiniMax / Hailuo",
+        "Sora",
+        "Veo",
+        "Canva Pro",
+        "CapCut Pro",
+        "ElevenLabs"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Spira Maxima",
+      "url": "https://www.producthunt.com/products/spira-ai",
+      "summary": "Video model that turns script into viral social media videos Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.5
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 8,
+    "buzz": 9.0,
+    "topic": "Jarq (text near cursor helper)",
+    "total": 88,
+    "detail": {
+      "id": 1,
+      "summary": "Jarq（Product Hunt）は、ブラウザ上でカーソル付近のテキストを選ばずに翻訳・要約・リライト・校正できるユーティリティ拡張／ツールです。コンテキストメニューやホットキーで即時処理できる点が売り。",
+      "why": "文章作成やSNS投稿を日常的に行う読者が、コピーの品質向上や多言語対応を手早く行うためのワークフロー改善につながるため。",
+      "try": "ブラウザ拡張をインストールして有効化後、メール本文やTwitterの草稿を開き、カーソルを置いてショートカットで『英訳』『短く』『口調をフォーマルに』などを順に実行。元文と出力を比較して違和感や修正点をスクリーンショットで残す。",
+      "angle": "カーソルひとつで文章力アップ：Jarqで日常業務を3倍速化する方法",
+      "products": [
+        "DeepL",
+        "Grammarly",
+        "LanguageTool",
+        "ChatGPT (Plus)",
+        "Claude (Anthropic)"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Jarq",
+      "url": "https://www.producthunt.com/products/jarq",
+      "summary": "Translate, shorten, fix or rewrite any text near your cursor Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 8,
+    "buzz": 8.0,
+    "topic": "Claude Mods (Claude Code)",
+    "total": 87,
+    "detail": {
+      "id": 2,
+      "summary": "Zenn記事『Claude Codeの「Claude Mods」とは？ 入れてみた3つのmodと、安全に入れる手順』は、Claudeの拡張（mods）を導入する手順と注意点を実際に検証した技術寄りの解説です。非公式の追加機能を安全に扱う方法に触れています。",
+      "why": "企業や研修担当がClaudeを業務導入する際、非公式拡張のリスクと利便性を理解してポリシー決定する材料になるため（コード不要で導入する手順や安全対策が参考になる）。",
+      "try": "記事の手順を読み、安全対策（バックアップ・アクセス権制御・テストアカウント）を準備した上で、まずは1つのmodだけを検証用アカウントで導入し、振る舞いとログを確認して問題がないかを記録する。",
+      "angle": "業務利用の前に知るべきClaude拡張の安全ルールと実地チェックリスト",
+      "products": [
+        "Claude (Anthropic)",
+        "ChatGPT Enterprise",
+        "Slack（社内検証用）",
+        "Google Workspace（テスト用アカウント）"
+      ]
+    },
+    "item": {
+      "source": "Zenn",
+      "title": "Claude Codeの「Claude Mods」とは？ 入れてみた3つのmodと、安全に入れる手順",
+      "url": "https://zenn.dev/yoshihiko555/articles/ea2db6070058b3",
+      "summary": "",
+      "signal": 24,
+      "signal_label": "24いいね",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  }
+]
