@@ -1,0 +1,92 @@
+[
+  {
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 6,
+    "buzz": 5.7,
+    "topic": "Drive Docs Markdown edit",
+    "total": 81,
+    "detail": {
+      "id": 0,
+      "summary": "Google ドライブとドキュメントでMarkdownファイルをそのまま編集・共同編集できるようになったという話。従来の変換プロセスを挟まずに.mdファイルをブラウザ上で開いて編集・リアルタイム共同編集できる。",
+      "why": "コードを書かない読者でも、Markdownで管理している資料やメモを手軽に共同編集できるワークフロー改善につながるため、実務で即役立つ。",
+      "try": "Driveに既存の.mdファイルをアップロードしてブラウザで開く（または右クリック→アプリで開く）。編集画面で書き換え→共有リンクを発行して共同編集者を招待し、同時編集・変更履歴を確認する。",
+      "angle": "Markdownファイルをそのまま共同編集できる新ワークフロー",
+      "products": []
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "Google ドライブとドキュメント、Markdownファイルを直接編集可能に　変換不要で共同編集",
+      "url": "https://k-tai.watch.impress.co.jp/docs/news/2145948.html",
+      "summary": "",
+      "signal": 37,
+      "signal_label": "37users",
+      "extra": {
+        "buzz": 5.7
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 7,
+    "buzz": 6.0,
+    "topic": "Claude Workspace add-on",
+    "total": 80,
+    "detail": {
+      "id": 1,
+      "summary": "Anthropicが『Claude for Google Workspace』というアドオンを公開し、ClaudeからGoogleドキュメントやスプレッドシート等のWorkspaceファイルを生成・編集できるコネクターをベータ公開したという話。",
+      "why": "非エンジニアの発信者や事務担当者が、AIに文章作成や資料の編集を任せてWorkspace内で完結する作業フローを作れる点が実務寄りで有益。",
+      "try": "Workspaceマーケットプレイスから『Claude for Google Workspace』をインストールしてGoogleアカウントと連携。ドキュメントを新規作成するプロンプト（例: 会議議事録のテンプレ作成）をClaudeに投げ、生成された内容をドキュメントに反映して共同編集権限を付与して動作を確認する。",
+      "angle": "AIがWorkspace内で資料を直接作成する業務効率化術",
+      "products": [
+        "Anthropic Claude (有料プラン)",
+        "Google Workspace (有料プラン)"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "Anthropic、「Claude for Google Workspace」アドオンをリリース／「Claude」から「Workspace」のファイルを作成・編集できるコネクターもベータ公開",
+      "url": "https://forest.watch.impress.co.jp/docs/news/2146192.html",
+      "summary": "",
+      "signal": 21,
+      "signal_label": "21users",
+      "extra": {
+        "buzz": 6.0
+      }
+    }
+  },
+  {
+    "relevance": 6,
+    "testable": 8,
+    "monetizable": 6,
+    "buzz": 8.0,
+    "topic": "Patchcord",
+    "total": 69,
+    "detail": {
+      "id": 2,
+      "summary": "PatchcordはMac向けにマイク音声を会議や通話で“スタジオ音”に整えるアプリで、EQやノイズ処理をリアルタイムに適用してZoom等で使えるというツール。",
+      "why": "動画や配信、オンライン会議で音声品質を簡単に向上できるため、制作担当や研修担当が声の聞こえ方で印象を上げられる実践的な投資先になる。",
+      "try": "PatchcordをMacにインストールしてシステムマイク入力として設定。ZoomやMeetを起動して入力デバイスをPatchcordに切替え、プリセットEQやノイズ除去を適用した状態で録音・通話して音質の差を比較する。",
+      "angle": "オンライン会議の声をプロ級に変える音声補正の導入手順",
+      "products": [
+        "Patchcord (有料)",
+        "Krisp",
+        "Loopback",
+        "Rogue Amoeba Audio Hijack",
+        "Elgato Wave Link"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Patchcord",
+      "url": "https://www.producthunt.com/products/patchcord-2",
+      "summary": "Studio sound for your mic in every Mac meeting with EQ Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  }
+]
