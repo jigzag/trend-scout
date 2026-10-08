@@ -1,0 +1,98 @@
+[
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 8,
+    "buzz": 10.0,
+    "topic": "Google Playground (game maker)",
+    "total": 87,
+    "detail": {
+      "id": 0,
+      "summary": "Googleがテキストプロンプトだけでゲームを作れるWebプラットフォーム「Playground」を米国で発表。Unity連携の高品質3D強化機能「Unity Spark」も年内提供予定という発表。",
+      "why": "ノーコードでコンテンツ制作の幅を広げたい個人事業主や研修担当が、AIで短時間にインタラクティブ素材を作れる可能性を検証できるため。",
+      "try": "米国限定リリースのためまずは公式ページでアカウント登録やウェイティングリストに申し込む。並行して、Playground発表のスクリーンショットや紹介動画をもとに、RunwayやKaiberなど既存のAI生成ツールで“簡易ゲーム風コンテンツ”を作って比較する（短い指示で動くシーンやキャラクターを生成して実際の時間と画質を計測）。",
+      "angle": "AIプロンプトで“簡易ゲーム素材”を作る未来：業務活用の期待と現実",
+      "products": [
+        "Runway",
+        "Kaiber",
+        "Unity (有料アセット)",
+        "Veo"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "Google、プロンプトでゲームを作って遊べる「Playground」を米国で公開　「Unity Spark」も年内投入",
+      "url": "https://www.itmedia.co.jp/news/article/2610/08/2000002117/",
+      "summary": "Googleはテキスト入力だけでゲームを作成・共有できるプラットフォーム「Playground」をWebブラウザ向けに発表した。まずは米国の成人向けに提供する。あわせてUnityとの提携で、高精細な3D表現やアセットを活用して機能拡張を図る「Unity Spark」を年内に投入することも発表した。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "testable": 8,
+    "monetizable": 7,
+    "buzz": 10.0,
+    "topic": "Supademo AI Demo Agent",
+    "total": 81,
+    "detail": {
+      "id": 1,
+      "summary": "Supademoはデモ用のエージェント（製品説明や営業トークを自動で行うデモ）をノーコードで作れるサービス。Product Huntで紹介されている新しいデモ制作フロー。",
+      "why": "営業資料や製品解説を自動化・省力化したい中小企業や個人が、従来の録画デモやライブ説明を置き換える手段としてすぐに試せるから。",
+      "try": "Product Huntページからサービスを開き、無料プランがあればサインアップして既存テンプレートでデモエージェントを1つ作る（製品説明のスクリプト入力→対話フロー設定→公開リンク発行）。作ったデモを社内共有し、実際の反応（理解度や所要時間）を測る。",
+      "angle": "説明業務を自動化するデモエージェントで営業工数を削減する方法",
+      "products": [
+        "Supademo",
+        "ManyChat",
+        "Landbot",
+        "Typeform (有料プラン)"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Supademo AI Demo Agent",
+      "url": "https://www.producthunt.com/products/supademo",
+      "summary": "Agentic demos like your best salesperson, without the salary Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "testable": 8,
+    "monetizable": 7,
+    "buzz": 7.5,
+    "topic": "Manus Video Editor 2.0",
+    "total": 78,
+    "detail": {
+      "id": 2,
+      "summary": "Manus 2.0が動画編集機能を導入し、非専門家でも短時間で投稿向け動画を作れるというアップデートがProduct Huntで紹介されている。",
+      "why": "動画制作を頻繁に行うが編集工数を減らしたい個人事業主・広報担当が、ブラウザベースで効率化できるかを即日検証できるため。",
+      "try": "ManusのProduct Huntページから試用リンクにアクセスしてアカウントを作成。テンプレートを選んで30〜60秒の宣伝動画を素材（画像・短い音声）で作り、書き出し時間、編集のしやすさ、自動キャプションやBGMの品質をチェックする。比較としてCapCut（Web版）やCanvaで同等の動画を作り、制作時間と仕上がりを比較する。",
+      "angle": "短時間でSNS映えする動画を量産する編集ワークフローの作り方",
+      "products": [
+        "Manus",
+        "CapCut",
+        "Canva Pro",
+        "Premiere Pro"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Introducing Video Editor in Manus 2.0",
+      "url": "https://www.producthunt.com/products/manus",
+      "summary": "Anyone Can Now Make A Video Worth Posting Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 7.5
+      }
+    }
+  }
+]
