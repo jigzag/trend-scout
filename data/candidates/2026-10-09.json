@@ -1,0 +1,97 @@
+[
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 8,
+    "buzz": 5.7,
+    "topic": "Claude Dashboards/Motion",
+    "total": 81,
+    "detail": {
+      "id": 0,
+      "summary": "Anthropicが生成系AI「Claude」に新機能「Dashboards」「Motion」を発表。Docs/Slides/Designは無償提供され、データからダッシュボードを作る機能や、アイデアから短いアニメーションを作るワークフローが紹介されている。",
+      "why": "ノーコードで資料・可視化・簡単アニメーションを作れる点は、コードを書かない読者が日常業務や発信で効率化を図るうえで直接役立つため。",
+      "try": "ClaudeのWeb版にアクセスして、新しいDocs/Slides/Designを触り、サンプルデータでDashboardsを作成。Motionで短いスライド→アニメーション変換を1本出力して動作と品質を確認する。",
+      "angle": "Anthropic新機能で資料・動画制作を効率化する方法",
+      "products": [
+        "Anthropic Claude",
+        "OpenAI ChatGPT (Docs/Slides比較用)",
+        "Google Gemini"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "Anthropic、「Claude」の新機能「Dashboards」「Motion」を発表。「Docs」「Slides」「Design」は無償でも提供／データからダッシュボード、アイデアからアニメーションを生成",
+      "url": "https://forest.watch.impress.co.jp/docs/news/2146954.html",
+      "summary": "",
+      "signal": 15,
+      "signal_label": "15users",
+      "extra": {
+        "buzz": 5.7
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 6,
+    "buzz": 5.3,
+    "topic": "ChatGPT transcription",
+    "total": 80,
+    "detail": {
+      "id": 1,
+      "summary": "ChatGPTが音声ファイルの文字起こしに対応（最大512MB、主要音声フォーマット対応）。iPhone・Macアプリでの実例検証では精度が高く、実用レベルの文字起こしが可能になったという報告がある。",
+      "why": "録音の文字起こしは発信・研修・事務作業で頻出のタスクなので、手順と精度感を示す記事は読者の即時活用に直結するため。",
+      "try": "スマホで録った会議・インタビュー（〜30分）を用意し、ChatGPTアプリにアップロードして文字起こしを実行。誤変換箇所や話者分離の有無、編集のしやすさを比較する。",
+      "angle": "ChatGPTで会議録音を効率化する現場チェック術",
+      "products": [
+        "OpenAI ChatGPT（アプリ機能）",
+        "Otter.ai",
+        "Descript",
+        "Rev"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "ChatGPTで「音声ファイルの文字起こし」ができるように | ギズモード・ジャパン",
+      "url": "https://www.gizmodo.jp/article/2610-chatgpt-audio-transcription-update/",
+      "summary": "ファイルサイズの上限は512MB。対応フォーマットは、以下の通りです。 WAVMP3/MPEGOGG/OGA音声のみのWebMPCMFLACAACM4A音声のみのMP4 iPhone版・Mac版アプリで実際に文字起こしできました。 精度はかなりいいと思います。以下はある本の一節を読み上げた音声を文字起こししてもらった結果です。1箇所だけ誤りがありまし...",
+      "signal": 28,
+      "signal_label": "28users",
+      "extra": {
+        "buzz": 5.3
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 6,
+    "buzz": 5.5,
+    "topic": "Klang transcription",
+    "total": 77,
+    "detail": {
+      "id": 2,
+      "summary": "スウェーデン発の文字起こしサービス「Klang」が8人の声を正しく分離できると報告。立ち話や雑談の録音でも話者を切り分けて精度の高い文字起こしを実現する点が注目されている。",
+      "why": "複数人が入り乱れる現場録音（会議、現場取材、ワークショップ）を文字起こしするニーズは高く、話者分離の実力を検証すれば読者の導入判断に役立つため。",
+      "try": "複数人（3〜8人）で短い雑談を録音してKlangにアップロードし、話者分離と文字起こし結果を比較。既存ツール（Plaud、Otter、Descript）と並べて得意・不得意を確認する。",
+      "angle": "雑談録音を活用するための話者分離ツール比較ガイド",
+      "products": [
+        "Klang",
+        "Plaud",
+        "Otter.ai",
+        "Descript"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "立ち話が“宝の山”に　8人の声を聞き分けられたAI文字起こし「Klang」の実力",
+      "url": "https://www.itmedia.co.jp/news/article/2610/08/2000002130/",
+      "summary": "取材の録音はAIで文字起こしする時代になったが、複数人が入り乱れる立ち話は、話者を分けられずにうまく文字にならないことが多い。そんな録音をスウェーデン発の「Klang」にかけてみると、8人の声を正しく切り分けた。愛用する「Plaud」と比べて見えた得意分野の違いと、雑談を“宝の山”に変えうる話者分離技術の可能性を探る。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 5.5
+      }
+    }
+  }
+]
