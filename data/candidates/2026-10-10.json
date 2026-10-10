@@ -1,0 +1,95 @@
+[
+  {
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 6,
+    "buzz": 9.5,
+    "topic": "ChatGPT audio upload",
+    "total": 86,
+    "detail": {
+      "id": 0,
+      "summary": "OpenAIのChatGPTが音声ファイルのアップロードに対応し、文字起こしや要約など音声ベースの処理ができるようになった（有料ユーザー向け）。",
+      "why": "動画や音声を扱う非エンジニアの読者が、手元の会議録や配信音声を簡単にテキスト化・要約して業務効率化できるため有用。",
+      "try": "ChatGPTの有料アカウントでログインして、音声ファイル（例：mp3）をアップロードし、文字起こし・要約・ハイライト抽出の指示を出して結果を比較する。",
+      "angle": "会議録や配信音声を3分で要約する方法",
+      "products": [
+        "ChatGPT Plus / ChatGPT Enterprise",
+        "Otter.ai（比較用）",
+        "Descript（比較用）"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "ChatGPT、ついに音声ファイルに対応　文字起こしや要約などが可能に　有料ユーザー向け",
+      "url": "https://www.itmedia.co.jp/aiplus/article/2610/09/2000002182/",
+      "summary": "米OpenAIは10月9日（日本時間）までに、「ChatGPT」が音声ファイルのアップロードに対応したと発表した。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.5
+      }
+    }
+  },
+  {
+    "relevance": 10,
+    "testable": 9,
+    "monetizable": 7,
+    "buzz": 1.0,
+    "topic": "Claude Dashboards",
+    "total": 79,
+    "detail": {
+      "id": 1,
+      "summary": "AnthropicがClaudeの新機能「Claude Dashboards」と「Claude Motion」をβ公開し、SQL不要でダッシュボード作成やアニメーションを伴う説明生成が可能になった。",
+      "why": "プログラミング不要でデータ分析結果をビジュアル化・説明できるため、資料作成や経営報告を簡単にしたい読者に直結する価値がある。",
+      "try": "Claudeのベータにアクセス（アカウント登録）し、CSVやスプレッドシートをアップロードしてダッシュボード自動生成を試し、生成されたグラフと自然言語説明を検証する。",
+      "angle": "SQL不要で作る：数値を見せるダッシュボード術",
+      "products": [
+        "Claude (Anthropic) 有料プラン",
+        "Looker Studio（比較用）",
+        "Google Sheets（データ準備用）"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "Claude、SQL不要でデータ分析可能に - ダッシュボードを自動生成する新機能",
+      "url": "https://news.mynavi.jp/techplus/article/20261009-5099252/",
+      "summary": "Anthropicは10月8日、Build live dashboards and animate explainers with Claude において、生成AI「Claude」の新機能「Claude Dashboards」と「Claude Motion」をベータ版として公開した。 Claude Dashboardsは、企業のデータ分析を支援する新機能。データウェアハウスや業務アプリケーションを",
+      "signal": 80,
+      "signal_label": "80users",
+      "extra": {
+        "buzz": 1.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 7,
+    "monetizable": 7,
+    "buzz": 5.5,
+    "topic": "Gemini Agent multi-model",
+    "total": 76,
+    "detail": {
+      "id": 2,
+      "summary": "Google Cloudが新サービス『Gemini Agent』を発表し、Geminiに加えてAnthropicのClaudeモデルも同プラットフォーム上で利用可能になった（今後さらにモデル追加予定）。",
+      "why": "複数の大規模モデルを同環境で切り替えながら業務ワークフローに組み込める点は、ツール選定や運用を検討する非エンジニアにとって重要な判断材料になる。",
+      "try": "Google CloudのコンソールでGemini Agentの概要ページを確認し、フリートライアルやデモがあれば実際にエージェントを作成して基本的な問いかけで挙動の違いを確かめる（画面キャプチャを取得）。",
+      "angle": "モデルを切り替えて業務改善する新プラットフォーム解説",
+      "products": [
+        "Google Cloud Gemini Agent（有料）",
+        "Claude Opus / Sonnet（Anthropic 有料プラン）",
+        "Microsoft Azure OpenAI（比較用）"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "Google「Gemini」新サービスで「Claude」利用可能に　他モデルも今後追加予定",
+      "url": "https://www.itmedia.co.jp/aiplus/article/2610/09/2000002152/",
+      "summary": "Google Cloudは新サービス「Gemini Agent」を発表。クラウドで動作するマルチエージェントツールとされる。Geminiに加えて、Anthropicの「Claude Opus 5.5」「Claude Sonnet 5.5」が利用可能だと明かされている。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 5.5
+      }
+    }
+  }
+]
