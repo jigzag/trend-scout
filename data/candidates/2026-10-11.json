@@ -1,0 +1,95 @@
+[
+  {
+    "relevance": 8,
+    "testable": 7,
+    "monetizable": 6,
+    "buzz": 9.3,
+    "topic": "Japanese TTS (G2P, prosody)",
+    "total": 76,
+    "detail": {
+      "id": 0,
+      "summary": "日本語の音声合成で起きる問題（高低アクセントや正しい発音変換＝G2P）と、それに対する言語処理アプローチを前後編で解説する技術記事の前編。専門的だが日本語TTSの精度向上に関する原理を扱う。",
+      "why": "日本語TTSの正確さは動画ナレーションや自動音声コンテンツの品質に直結するため、制作担当者が知っておくべき背景と改善余地を理解できる。",
+      "try": "記事を読んで高低アクセントやG2Pの概念を整理した上で、ElevenLabsやVoicefulなど手元で使えるTTSサービスに同一の長文（固有名詞や日付を含む）を入力して発音・アクセントの差を比較してスクショで記録する。",
+      "angle": "日本語音声合成の“読み方”問題をやさしく理解する",
+      "products": [
+        "ElevenLabs",
+        "Coqui TTS",
+        "Voiceful",
+        "OpenJTalk（参考）"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "音声合成に日本語を正しく読んでもらう話 〜高低アクセントからG2Pまで〜 【前編】",
+      "url": "https://zenn.dev/mkj/articles/speech-tts-japanese-2026",
+      "summary": "株式会社 松尾研究所で働いている栗原です。 以前、「音声合成の日本語化手法が一般化した話」を書きました。 今回は、日本語の難しさと、それを音声合成に扱わせる難しさ、その課題に取り組むために考案した日本語言語処理部（G2P: Grapheme-to-Phoneme）について、前後編に分けて解説していきます。 専門家・理系の方...",
+      "signal": 40,
+      "signal_label": "40users",
+      "extra": {
+        "buzz": 9.3
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 8,
+    "buzz": 2.0,
+    "topic": "Onepin (AI voiceover)",
+    "total": 75,
+    "detail": {
+      "id": 1,
+      "summary": "Onepinは固有名詞・価格・日付などを正しく読み上げることに特化したAIボイスオーバーサービス。宣伝文や商品紹介で名前を間違えず自然に話す点を売りにしている。",
+      "why": "動画やSNS用の音声ナレーションで固有名詞や数字の読み間違いは致命的なので、制作効率と品質を両立させたい読者にとって即使える解決策になる。",
+      "try": "Onepinのページからサインアップして、実際に商品の名前・価格・日時を含む30〜60秒の原稿を入力し、出力音声を比較・ダウンロード。既存サービス（ElevenLabs等）で同一原稿を生成して差を聞き比べる。",
+      "angle": "固有名詞と数字を間違えないAIナレーションで信頼感を上げる方法",
+      "products": [
+        "Onepin",
+        "ElevenLabs"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Onepin",
+      "url": "https://www.producthunt.com/products/onepin",
+      "summary": "AI voiceover with every name, price and date said right Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 2.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 7,
+    "buzz": 2.5,
+    "topic": "Skreno (browser video editor)",
+    "total": 74,
+    "detail": {
+      "id": 2,
+      "summary": "Skrenoはブラウザ上で録画・編集・共有が完結する動画ツール。インストール不要で簡単に短尺コンテンツを作れる点をウリにしている。",
+      "why": "プログラミング不要で動画制作を手早く済ませたい個人事業主や広報担当が、手順を追って導入可否を判断できる実践レビューを求めている。",
+      "try": "Skrenoにアクセスしてブラウザでカメラ＋画面録画を行い、カット編集・テキスト挿入・書き出しまで実際に行って所要時間と操作感を記録。CapCut WebやLoomと同じ素材で比較動画を作ると説得力が増す。",
+      "angle": "ブラウザだけで完結する短尺動画ワークフローの最短ルート",
+      "products": [
+        "Skreno",
+        "CapCut（Web）",
+        "Loom"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Skreno",
+      "url": "https://www.producthunt.com/products/skreno",
+      "summary": "Record, edit and share videos, all in your browser Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 2.5
+      }
+    }
+  }
+]
