@@ -1,0 +1,93 @@
+[
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 7,
+    "buzz": 10.0,
+    "topic": "OpenScreen 2",
+    "total": 86,
+    "detail": {
+      "id": 0,
+      "summary": "OpenScreen 2は、録画したデモ映像をAIエージェントに解析させて自動でカット編集やハイライト生成を行うというワークフロー支援ツールです。ProductHuntで紹介されている新版の機能やデモに注目しています。",
+      "why": "コードを書かない制作者や事務担当が、短時間で見映えするデモ動画やチュートリアルを量産できる点が業務効率化に直結するため記事価値が高いです。",
+      "try": "1) OpenScreen 2のProductHuntページを確認してアカウント登録（β招待が必要なら申請）します。2) 手元の5分程度の画面収録をアップロードして、AIによるハイライト抽出・カット編集・字幕生成の出力を比較します（生成物の修正のしやすさもチェック）。",
+      "angle": "AIがデモを自動編集、1本で伝わる映像作りの新常識",
+      "products": [
+        "Descript",
+        "Runway",
+        "CapCut",
+        "Canva (ビデオ機能)"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "OpenScreen 2",
+      "url": "https://www.producthunt.com/products/openscreen-2",
+      "summary": "Record your demo and let your AI agent do the edits Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 4,
+    "buzz": 9.0,
+    "topic": "hayamimi（早耳）",
+    "total": 80,
+    "detail": {
+      "id": 1,
+      "summary": "hayamimiはGPU不要でCPUのみでも高精度なリアルタイム多言語文字起こし・翻訳ができる日本発のツールで、低スペックPCでも動作する点が特徴です。",
+      "why": "外出先や安価なマシンでオンライン研修や会議の文字起こし・翻訳を手軽に行えるため、プログラミング不要の読者にとって即効性のある業務改善ネタになります。",
+      "try": "1) GitHubのリポジトリをクローンしてREADMEに従いローカルでセットアップ（Python環境や依存インストール）。2) Zoom録画やスマホで録った多言語音声を流してリアルタイム文字起こしと翻訳の精度・遅延を比較検証します。",
+      "angle": "低スペックPCで会議が文字化、GPU不要の文字起こし革命",
+      "products": [
+        "Otter.ai",
+        "Deepgram",
+        "Rev",
+        "Google Speech-to-Text"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "GPU不要で驚きの精度。リアルタイム多言語文字起こしツール「hayamimi」使ってみましたー。｜ゆいまる‐IT界隈以外でAIを使いまくる2005年生まれ",
+      "url": "https://note.com/humble_bobcat51/n/n64602c64db6c",
+      "summary": "日本の開発者さんっぽいリポジトリだーと思ってみたら、物凄い高性能な文字起こしツールでした。凄いなコレ。 貰い物の半壊PCでも全然CPUだけで文字起こし出来るし、翻訳でもかなり性能高い感じ。唯一の弱点は複数言語をいっぺんに読み取れないくらいしか、今のところは見当たらない。 こんなの出来るんだ、凄いってなり...",
+      "signal": 168,
+      "signal_label": "168users",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 4,
+    "buzz": 6.7,
+    "topic": "hayamimi（リポジトリ）",
+    "total": 76,
+    "detail": {
+      "id": 2,
+      "summary": "oboroge0/hayamimiのREADME日本語版ページはセットアップ・使い方・注意点が書かれているドキュメントで、導入障壁や実行時のトラブルシューティング情報が得られます。",
+      "why": "実際に導入する際に直面する手順やエラー対処を画面つきで示せば、非エンジニア読者の導入ハードルを下げられるため有益です。",
+      "try": "1) README.ja.mdを読み、依存項目やコマンドをメモする。2) 実際にREADMEの手順で動かしてみて、つまずいた箇所（環境変数や権限、モデルダウンロードの時間など）をスクリーンショットで記録します。",
+      "angle": "つまずかない導入ガイド：hayamimiの実践的セットアップ手順",
+      "products": []
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "hayamimi/README.ja.md at main · oboroge0/hayamimi",
+      "url": "https://github.com/oboroge0/hayamimi/blob/main/README.ja.md",
+      "summary": "You signed in with another tab or window. Reload to refresh your session. You signed out in another tab or window. Reload to refresh your session. You switched accounts on another tab or window. Reloa",
+      "signal": 27,
+      "signal_label": "27users",
+      "extra": {
+        "buzz": 6.7
+      }
+    }
+  }
+]
