@@ -1,0 +1,91 @@
+[
+  {
+    "relevance": 10,
+    "testable": 9,
+    "monetizable": 8,
+    "buzz": 6.7,
+    "topic": "PowerPoint Copilot Brand Kit",
+    "total": 89,
+    "detail": {
+      "id": 0,
+      "summary": "MicrosoftがPowerPointのCopilotにブランドキット（自社デザインの適用）とスキルの一般提供を開始し、ブランド統一やテンプレート適用・作業自動化が簡単になる機能が発表された話題。",
+      "why": "ブランド統一や資料作成の効率化は個人事業主や中小企業の制作・事務作業の負担を下げるため、導入効果や実務フローを示す価値が高い。",
+      "try": "Microsoft 365のPowerPointでCopilotを有効にし、ブランドキット（ロゴ・色・フォント）をアップロードして既存スライドへ適用、その後Copilotに「ブランドガイドに沿ってこのスライドを整えて」と指示して出力結果を比較する。",
+      "angle": "PowerPointでブランド統一を自動化する実務手順",
+      "products": [
+        "Microsoft 365 (PowerPoint, Copilot)"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "「PowerPoint」のCopilotで自社デザインの適用や作業自動化が可能に／ブランドキットとスキルが一般提供開始、ブランド統一と効率化を促進",
+      "url": "https://forest.watch.impress.co.jp/docs/news/2147289.html",
+      "summary": "",
+      "signal": 12,
+      "signal_label": "12users",
+      "extra": {
+        "buzz": 6.7
+      }
+    }
+  },
+  {
+    "relevance": 10,
+    "testable": 9,
+    "monetizable": 9,
+    "buzz": 4.5,
+    "topic": "ngram 2.0",
+    "total": 87,
+    "detail": {
+      "id": 1,
+      "summary": "Product Huntで公開されたngram 2.0は、解説動画や画面録画、AIアバタービデオ作成を支援するツールで、短い説明コンテンツ作成にフォーカスしているプロダクト。",
+      "why": "動画やスクリーンキャストを手早く作りたい非プログラマ向けに、新機能の使い勝手や他ツールとの違いを示すことで導入判断を助けられる。",
+      "try": "ngramのサイトにアクセスしてアカウントを作成し、短い製品説明（30〜60秒）を作成：スラインや画面録画をアップ、テンプレートを選んで自動生成されたナレーションや字幕を確認・微調整する。",
+      "angle": "短尺説明動画を最速で作るワークフロー",
+      "products": [
+        "ngram"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "ngram 2.0",
+      "url": "https://www.producthunt.com/products/ngram",
+      "summary": "Create explainers, screencasts, and AI avatar videos Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 4.5
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 6,
+    "buzz": 6.5,
+    "topic": "Claude Motion",
+    "total": 79,
+    "detail": {
+      "id": 2,
+      "summary": "Claudeの新機能『Claude Motion』はテキストから動きのある出力やアニメーション付きのコンテンツ生成を提供する拡張機能で、Zenn記事で早速の使用レポートが上がっている話題。",
+      "why": "スライドやSNS用の動的コンテンツをAIで手早く作りたい読者にとって、具体的な操作感と制作フローを示すことは導入判断に直結するため有益。",
+      "try": "AnthropicのClaudeにアクセスしてMotion機能が有効か確認し、既存のスライドや投稿文を入力して『動きを付けた短い紹介アニメーション』を生成、出力を動画やGIFで書き出して質感を比較する。",
+      "angle": "テキストから動くコンテンツを作る実務ガイド",
+      "products": [
+        "Anthropic Claude (Claude Motion)",
+        "ElevenLabs (音声合成, ナレーション用)",
+        "Runway (動画編集・生成の補助)"
+      ]
+    },
+    "item": {
+      "source": "Zenn",
+      "title": "【速報】Claude の新機能 Claude Motion 早速使ってみた",
+      "url": "https://zenn.dev/branbran/articles/047821d64590f0",
+      "summary": "",
+      "signal": 48,
+      "signal_label": "48いいね",
+      "extra": {
+        "buzz": 6.5
+      }
+    }
+  }
+]
