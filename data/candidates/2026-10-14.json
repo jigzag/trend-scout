@@ -1,0 +1,94 @@
+[
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 8,
+    "buzz": 8.3,
+    "topic": "Gemini 4 Argon",
+    "total": 84,
+    "detail": {
+      "id": 0,
+      "summary": "Googleの最新大規模モデル「Gemini 4 Argon」が一般提供開始。Geminiアプリ上ではGoogle AI Pro/Ultra契約者が利用可能になり、高性能な生成や会話が可能になるとの発表。",
+      "why": "読者がノーコードで高精度な生成AIを業務に取り入れる際の性能や利用条件を実務目線で評価できるため。",
+      "try": "GeminiアプリをインストールしてGoogleアカウントでログインし、Google AI Pro/Ultraの契約有無で動作を比較（要契約者は機能差の確認）。短い問い合わせ・長文要約・スライドの要約などで出力の質と速度を検証する。",
+      "angle": "Gemini 4 Argonで業務編集がどう変わるか",
+      "products": [
+        "Google Gemini（Geminiアプリ）",
+        "Google AI Pro/Ultra"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "「Gemini 4 Argon」が一般提供開始 ～満を持して登場した最強の「Gemini」モデル／「Gemini」アプリでは「Google AI Pro/Ultra」の契約者が利用可能",
+      "url": "https://forest.watch.impress.co.jp/docs/news/2147842.html",
+      "summary": "",
+      "signal": 36,
+      "signal_label": "36users",
+      "extra": {
+        "buzz": 8.3
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "testable": 9,
+    "monetizable": 6,
+    "buzz": 10.0,
+    "topic": "Mi Speaks 2.0",
+    "total": 83,
+    "detail": {
+      "id": 1,
+      "summary": "Mi Speaks 2.0は書籍やPDFを端末上でニューラルボイスで読み上げるアプリの新バージョン。ローカルでの音声合成や読み上げ体験の向上が特徴。",
+      "why": "コンテンツ制作や資料の多重活用（音声コンテンツ化）をコード不要で進めたい読者にとって、手軽に音声化ワークフローを増やせる実用的な選択肢になるため。",
+      "try": "スマホやデスクトップでMi Speaksをインストール／アクセスし、手持ちのPDFや短い書籍ファイルを読み込んで各ボイスや速度、言語切替の品質と出力ファイルの使いやすさを比較する。",
+      "angle": "資料を音声化して作業時間を減らす方法",
+      "products": [
+        "Mi Speaks",
+        "ElevenLabs",
+        "Apple VoiceOver / Android TTS（比較用）"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Mi Speaks 2.0",
+      "url": "https://www.producthunt.com/products/mi-speaks",
+      "summary": "Books and PDFs read aloud by neural voices, on device Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "testable": 9,
+    "monetizable": 7,
+    "buzz": 8.0,
+    "topic": "Sarashina (SB Intuitions)",
+    "total": 82,
+    "detail": {
+      "id": 2,
+      "summary": "ソフトバンク子会社が国産生成AI『Sarashina』の無償βサイトを公開。6つのモデルを呼べるAPIとチャット機能がGoogleログインで利用できる。",
+      "why": "国内サービスでのデータローカル性や日本語性能、APIの使いやすさを検証でき、研修資料や社内業務フローに組み込む可能性を評価できるため。",
+      "try": "SarashinaサービスにGoogleアカウントでログインし、チャットで日本語の要約・意図抽出・スライド用アウトライン生成を依頼、同時に提供APIで応答速度や入力制限を確認する。",
+      "angle": "国産AI Sarashinaで日本語業務を高速化する手順",
+      "products": [
+        "Sarashina（SB Intuitions）",
+        "ChatGPT / Claude / Gemini（比較用）",
+        "Zapier / Make（ワークフロー自動化の連携候補）"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "国産AI「Sarashina」が無料で試せるWebサイト、ソフトバンク子会社が公開　6つのAIモデルが呼び出せるAPIも",
+      "url": "https://www.itmedia.co.jp/news/article/2610/13/2000002224/",
+      "summary": "SB Intuitionsは10月13日、国産生成AI「Sarashina」を試せる「Sarashinaサービス」の無償β版の提供を始めた。Googleアカウントでログインするだけで、6つのAIモデルのAPIとチャット機能を無料で使える。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  }
+]
