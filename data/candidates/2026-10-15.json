@@ -1,0 +1,99 @@
+[
+  {
+    "relevance": 10,
+    "testable": 8,
+    "monetizable": 7,
+    "buzz": 7.3,
+    "topic": "Claude Code video editing",
+    "total": 85,
+    "detail": {
+      "id": 0,
+      "summary": "AnthropicのClaude Codeが長時間動画の解析・編集・字幕付けを自動で行えるという実例レポート。8時間の素材を短時間でハイライト編集できたという話。",
+      "why": "動画制作や配信を行う非エンジニアの読者にとって、膨大な素材をAIに任せて短時間で編集・字幕化するワークフローは即効性の高い業務効率化ネタになるため。",
+      "try": "Claude（Code含む）にアクセスして、手元の長時間動画の要約・編集指示（例：不要部分カット、重要な会話をハイライト、字幕生成）をアップロードして実行。出力された編集案と字幕ファイルを実際にダウンロードして、元素材と比較する。",
+      "angle": "8時間素材を1時間に短縮するAI編集術：手順と効果を比べる",
+      "products": [
+        "Anthropic Claude (Code)",
+        "Runway",
+        "Descript",
+        "CapCut",
+        "Veed/VEED.IO"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "Claude Codeがほとんどの場合、動画編集してくれる。8時間の素材を30分で1時間に編集。字幕もつけられる｜shi3z",
+      "url": "https://note.com/shi3zblog/n/ncb38d2978074",
+      "summary": "Claude Codeがほとんどの場合、動画編集してくれる。8時間の素材を30分で1時間に編集。字幕もつけられる 実はClaude Codeは長時間動画を見ることができる。見るだけでなくてそこで何が起きているか、どんな会話がなされているかもみれる。 しかもただ見るだけでない。編集もできるしテロップも入れてくれる。 さらにInst...",
+      "signal": 262,
+      "signal_label": "262users",
+      "extra": {
+        "buzz": 7.3
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "testable": 7,
+    "monetizable": 6,
+    "buzz": 9.0,
+    "topic": "Retriever AI (browser agent)",
+    "total": 76,
+    "detail": {
+      "id": 1,
+      "summary": "Retriever AI（rtrvr-ai）はブラウザ上で動く無料のAIエージェントで、見込み顧客の発見や外部とのコンタクト（リーチアウト）、求人応募支援などを支援するツール。",
+      "why": "営業・採用・広報で少人数の中小企業が手作業でやっているリード発掘や外部アプローチを、非エンジニアでもブラウザ上で半自動化できる点が読者に刺さるため。",
+      "try": "Retriever AIをブラウザで登録して、自社のペルソナ（業種・職位・地域）を設定してリード検索を実行。見つかった候補に対するテンプレートメッセージの生成・一括送信（または送信準備）までの流れを試す。",
+      "angle": "少人数で回せる！AIブラウザエージェントでリード発掘〜初回接触を効率化する方法",
+      "products": [
+        "Retriever AI (rtrvr-ai)",
+        "LinkedIn",
+        "Apollo",
+        "Hunter.io",
+        "Zapier"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Retriever AI",
+      "url": "https://www.producthunt.com/products/rtrvr-ai",
+      "summary": "Free AI browser agent: find leads, reach out, apply to jobs Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "testable": 5,
+    "monetizable": 6,
+    "buzz": 10.0,
+    "topic": "AI model comparison (Gemini/GPT/Claude)",
+    "total": 71,
+    "detail": {
+      "id": 2,
+      "summary": "最新の大規模言語モデル（GPT-6.1 Sol、Claude Opus/Sonnet、Gemini 4 Argonなど）をスペック・公式ベンチマーク・料金で比較した総合レビュー記事（2026年10月時点）。",
+      "why": "非エンジニアの意思決定者でも、料金や得意領域を比較すれば業務導入の判断がしやすくなるため、導入コストや用途別の選び方を示せば価値が高い。",
+      "try": "各モデルの公式ドキュメント／価格ページを確認して、料金表と各種ベンチマーク（公式公開値）をスプレッドシートに整理。無償トライアルやデモがあれば簡単な同じプロンプトで生成品質を試してみる。",
+      "angle": "業務で使うならどれ？コストと得意領域で比較する最新AIモデルガイド",
+      "products": [
+        "OpenAI (GPT-6.1)",
+        "Anthropic (Claude Opus / Claude Sonnet)",
+        "Google (Gemini 4 Argon)"
+      ]
+    },
+    "item": {
+      "source": "Qiita",
+      "title": "【2026年10月 最新版】AIモデル徹底比較 | GPT-6.1 Sol  / Claude Opus 5.5  / Claude Sonnet 5.5 / Gemini 4 Argon",
+      "url": "https://qiita.com/nuco_d/items/9d4f86c185dda6fd24a7?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
+      "summary": "はじめに 本記事では、Gemini 4 Argon、GPT-6.1 Sol、Claude Opus 5.5、Claude Sonnet 5.5 の4モデルを、スペック・公式ベンチマーク・料金の3つの観点で比較します。 記載している数値は、すべて2026年10月13日時点の...",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  }
+]
