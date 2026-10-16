@@ -1,0 +1,100 @@
+[
+  {
+    "relevance": 8,
+    "testable": 8,
+    "monetizable": 6,
+    "buzz": 9.5,
+    "topic": "Umios sales-plan automation case study",
+    "total": 79,
+    "detail": {
+      "id": 0,
+      "summary": "旧マルハニチロ（現Umios）が、全国支社で手作業だった月次販売計画の入力作業をRPA/自動化で置き換え、年間約4200時間の削減を見込んだ事例。どのプロセスが自動化の鍵になったかや導入効果を解説している。",
+      "why": "個人事業主や中小企業の担当者にとって、複数拠点での定型データ入力や販促計画の自動化はすぐに応用できるため、手順と効果を実務目線で示す価値が高い。",
+      "try": "手元の月次販売（または受発注）Excel/スプレッドシートを1つ用意し、支社別の入力フローを洗い出す。次にZapier/Make/Power Automateの無料プランで「支社別フォーム→集約スプレッドシート→通知」の簡易フローを作り、所要時間と重複エラー数を手動時と比較する。",
+      "angle": "全国拠点の定型入力を半自動化して作業時間を削減する方法",
+      "products": [
+        "Umios（旧マルハニチロ）事例",
+        "Zapier",
+        "Make（Integromat）",
+        "Microsoft Power Automate",
+        "UiPath（RPA）"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "「年4200時間の入力」「経験と勘」からの脱却　旧マルハニチロは「販売計画」をどう自動化した？",
+      "url": "https://atmarkit.itmedia.co.jp/ait/articles/2610/16/news033.html",
+      "summary": "Umios（旧マルハニチロ）が全国の支社が手作業で入力していた月次の販売計画業務を自動化した。業務用流通事業部の全支社で年間約4200時間の作業削減を見込む。自動化の鍵は何だったのか。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.5
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "testable": 8,
+    "monetizable": 7,
+    "buzz": 6.3,
+    "topic": "Jev QA automation",
+    "total": 76,
+    "detail": {
+      "id": 1,
+      "summary": "新しい高速で安価なAI検証ツール『Jev』を使ってQA（品質検証）業務を自動化した体験記事。Jevがどのようにテスト設計や結果確認を効率化するかを紹介している。",
+      "why": "コードを書かない担当者でもQAやチェックリスト業務をAIで効率化できる可能性があるため、非エンジニア向けの導入ハードルと得られる効果を示せる。",
+      "try": "Jevのアカウントを取得し、既存のドキュメントやUIスクリーンショットをアップロードしてテストケース（例：ログイン手順、主要機能のチェックリスト）を作成。AIによる検出結果を受け取り、誤検出や改善ポイントをメモして実際の手動チェックと比較する。",
+      "angle": "非エンジニアがAIでQAチェックを効率化するための実践ガイド",
+      "products": [
+        "Jev",
+        "Every（記事出典）",
+        "TestRail（比較用）",
+        "Notion（結果管理）"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "速くて安いAI「Jev」でQAを自動化してみた - every Tech Blog",
+      "url": "https://tech.every.tv/entry/2026/10/15/125805",
+      "summary": "はじめに こんにちは！株式会社エブリーで1ヶ月間、iOS エンジニアとしてインターンをしていた木村風葉です。ヘルシカの iOS チームで、食事記録まわりの改善や無料会員向けの機能追加など、いくつかの機能開発に取り組みました。 この記事では、インターンの後半に取り組んだ「Jev」という新しいAIを使った検証ツールづ...",
+      "signal": 8,
+      "signal_label": "8users",
+      "extra": {
+        "buzz": 6.3
+      }
+    }
+  },
+  {
+    "relevance": 7,
+    "testable": 8,
+    "monetizable": 6,
+    "buzz": 9.0,
+    "topic": "Talanoa (email-as-chat)",
+    "total": 74,
+    "detail": {
+      "id": 2,
+      "summary": "Product Huntで紹介されたTalanoaは、チャットのような感覚で書けるメール作成サービス（Email that feels like chat）。会話形式で下書き→送信の流れを意図しているプロダクト。",
+      "why": "動画やSNS発信、営業メール、社内周知など、文章作成が多い読者層にとって、会話感覚のメール作成は負担軽減につながるため実務での応用例を示せる。",
+      "try": "Talanoaの無料トライアルかデモに登録し、よく使うテンプレ（顧客への案内、打ち合わせリマインド、コラボ依頼）を会話形式で生成させる。生成したメールをGmailやOutlookにコピーして送信し、配信前後で所要時間や文調の差を比較する。",
+      "angle": "会話感覚でメールを書いて作業負担を減らす方法",
+      "products": [
+        "Talanoa",
+        "Superhuman",
+        "Front",
+        "Gmail（Smart Composeとの比較）",
+        "ChatGPT（メール作成支援）"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Talanoa",
+      "url": "https://www.producthunt.com/products/talanoa-2",
+      "summary": "Email that feels like chat Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  }
+]
