@@ -1,0 +1,98 @@
+[
+  {
+    "relevance": 7,
+    "testable": 7,
+    "monetizable": 4,
+    "buzz": 9.0,
+    "topic": "AIで動画リール作成事例",
+    "total": 68,
+    "detail": {
+      "id": 0,
+      "summary": "縦型リールなど短尺動画で“伸びる要素”をAIに言語化させ、その出力を元にリール制作と投稿運用を効率化した実践記。",
+      "why": "コーディング不要な読者にとって、AIを使って企画→編集→投稿のボトルネックを言語化・仕組み化する手法はすぐ真似できる実用ネタになるため。",
+      "try": "伸びているリール10本を集め、見どころ（構図・尺・サムネ・フック等）を箇条書きでAIに要約させ→テンプレート化して3本の台本（フック/ボディ/CTA）を作る。出来た台本でスマホ撮影→CapCut/CapCutテンプレート等で編集して投稿し、24時間の反応を比較する。",
+      "angle": "AIで“伸びる動画”の共通点を言語化して投稿効率化",
+      "products": [
+        "ChatGPT/Claude/Gemini",
+        "CapCut",
+        "Canva",
+        "Instagram（リール）",
+        "ElevenLabs（音声ナレーション）"
+      ]
+    },
+    "item": {
+      "source": "Qiita",
+      "title": "伸びる動画の特徴をAIに言語化させたら、リール作りが回り始めた話",
+      "url": "https://qiita.com/Eitaro_dotlog/items/c1e2f6d696ea88854186?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
+      "summary": "はじめに 建設業界向けのInstagram「建設AIラボ（@kensetsu_ai_lab）」の運用などなどを担当しておりますEitaroです！縦型のリールなど様々なクリエイティブを作っています。 撮影はしていませんし、編集ソフトも開いていません。 写真も映像もナレーショ...",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  },
+  {
+    "relevance": 7,
+    "testable": 7,
+    "monetizable": 3,
+    "buzz": 6.0,
+    "topic": "ibisOffice（無料Office）",
+    "total": 62,
+    "detail": {
+      "id": 1,
+      "summary": "ibisPaint開発元が公開した無料オープンソースのOfficeスイート『ibisOffice』。ブラウザやWindows/MacアプリでWord/Excel/PowerPointの閲覧・編集が可能になったという話。",
+      "why": "個人事業主や中小企業でコストを抑えつつブラウザで資料編集したい層にとって、既存の有料SaaSや定番ツールの代替・併用候補としてすぐ検証できるため。",
+      "try": "公式プレイグラウンドで手元のWord・Excel・PowerPointファイル（1〜2点）をアップして表示・簡易編集を試し、レイアウト崩れや互換性（図表・フォント・アニメーション）の挙動をスクショで比較する。必要ならWindows/Macアプリ版をインストールしてオフライン挙動も確認する。",
+      "angle": "無料で使えるibisOfficeは業務資料の代替になり得るか検証",
+      "products": [
+        "ibisOffice",
+        "Google ドキュメント/スプレッドシート/スライド",
+        "Microsoft 365",
+        "LibreOffice"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "無料オープンソースオフィススイート「ibisOffice」をibisPaint開発元がリリース、ブラウザまたはWindows・Mac版アプリでWord・Excel・PowerPointファイルの閲覧と編集が可能",
+      "url": "https://gigazine.net/news/20261017-ibisOffice/",
+      "summary": "基本無料のイラスト制作アプリ「アイビスペイント(ibisPaint)」で知られるibisWorksが、Microsoft Officeファイル形式を編集できる無料オープンソースオフィススイート「ibisOffice」をリリースしました。 ibisOffice プレイグラウンド — Word・Excel・PowerPoint をブラウザで開く https://ibisjp.github.io/ibi",
+      "signal": 23,
+      "signal_label": "23users",
+      "extra": {
+        "buzz": 6.0
+      }
+    }
+  },
+  {
+    "relevance": 6,
+    "testable": 6,
+    "monetizable": 3,
+    "buzz": 8.5,
+    "topic": "Notion Agents新機能",
+    "total": 59,
+    "detail": {
+      "id": 2,
+      "summary": "Notionの新機能『Context for your agents』に関する話題。作業コンテキストを引き継ぎつつAIエージェントを切り替えられる機能で、説明を繰り返さずに複数ワークフローを回せる点が売り。",
+      "why": "ノーコードでチームや個人の業務フローにAIを組み込む読者にとって、実務での使い勝手（コンテキスト維持・切替）が導入判断に直結するため、即日試せる検証ネタになる。",
+      "try": "Notionで2つのAIエージェント（例：議事録作成用／アイデア発想用）を用意し、同一ページでエージェントを切り替えて指示なしに前提が引き継がれるか、出力の一貫性や誤認の有無を確認する。チームテンプレートやZapier連携の有無もチェックする。",
+      "angle": "Notionでエージェントを切替えて作業の前提を維持する運用設計",
+      "products": [
+        "Notion（Notion AI）",
+        "Zapier",
+        "Make"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Notion: Context for your agents",
+      "url": "https://www.producthunt.com/products/notion",
+      "summary": "Switch AI agents without re-explaining your work Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.5
+      }
+    }
+  }
+]
