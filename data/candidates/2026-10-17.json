@@ -1,0 +1,33 @@
+[
+  {
+    "relevance": 5,
+    "testable": 4,
+    "monetizable": 4,
+    "buzz": 4.7,
+    "topic": "OpenRouter Armor（エージェント防御）",
+    "total": 45,
+    "detail": {
+      "id": 0,
+      "summary": "OpenRouterが、AIエージェントが実行しようとする危険な操作を別のAIモデルで事前に検出してブロックする新機能「Armor」をベータ公開しました。エージェントのコマンド実行をルールで制御し安全性を高める仕組みです。",
+      "why": "ノーコードでAIを業務に組み込もうとする読者にとって、エージェントの暴走や誤操作リスクを抑える現実的な対策を紹介できるから。",
+      "try": "OpenRouterのアカウントを作成し（ベータ招待が必要なら申請）、Armorの設定画面で既定ルールを確認。簡単なエージェント（例：ファイル操作や外部コマンド呼び出しを含むワークフロー）を作り、Armorがどの操作をブロック/許可するかログで確認する。",
+      "angle": "AIエージェントの暴走を防ぐ「Armor」導入メリット解説",
+      "products": [
+        "OpenRouter",
+        "OpenAI",
+        "Anthropic"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "AIエージェントの危険な操作を別のAIが検出してブロックする「Armor」をOpenRouterがリリース",
+      "url": "https://gigazine.net/news/20261016-openrouter-armor/",
+      "summary": "複数のAIモデルを利用できるサービス「OpenRouter」が、AIエージェントによる危険なツールの実行を防ぐ新機能「Armor」をリリースしました。ArmorはAIエージェントが実行しようとする操作を別のAIモデルで事前にチェックし、設定されたルールに違反する操作を自動的にブロックする機能です。記事作成時点ではベータ版と...",
+      "signal": 14,
+      "signal_label": "14users",
+      "extra": {
+        "buzz": 4.7
+      }
+    }
+  }
+]
