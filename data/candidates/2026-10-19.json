@@ -1,0 +1,93 @@
+[
+  {
+    "relevance": 10,
+    "testable": 8,
+    "monetizable": 6,
+    "buzz": 9.5,
+    "topic": "今日から使えるAIとの会話術",
+    "total": 87,
+    "detail": {
+      "id": 0,
+      "summary": "Claude・Gemini・Codex 等の大規模言語モデルに対して“指示を守らせる”ための6つの原則を整理した記事。プロンプト設計で起きる典型的な失敗と改善策を具体例で示す。",
+      "why": "読者が日常的にAIに指示を出す際、出力の精度と安定性をすぐに改善できる実践的テクニックだから。",
+      "try": "自分の業務で使う依頼（例：300文字の要約＋3点の注文）を用意し、ClaudeとGeminiで6原則ごとに変えたプロンプトを順に入力して、出力の遵守率と品質をスクショ付きで比較する。",
+      "angle": "AIに指示を守らせる6原則で作業ミスを減らす方法",
+      "products": [
+        "Anthropic Claude",
+        "Google Gemini",
+        "OpenAI ChatGPT"
+      ]
+    },
+    "item": {
+      "source": "Qiita",
+      "title": "今日から使える AI との会話術 — Claude・Gemini・Codex に指示を守らせる 6 つの原則【2026年版】",
+      "url": "https://qiita.com/songchong/items/351a939e2e1b673c2929?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
+      "summary": "はじめに：AI が指示を守らないのは、なぜか 「指示したはずのルールを、AI が途中で守らなくなる」 「細かい条件をたくさん渡したのに、半分も守ってくれない」 「会話を続けていたら、トークンが急に増えて、使用量制限に達してしまった」 Claude Code・Code...",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.5
+      }
+    }
+  },
+  {
+    "relevance": 10,
+    "testable": 8,
+    "monetizable": 6,
+    "buzz": 9.0,
+    "topic": "重要指示の配置比較（資料→命令→指示）",
+    "total": 86,
+    "detail": {
+      "id": 1,
+      "summary": "長い資料をAIに渡して命令を与える際、『資料→命令→指示』の並びを8通り試し、各社（Anthropic・Google・OpenAI）の挙動差を検証した実験記事。",
+      "why": "資料をAIに与えて業務指示を出す機会が多い読者にとって、どの並べ方が安定して意図を反映するかすぐに使える知見になるから。",
+      "try": "手元の長めの報告資料（A4一枚程度）を用意し、8パターンの並びで同じ「タスク指示」を各モデルに入力して出力を比較、守られた条件をチェックリスト化して結果をスクリーンショットで記録する。",
+      "angle": "長文資料を渡すときの指示の置き方8パターン検証",
+      "products": [
+        "Anthropic Claude",
+        "Google Gemini",
+        "OpenAI ChatGPT"
+      ]
+    },
+    "item": {
+      "source": "Qiita",
+      "title": "重要な指示は最初か最後か？ AI 大手 3 社の助言が異なるので、資料→命令→指示の並び方を 8 通り試してみた",
+      "url": "https://qiita.com/songchong/items/542892c6d4c569c9c15f?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
+      "summary": "長い資料を AI に渡して仕事を頼むとき、守らせたい指示は資料の前に書くべきか、後に書くべきか。Anthropic・Google・OpenAI の 3 社の手引きを読むと、この答えが会社によって異なります。 そこで IT連携マップ編集部は、資料・命令・指示の 3 つを 8...",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 7,
+    "buzz": 10.0,
+    "topic": "MyLens (1:1 Live AI Presentations)",
+    "total": 86,
+    "detail": {
+      "id": 2,
+      "summary": "MyLensはAIを活用してライブ発表（1対1のプレゼンや大規模配信の個別化）を支援するプロダクトで、ProductHuntで紹介されている新サービス。",
+      "why": "研修やセールス資料を複数の受け手に合わせて個別最適化したい読者にとって、配信・パーソナライズの新しい選択肢になるため。",
+      "try": "MyLensのトライアルに登録し、既存のスライド1セットをアップロードしてパーソナライズ設定を試し、生成されたスライドやトークスクリプトを実際に1分間の録画で確認する。",
+      "angle": "AIでライブ発表を個別化するMyLens導入ガイド",
+      "products": [
+        "MyLens"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "MyLens",
+      "url": "https://www.producthunt.com/products/mylens-ai",
+      "summary": "1-1 Live Presentations at Scale with AI. Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  }
+]
