@@ -1,0 +1,94 @@
+[
+  {
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 7,
+    "buzz": 10.0,
+    "topic": "Claude Code × Figma ワークフロー",
+    "total": 88,
+    "detail": {
+      "id": 0,
+      "summary": "Claude CodeにFigma上で画面を生成させ、それを別のAI（検査役）にデザインの問題点を指摘させるワークフローを紹介する記事。",
+      "why": "非エンジニアの制作者がAIで画面デザインを量産するときに起こる品質低下を、別のAIを使って短時間で検出・改善する実践的な手法は読者にとって即効性が高い。",
+      "try": "Claude Codeで「画面レイアウトを作る」プロンプトを送ってFigmaにフレームを生成→生成結果のスクショとFigmaリンクを別のAI（ClaudeやGPT系）に渡して「配置・アクセシビリティ・情報設計の観点で改善点を列挙して」と依頼し、指摘をFigmaに反映して比較する。",
+      "angle": "AI同士でデザイン校閲を自動化する実務ワークフロー",
+      "products": [
+        "Claude Code",
+        "Figma",
+        "Claude (AI検査役)",
+        "ChatGPT/GPT-4系（オプション）"
+      ]
+    },
+    "item": {
+      "source": "Qiita",
+      "title": "Claude Code × Figma MCP で作ったデザインを別のAIに検査させる — デザインのグラフエンジニアリング",
+      "url": "https://qiita.com/vivi-koh/items/fc957950ba9fd21c1d1b?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
+      "summary": "Claude Codeで完璧なFigmaを出力させたい Claude Codeに「この画面、Figmaに起こして」と頼むと、Figma上に数分でフレームが出てきます。 ただ、一見して完成品でもデザイナー的には未完成です。 配置や既存画面の情報設計を無視していることも多く、...",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 7,
+    "buzz": 7.3,
+    "topic": "Jinba PPTX skill",
+    "total": 84,
+    "detail": {
+      "id": 1,
+      "summary": "Jinbaプラットフォーム向けのClaude Code/Codexスキル群を使い、規約に沿った“まじめな”PPTX（HTML→Chrome→PPTX）生成を行うライブラリの紹介と運用ガイド。",
+      "why": "資料制作担当がAIで制式フォーマットに沿った高品質なスライドを短時間で作れるようにする具体ツールとテンプレートが読者にとって有益だから。",
+      "try": "GitHubのjinba-consulting-pptx-skillをリポジトリからダウンロード→サンプルHTMLパーツをChromeでレンダリングしてPDF/PPTX出力する手順を動かし、手元のテンプレート（ロゴ・色）を反映して出力品質を確認する。",
+      "angle": "社内フォーマット準拠のPPTXをAIで量産する手順書",
+      "products": [
+        "Jinba（Jinbaワークフロー）",
+        "Claude Code / Codex",
+        "Google Chrome（PDF/PPTX出力用）"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "GitHub - carnot-tech/jinba-consulting-pptx-skill: AIにまじなPPTXを作らせる Claude Code / Codex スキル",
+      "url": "https://github.com/carnot-tech/jinba-consulting-pptx-skill",
+      "summary": "AIに「まじ」なPowerPointを作らせるためのClaude Codeスキル。 AIワークフロープラットフォーム Jinba を提供するメンバーにより作成されました。 スライドの設計規約、規約違反を見つける機械チェック、62型のHTMLパーツ集（基本27＋追加35）、型カタログPDFをまとめたものです。資料は HTML（16:9）で組み、Chrome で...",
+      "signal": 37,
+      "signal_label": "37users",
+      "extra": {
+        "buzz": 7.3
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "testable": 8,
+    "monetizable": 4,
+    "buzz": 8.0,
+    "topic": "Claude Code .env 読ませない実験",
+    "total": 74,
+    "detail": {
+      "id": 2,
+      "summary": "Claude Codeの.permissions.deny（.env読み取り制限）設定が実際にどこまで効くかを検証した実験レポートのまとめ。",
+      "why": "現場でAPIキーや機密情報を扱う非エンジニア担当者が、AIツールに秘密情報を渡すリスクを理解して安全運用するための実用的な知見を提供できるから。",
+      "try": "ローカルに複数の偽.env（ダミーキー）を用意し、permissions.denyに追加→Claude Codeに環境変数参照を促すプロンプトを複数パターン投げて応答を記録し、どのケースで. env参照が回避される/されないかをスクショ付きで整理する。",
+      "angle": "Claude Codeの.env遮断はどこまで信頼できるかの実務検証",
+      "products": [
+        "Claude Code"
+      ]
+    },
+    "item": {
+      "source": "Qiita",
+      "title": "Claude Codeの.envを読ませない設定がどこまで効くのか試してみた",
+      "url": "https://qiita.com/yakumo_09/items/5a86ca330b449db0e6bc?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
+      "summary": "はじめに Claude Codeには、permissions.deny で .env を読ませない設定があります。ただ、公式ドキュメントを読むと「止まらないケースもある」と書いてあるんですよね。 じゃあ実際どこまで止まるのか、偽物のキーを置いて48回試してみました。 手...",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  }
+]
