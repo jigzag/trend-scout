@@ -1,0 +1,101 @@
+[
+  {
+    "relevance": 10,
+    "testable": 9,
+    "monetizable": 9,
+    "buzz": 9.5,
+    "topic": "Kling 4.0",
+    "total": 95,
+    "detail": {
+      "id": 0,
+      "summary": "Kling 4.0は、頻繁に短尺のAI動画を制作するクリエイター向けに高速で低コストな動画生成を売りにしたアップデート版のサービス。ProductHuntで注目されている。",
+      "why": "動画制作を業務やSNS発信に使う読者にとって、コストと時間を下げる新しい選択肢を検証できるため価値がある。",
+      "try": "公式サイトやデモページで無料トライアルを申し込み、短いテンプレートを選んで15〜30秒の動画を1本生成し、品質・生成時間・コストをスクリーンショット付きで記録する。",
+      "angle": "短尺SNS動画を低コストで量産する現実解",
+      "products": [
+        "Kling",
+        "Runway",
+        "Veo",
+        "Sora",
+        "CapCut"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Kling 4.0",
+      "url": "https://www.producthunt.com/products/kling-4-0-4",
+      "summary": "Fast and affordable AI video for high-frequency creators Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.5
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 8,
+    "buzz": 10.0,
+    "topic": "Jotform App Builder for ChatGPT&Claude",
+    "total": 90,
+    "detail": {
+      "id": 1,
+      "summary": "JotformのApp BuilderはChatGPTやAnthropic Claude内でノーコードでアプリを作成・編集できる統合機能で、会話型AIから直接フォームやワークフローを生成できるという新しいUXを提供する。",
+      "why": "プログラミング不要で業務ツールや申請フォームをAI経由で素早く作れる点が、個人事業主や社内担当者の業務改善に直結するため。",
+      "try": "ChatGPTまたはClaudeのインテグレーションを有効にしてJotform App Builderを起動、簡単な申請フォーム（例：経費精算）を会話で作成してプレビュー・公開し、共有リンクを発行して動作を確認する。",
+      "angle": "会話で作る申請フォームと業務アプリの時短術",
+      "products": [
+        "Jotform",
+        "ChatGPT",
+        "Claude",
+        "Zapier",
+        "Make"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Jotform App Builder for ChatGPT & Claude",
+      "url": "https://www.producthunt.com/products/jotform",
+      "summary": "Build and edit no-code apps inside ChatGPT & Claude Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 8,
+    "buzz": 6.5,
+    "topic": "GMO RAG×業務自動化",
+    "total": 82,
+    "detail": {
+      "id": 2,
+      "summary": "GMOが紹介する取り組みは、単に社内ナレッジに答えるだけの生成AIを超えて、RAG（外部知識参照）と業務自動化基盤を結びつけ、社内ルールに基づく判断から実際の申請やデータ登録まで自動化するというもの。",
+      "why": "AIを業務フローに組み込む実践的なアプローチは、人事や研修・総務担当者が現場で導入可否を判断する際のヒントになるため重要である。",
+      "try": "記事で示された概念を元に、既存のナレッジ（社内マニュアルPDFなど）→RAG（例えばChatGPTプラグインやVector DBの無料トライアル）→Zapier/Makeで簡単な申請フロー（承認メール送信）を模擬的に組み、処理結果をスクリーンショットで記録する。",
+      "angle": "社内ルールに沿うAIで申請フローを自動化する道筋",
+      "products": [
+        "GMO AIコネクト",
+        "RAGソリューション（Vector DB）",
+        "ChatGPT",
+        "Zapier",
+        "Make"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "GMO、生成AIの「答えるだけ問題」を解消へ　社内ナレッジを業務フローにつなぐ",
+      "url": "https://kn.itmedia.co.jp/kn/article/2610/21/2000002373/",
+      "summary": "生成AIに社内規定やマニュアルを参照させても、その後の申請やデータ登録は人手に頼る場合がある。GMOプライム・ストラテジーとGMO AIコネクトは、RAGと業務自動化基盤を連携し、社内ルールに沿った判断から業務処理までの自動化を目指す。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 6.5
+      }
+    }
+  }
+]
