@@ -1,0 +1,95 @@
+[
+  {
+    "relevance": 10,
+    "testable": 9,
+    "monetizable": 9,
+    "buzz": 9.0,
+    "topic": "Woven Video",
+    "total": 94,
+    "detail": {
+      "id": 0,
+      "summary": "Woven Videoは、チャットで指示して実際のMacタイムライン上でビデオ編集できるという新しいワークフローを提案するツール。ProductHuntに掲載されている編集アシスト型のUIが特徴。",
+      "why": "動画制作の非エンジニア層向けに、従来の編集ソフトとの連携で作業を短縮できる点がこのブログ読者に直接響くため。",
+      "try": "公式ページでアカウント登録（またはProductHuntのリンク経由）して、サンプル動画をアップ。チャットで『冒頭を10秒短く、Bロールを挿入、音声レベルを-3dBに』など指示を出し、タイムライン上で反映される工程をスクリーンショットとGIFで記録する。",
+      "angle": "チャット命令だけで完了する、Macタイムライン直結の動画編集術",
+      "products": [
+        "Final Cut Pro",
+        "Adobe Premiere Pro",
+        "Runway"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Woven Video",
+      "url": "https://www.producthunt.com/products/woven-video",
+      "summary": "Edit any video by chat, on a real Mac timeline Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 8,
+    "buzz": 8.5,
+    "topic": "Scout by Fini",
+    "total": 85,
+    "detail": {
+      "id": 1,
+      "summary": "Scout by FiniはSlack上で動くサポートチーム向けのAI同僚で、問い合わせの自動応答や定型文提案、チケットの振り分け支援を行うサービス（ProductHunt掲載）。",
+      "why": "個人事業主や中小企業のサポート担当がSlack中心で業務しているケースに直接効率化効果を出せるため、導入判断に役立つ記事になる。",
+      "try": "FiniのProductHuntページからトライアル登録し、テスト用Slackワークスペースに導入。よくある問い合わせテンプレ（返金・納期・利用方法）を3件登録して、実際にユーザー役・サポート役で対話を行い応答精度と提案の質を比較・記録する。",
+      "angle": "Slackを味方にするAI同僚で問い合わせ対応を半分にする方法",
+      "products": [
+        "Zendesk",
+        "Freshdesk",
+        "Front"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Scout by Fini",
+      "url": "https://www.producthunt.com/products/fini-2",
+      "summary": "The AI coworker for support teams, on Slack Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.5
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 7,
+    "buzz": 7.7,
+    "topic": "Claude Duet (HackerNews)",
+    "total": 82,
+    "detail": {
+      "id": 2,
+      "summary": "Claude DuetはAnthropicのClaudeをコラボレーション向けに拡張したプロダクト機能で、共同編集やチーム用のワークフローを強化する新しいUI/機能群を含む（Hacker Newsや公式ページで紹介）。",
+      "why": "研修や社内資料作成で複数人が関わる場面でのAI活用方法を解説でき、非エンジニア読者が導入可否を判断しやすくなるため。",
+      "try": "Anthropicの公式ページでDuetのアクセス方法を確認し（有償プランの案内があれば申し込み）、既存の社内ドキュメントをアップして共同編集モードでコメント生成・要約・アクションアイテム抽出を実行し、出力の品質とチームでの扱いやすさをスクリーンキャプチャで示す。",
+      "angle": "チーム作業が早くなるAI共同編集の使い方と導入チェックリスト",
+      "products": [
+        "Anthropic Claude Pro",
+        "Google Workspace",
+        "Notion"
+      ]
+    },
+    "item": {
+      "source": "HackerNews",
+      "title": "Claude Duet",
+      "url": "https://claude.com/product/claude-duet",
+      "summary": "",
+      "signal": 297,
+      "signal_label": "297pt",
+      "extra": {
+        "buzz": 7.7
+      }
+    }
+  }
+]
