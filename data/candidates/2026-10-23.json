@@ -1,0 +1,96 @@
+[
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 8,
+    "buzz": 9.0,
+    "topic": "ClaudeDuet",
+    "total": 86,
+    "detail": {
+      "id": 0,
+      "summary": "Anthropicの新機能「Claude Duet」は、ユーザーの注意が必要なタスクを常時監視して優先度判断や能動的提案を行う常時稼働型エージェントのプロダクト紹介ページです（ProductHunt掲載）。",
+      "why": "ノーコードで業務を自動化したい読者にとって、日常業務の優先順位付けや能動的通知をAIに任せる運用イメージが得られるため価値が高い。",
+      "try": "ProductHuntページで機能説明を読み、Anthropicの公式サイトからDuetのリサーチプレビューやサインアップ案内を確認。自社のチェックリストやTodoを簡単にまとめたCSV/スプレッドシートを用意して、Duetに読み込ませる想定で期待される挙動をメモする。",
+      "angle": "常時稼働AIに仕事を任せるメリットと業務テンプレの作り方",
+      "products": [
+        "Anthropic Claude (Pro/Max)",
+        "ChatGPT Plus/Enterprise",
+        "Microsoft Copilot for Microsoft 365"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Claude Duet",
+      "url": "https://www.producthunt.com/products/claude",
+      "summary": "Proactive agent that understands what needs your attention Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 8,
+    "buzz": 4.0,
+    "topic": "ClaudeDuet_Anthropic",
+    "total": 78,
+    "detail": {
+      "id": 1,
+      "summary": "ITmediaの記事は、AnthropicがOpus 5.5をベースに設計した常時稼働エージェント「Claude Duet」をPro／Maxプランで提供する発表と、その特徴（タスク優先度判断など）を伝えています。",
+      "why": "公式発表に基づく技術的背景と料金プランの情報は、導入可否を判断する経営者や担当者にとって重要な検討材料となるため優先的に扱うべき話題です。",
+      "try": "記事を要点だけ抜き出して料金プラン、対応プラットフォーム、プライバシー/データ保持方針を表にまとめる。自社の業務フロー（営業フォロー、納期管理、研修運営など）にDuetがどう組み込めるかを3パターンでシミュレーションする。",
+      "angle": "料金と運用観点で見るClaude Duetの導入可否チェックリスト",
+      "products": [
+        "Anthropic Claude (Pro/Max)",
+        "Google Gemini Enterprise",
+        "OpenAI ChatGPT Enterprise"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "Anthropic版常時稼働エージェント「Claude Duet」発表　Opus 5.5ベースで設計　Pro／Maxプランで提供",
+      "url": "https://www.itmedia.co.jp/aiplus/article/2610/22/2000002490/",
+      "summary": "Anthropicは常時稼働エージェント「Claude Duet」のリサーチプレビューを公開した。「Claude Opus 5.5」をベースに設計し、タスクの優先度などの判断力に優れるという。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 4.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "testable": 8,
+    "monetizable": 8,
+    "buzz": 5.5,
+    "topic": "DadanAIVideoWorkspace",
+    "total": 76,
+    "detail": {
+      "id": 2,
+      "summary": "Dadanは録画、会議、ガイド制作を一元管理できるAIビデオワークスペースを謳うプロダクトで、録画の編集・文字起こし・要約・ガイド化などを統合するツールです（ProductHunt掲載）。",
+      "why": "動画コンテンツや社内マニュアルを短時間で作りたい非エンジニア層にとって、録画→編集→配布の一連作業をAIで圧縮できる具体的な代替手段を示せるため有益です。",
+      "try": "無料トライアルがあればアカウント登録して、手元で30秒〜1分の説明動画をアップロード／録画。自動文字起こし・チャプター分割・要約機能を試し、生成された説明文やサムネイルをダウンロードして社内資料に貼るまでの時間を計測する。",
+      "angle": "短時間で社内動画マニュアルを仕上げるワークフロー（録画→要約→配布まで）",
+      "products": [
+        "Dadan",
+        "Descript",
+        "Loom",
+        "Veed/CapCut Pro"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Dadan",
+      "url": "https://www.producthunt.com/products/dadan",
+      "summary": "One AI video workspace for recordings, meetings and guides Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 5.5
+      }
+    }
+  }
+]
