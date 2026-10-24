@@ -1,0 +1,95 @@
+[
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 7,
+    "buzz": 10.0,
+    "topic": "Claude for explainer videos",
+    "total": 86,
+    "detail": {
+      "id": 0,
+      "summary": "仕組みやアルゴリズムの説明動画をAnthropicのClaude Code（コード生成系モデル）に作らせ、解説スライドやナレーション原稿まで一気に生成するワークフローの紹介。",
+      "why": "コードを書かない制作担当者でも、専門的な説明コンテンツを短時間で作れる実用的なテンプレートを示せるため。",
+      "try": "Claude（Code）にテーマと対象読者を渡して動画の台本・スライド構成・ナレーション原稿を生成し、生成したスライド原稿をGoogleスライドやCanvaにコピペして1本サンプルを作る。ナレーションはElevenLabsで音声合成して簡易動画に組み合わせる。",
+      "angle": "AIで説明動画を一気通貫作る手順とテンプレート",
+      "products": [
+        "Anthropic Claude",
+        "Canva",
+        "Google スライド",
+        "ElevenLabs"
+      ]
+    },
+    "item": {
+      "source": "Zenn",
+      "title": "仕組みを理解する動画を、Claude Codeに作らせると便利すぎる",
+      "url": "https://zenn.dev/explaza/articles/c749042ecbe232",
+      "summary": "",
+      "signal": 156,
+      "signal_label": "156いいね",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 8,
+    "buzz": 6.0,
+    "topic": "MOVO AI",
+    "total": 81,
+    "detail": {
+      "id": 1,
+      "summary": "MOVO AIはモバイル向けの長尺動画作成エージェントで、スマホで撮った素材から自動編集・構成して長いストーリー型コンテンツを生成する機能を謳うサービス。",
+      "why": "個人事業主や現場担当者がスマホ素材から短時間で長尺コンテンツを作る際の手間を削減する実運用上の有用性が高いため。",
+      "try": "スマホで短いクリップを複数撮影してMOVO AIのモバイルアプリにアップロードし、エージェント任せで一本の長尺動画を生成。出力をダウンロードして尺調整やサムネ作成まで行う。",
+      "angle": "スマホ素材で長尺コンテンツを作る、編集コストをゼロに近づける流れ",
+      "products": [
+        "MOVO AI",
+        "CapCut",
+        "Canva"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "MOVO AI",
+      "url": "https://www.producthunt.com/products/movo-ai",
+      "summary": "The world's first long-form video agent for mobile Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 6.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 8,
+    "monetizable": 8,
+    "buzz": 5.5,
+    "topic": "ElevenLabs Realtime",
+    "total": 80,
+    "detail": {
+      "id": 2,
+      "summary": "ElevenLabsのRealtimeは低レイテンシでリアルタイム音声合成・音声エージェントを実現するモデル群を提供し、対話型ナレーションやライブ音声生成に向く新機能。",
+      "why": "ライブ配信や対話型コンテンツ、社内トレーニングの即時音声生成に活用でき、既存ワークフローに組み込みやすい点が実務的に魅力的だから。",
+      "try": "ElevenLabsのRealtimeのデモやアカウント登録でリアルタイム合成を試し、簡単なQ&Aをマイク入力して応答音声がどれだけ自然か・遅延が許容範囲かを確認する。既存の録音ワークフローと差し替えて比較する。",
+      "angle": "ライブ配信・研修で使える即時合成音声の実用ラインと導入判断基準",
+      "products": [
+        "ElevenLabs",
+        "OBS Studio"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "ElevenLabs Realtime",
+      "url": "https://www.producthunt.com/products/realtime-max-mini",
+      "summary": "Realtime voice agent models with 570ms to first audio Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 5.5
+      }
+    }
+  }
+]
