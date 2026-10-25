@@ -232,14 +232,26 @@ def add_details(top: list[dict], genre: str, llm_cfg: dict) -> list[dict]:
     return top
 
 
-def pick_diverse(scored: list[dict], n: int, min_relevance: int) -> list[dict]:
-    """同じ話題（topic）は1件だけにして上位n件を選ぶ。"""
+def topic_key(topic: str) -> str:
+    return re.sub(r"[\s\W_]+", "", (topic or "").lower())
+
+
+def same_topic(key: str, seen: set[str]) -> bool:
+    """同じ話題か。ラベルの表記ゆれ（「Claude Duet」と「Anthropic Claude Duet」など）は、片方がもう片方を含めば同じとみなす。"""
+    if not key:
+        return False
+    return any(key == s or (min(len(key), len(s)) >= 8 and (key in s or s in key)) for s in seen)
+
+
+def pick_diverse(scored: list[dict], n: int, min_relevance: int, recent_topics: set[str] | None = None) -> list[dict]:
+    """同じ話題（topic）は1件だけにして上位n件を選ぶ。recent_topics（最近通知した話題）も除く。"""
     picked, seen = [], set()
+    recent = recent_topics or set()
     for r in scored:
         if r["relevance"] < min_relevance:
             continue
-        key = re.sub(r"[\s\W_]+", "", r.get("topic", "").lower())
-        if key and key in seen:
+        key = topic_key(r.get("topic", ""))
+        if same_topic(key, seen) or same_topic(key, recent):
             continue
         picked.append(r)
         if key:

@@ -47,6 +47,10 @@ class History:
         self.seen: dict[str, str] = {}
         if path.exists():
             self.seen = json.loads(path.read_text(encoding="utf-8"))
+        self.topics_path = path.with_name("seen_topics.json")   # 話題ラベル → 最後に通知した日
+        self.topics: dict[str, str] = {}
+        if self.topics_path.exists():
+            self.topics = json.loads(self.topics_path.read_text(encoding="utf-8"))
 
     def filter_new(self, items: list[Item], today: date) -> list[Item]:
         limit = today - timedelta(days=self.recheck_days)
@@ -64,6 +68,19 @@ class History:
         cutoff = today - timedelta(days=max(self.recheck_days * 2, 30))
         self.seen = {k: v for k, v in self.seen.items() if date.fromisoformat(v) >= cutoff}
 
+    def recent_topics(self, today: date) -> set[str]:
+        """最近（recheck_days 以内）に通知した話題ラベル。別のURLでも同じ話題なら再通知しないため。"""
+        limit = today - timedelta(days=self.recheck_days)
+        return {k for k, d in self.topics.items() if date.fromisoformat(d) >= limit}
+
+    def mark_topics(self, keys: list[str], today: date) -> None:
+        for k in keys:
+            if k:
+                self.topics[k] = today.isoformat()
+        cutoff = today - timedelta(days=max(self.recheck_days * 2, 30))
+        self.topics = {k: v for k, v in self.topics.items() if date.fromisoformat(v) >= cutoff}
+
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(json.dumps(self.seen, ensure_ascii=False, indent=1), encoding="utf-8")
+        self.topics_path.write_text(json.dumps(self.topics, ensure_ascii=False, indent=1), encoding="utf-8")

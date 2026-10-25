@@ -212,6 +212,24 @@ def test_structured_outputs():
         except RuntimeError as e:
             assert "途中で切れ" in str(e)
 
+def test_topic_dedupe(tmp_path=Path(tempfile.gettempdir()) / "ts_topics"):
+    """10/22〜23 に Claude Duet が3回出た件: 表記ゆれは同じ話題、過去14日に出した話題は除く。"""
+    def r(topic, total, rel=9):
+        return {"item": sources.Item("X", topic, f"https://e.com/{topic}"), "topic": topic, "relevance": rel, "total": total}
+    scored = [r("Claude Duet", 90), r("Anthropic Claude Duet", 85), r("ChatGPT", 84), r("ChatGPT音声文字起こし", 83),
+              r("Kling 4.0", 80), r("Gemini 4", 79)]
+    got = [x["topic"] for x in scorer.pick_diverse(scored, 3, 5)]
+    assert got == ["Claude Duet", "ChatGPT", "ChatGPT音声文字起こし"]  # 短い「chatgpt」(7字)は含んでいても別扱い
+    tmp_path.mkdir(exist_ok=True)
+    (tmp_path / "seen_topics.json").unlink(missing_ok=True)
+    hs = history.History(tmp_path / "seen.json", 14)
+    hs.mark_topics([scorer.topic_key("Claude Duet"), scorer.topic_key("Kling 4.0")], date(2026, 10, 22)); hs.save()
+    hs2 = history.History(tmp_path / "seen.json", 14)
+    recent = hs2.recent_topics(date(2026, 10, 23))
+    got = [x["topic"] for x in scorer.pick_diverse(scored, 3, 5, recent)]
+    assert "Claude Duet" not in got and "Anthropic Claude Duet" not in got and "Kling 4.0" not in got
+    assert hs2.recent_topics(date(2026, 11, 10)) == set()  # 14日を過ぎたら再び候補にできる
+
 def test_line_payload():
     os.environ["LINE_CHANNEL_ACCESS_TOKEN"] = "tok"; os.environ["LINE_USER_ID"] = "U123"
     with mock.patch.object(notifier.requests, "post", return_value=Resp("{}")) as p:

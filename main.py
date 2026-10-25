@@ -18,7 +18,7 @@ import yaml
 
 from history import History, dedupe
 from notifier import build_message, send_line
-from scorer import add_details, judge_sales, keyword_hit, pick_diverse, score_all
+from scorer import add_details, judge_sales, keyword_hit, pick_diverse, score_all, topic_key
 from sources import FETCHERS, fetch_rss
 
 BASE = Path(__file__).parent
@@ -65,7 +65,7 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml") -> str:
     top = []
     if items:
         scored = score_all(items, cfg["genre"], cfg["weights"], cfg["llm"])
-        top = pick_diverse(scored, cfg.get("top_n", 3), cfg.get("min_relevance", 5))
+        top = pick_diverse(scored, cfg.get("top_n", 3), cfg.get("min_relevance", 5), history.recent_topics(today))
         if top:
             top = add_details(top, cfg["genre"], cfg["llm"])
 
@@ -96,6 +96,7 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml") -> str:
 
     # 5. 記録（次工程=記事生成の入力にもなる）
     history.mark([r["item"] for r in top] + [x["item"] for x in sales], today)
+    history.mark_topics([topic_key(r.get("topic", "")) for r in top], today)
     history.save()
     out = BASE / "data" / "candidates" / f"{today.isoformat()}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
