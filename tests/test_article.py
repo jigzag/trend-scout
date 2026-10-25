@@ -69,7 +69,8 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
     if "事実」だけを抜き出して" in prompt:
         assert "参考1:" in prompt and "参考2:" in prompt and "参考3:" not in prompt  # 同ドメイン・短文は除外
         return json.dumps({"summary": "試着機能", "facts": [{"fact": "米国Plusから提供", "src": 1}],
-                           "steps": [], "cautions": [], "unknowns": ["日本での提供時期"]}, ensure_ascii=False)
+                           "steps": [], "cautions": [], "unknowns": ["日本での提供時期"], **fake_llm.facts_extra},
+                          ensure_ascii=False)
     if "記事の構成を作って" in prompt:
         return json.dumps({"title": "ChatGPTの試着機能でできること", "slug": "chatgpt-virtual-try-on",
                            "excerpt": "説明", "persona": "研修担当のAさん", "sections": []}, ensure_ascii=False)
@@ -84,6 +85,7 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
                           ensure_ascii=False)
     raise AssertionError(prompt[:80])
 fake_llm.with_memo = False
+fake_llm.facts_extra = {}
 
 
 def _setup(tmp: Path):
@@ -159,6 +161,25 @@ def test_without_tavily_and_wp(tmp=Path(tempfile.gettempdir()) / "ts_article2"):
          mock.patch.object(article, "BASE", tmp):
         art = article.run(1, dry_run=True, config_path=Path(article.__file__).parent / "config.yaml")
     assert art["wordpress"] is None and len(art["sources"]) == 1
+    assert any("参考記事が1件" in w for w in art["warnings"])
+
+
+def test_irrelevant_source_and_coding(tmp=Path(tempfile.gettempdir()) / "ts_article3"):
+    """事実抽出で「関係ない」とされた参考記事は出典から外し、コード前提の話題は警告する。"""
+    _setup(tmp)
+    os.environ.update({"TAVILY_API_KEY": "tvly-x"})
+    for k in ("WP_URL", "WP_USER", "WP_APP_PASSWORD"):
+        os.environ.pop(k, None)
+    fake_llm.with_memo = False
+    fake_llm.facts_extra = {"relevant_sources": [1], "needs_coding": True, "coding_reason": "JSONを書く必要がある"}
+    try:
+        with mock.patch.object(research.requests, "post", fake_post),              mock.patch.object(writer, "call_llm", fake_llm),              mock.patch.object(article, "BASE", tmp):
+            art = article.run(1, dry_run=True, config_path=Path(article.__file__).parent / "config.yaml")
+    finally:
+        fake_llm.facts_extra = {}
+    assert [s["url"] for s in art["sources"]] == ["https://www.itmedia.co.jp/a/1"]
+    assert "other.example" not in art["content"]
+    assert art["warnings"][0].startswith("コードを書く前提") and "JSON" in art["warnings"][0]
     assert any("参考記事が1件" in w for w in art["warnings"])
 
 

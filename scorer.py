@@ -37,7 +37,7 @@ def arr(items: dict) -> dict:
     return {"type": "array", "items": items}
 
 
-STR, INT = {"type": "string"}, {"type": "integer"}
+STR, INT, BOOL = {"type": "string"}, {"type": "integer"}, {"type": "boolean"}
 
 
 def unwrap(obj, key: str):

@@ -58,13 +58,23 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     print(f"[article] 参考記事 {len(sources)}件: " + ", ".join(s["url"] for s in sources))
 
     facts = writer.extract_facts(topic, sources, lc)
+    # 話題と関係なかった参考記事は、出典にも載せない（元記事=参考1は必ず残す）
+    keep = {i for i in facts.pop("relevant_sources", None) or range(1, len(sources) + 1) if isinstance(i, int)} | {1}
+    all_sources = sources  # 類似度チェックは、AIに見せた全参考記事と照合する
+    dropped = [s["url"] for i, s in enumerate(sources, 1) if i not in keep]
+    sources = [s for i, s in enumerate(sources, 1) if i in keep]
+    if dropped:
+        print("[article] 話題と関係ない参考記事を除外: " + ", ".join(dropped))
+    needs_coding, coding_reason = facts.pop("needs_coding", False), facts.pop("coding_reason", "")
     outline = writer.make_outline(cfg["genre"], facts, memo, lc)
     body = writer.write_body(cfg["genre"], outline, facts, memo, opt, lc)
     body = writer.review(body, facts, memo, lc)
-    body, sim = writer.fix_similarity(body, sources, opt, lc)
+    body, sim = writer.fix_similarity(body, all_sources, opt, lc)
     warnings = writer.check_rules(body, memo, opt.get("min_chars", 3000))
+    if needs_coding:
+        warnings.insert(0, f"コードを書く前提の話題で、読者（非エンジニア）に合わない可能性: {coding_reason}")
     if len(sources) < 2:
-        warnings.append("参考記事が1件だけ（関連記事が見つからなかった）。事実が少ないので内容を確認してください")
+        warnings.append("話題に関係する参考記事が1件だけ。事実が少ないので内容を確認してください")
     if not sim["ok"]:
         warnings.append(f"参考記事との類似が高い（一致率{sim['ratio']:.1%}、最長{sim['longest']}字）")
     return {

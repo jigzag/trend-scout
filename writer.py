@@ -9,7 +9,7 @@ import html
 import json
 import re
 
-from scorer import INT, STR, arr, call_llm, extract_json, obj_schema, unwrap
+from scorer import BOOL, INT, STR, arr, call_llm, extract_json, obj_schema, unwrap
 
 PR_NOTE = '<p class="pr-note">※本記事にはプロモーション（広告）が含まれる場合があります。</p>'
 NOTE_CLASS = "operator-note"   # 運営者メモの囲み。この中だけは「試した」表現を許す
@@ -49,8 +49,13 @@ FACTS_PROMPT = """あなたは調査担当の編集者です。次の話題に�
 - steps: 使い始める手順として書かれていること（書かれていなければ空配列）
 - cautions: 制限・注意点・未確定の点
 - unknowns: 読者が知りたいのに参考記事に書かれていないこと
+- relevant_sources: この話題について実際に書かれていた参考番号の一覧（話題と関係ない記事の番号は入れない）
+- needs_coding: 読者がこの話題を試すのに、プログラムを書く・コマンドを打つ・設定ファイル（JSON等）を編集する必要があるなら true
+- coding_reason: needs_coding が true の理由（1文。false なら空文字）
 文章をそのまま写さず、短く言い換えること。推測は入れないこと。
-{{"summary": "", "facts": [], "steps": [], "cautions": [], "unknowns": []}}
+**この話題に直接関係する事実だけ**を入れること。会社や製品全般の紹介、別の製品・別の機能の話、書籍やイベントの宣伝など、
+この話題を説明するのに不要なものは、参考記事に書かれていても入れない。
+{{"summary": "", "facts": [], "steps": [], "cautions": [], "unknowns": [], "relevant_sources": [], "needs_coding": false, "coding_reason": ""}}
 """
 
 # ---------- 2. 構成 ----------
@@ -143,7 +148,8 @@ HTMLタグの種類はそのまま保ち、書き直した段落だけを、入�
 """
 
 FACTS_SCHEMA = obj_schema({"summary": STR, "facts": arr(obj_schema({"fact": STR, "src": INT})),
-                           "steps": arr(STR), "cautions": arr(STR), "unknowns": arr(STR)})
+                           "steps": arr(STR), "cautions": arr(STR), "unknowns": arr(STR),
+                           "relevant_sources": arr(INT), "needs_coding": BOOL, "coding_reason": STR})
 OUTLINE_SCHEMA = obj_schema({"title": STR, "slug": STR, "excerpt": STR, "persona": STR,
                              "sections": arr(obj_schema({"h2": STR, "points": arr(STR)})),
                              "image_featured": STR, "image_scenario": STR})
