@@ -28,7 +28,26 @@ def _check(r: requests.Response, name: str) -> None:
 
 
 
-def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000) -> str:
+def obj_schema(props: dict) -> dict:
+    """Structured Outputs（strict）用のオブジェクト型。全項目必須・余計な項目なし。"""
+    return {"type": "object", "properties": props, "required": list(props), "additionalProperties": False}
+
+
+def arr(items: dict) -> dict:
+    return {"type": "array", "items": items}
+
+
+STR, INT = {"type": "string"}, {"type": "integer"}
+
+
+def unwrap(obj, key: str):
+    """{"key": [...]} の形でも [...] の形でも中身の配列を返す（Anthropic は形式を保証しないため両方受ける）。"""
+    return obj.get(key, []) if isinstance(obj, dict) else obj
+
+
+def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000, schema: dict | None = None,
+             schema_name: str = "result") -> str:
+    """schema を渡すと、OpenAI では Structured Outputs（strict）で形式どおりのJSONを保証させる。"""
     provider = cfg.get("provider", "anthropic")
     if provider == "anthropic":
         r = requests.post(
@@ -59,6 +78,9 @@ def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000) -> str:
         }
         if cfg["openai_model"].startswith(("gpt-5", "o")):
             body["reasoning_effort"] = cfg.get("openai_reasoning_effort", "low")
+        if schema:
+            body["response_format"] = {"type": "json_schema",
+                                       "json_schema": {"name": schema_name, "strict": True, "schema": schema}}
         r = requests.post(
             "https://api.openai.com/v1/chat/completions",
             headers={"Authorization": f"Bearer {key}"},
@@ -66,7 +88,13 @@ def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000) -> str:
             timeout=300,
         )
         _check(r, "OpenAI")
-        return r.json()["choices"][0]["message"]["content"] or ""
+        choice = r.json()["choices"][0]
+        msg = choice["message"]
+        if msg.get("refusal"):
+            raise RuntimeError(f"OpenAI が応答を拒否しました: {msg['refusal'][:200]}")
+        if choice.get("finish_reason") == "length":
+            raise RuntimeError("OpenAI の出力が上限で途中で切れました（max_completion_tokens を増やす）")
+        return msg.get("content") or ""
     raise ValueError(f"unknown provider: {provider}")
 
 
@@ -114,9 +142,12 @@ SCORE_PROMPT = """あなたはブログ編集長です。以下のジャンル�
 {items}
 
 # 出力
-全候補について、次の形式のJSON配列だけを出力してください。説明文は不要です。
-[{{"id": 0, "relevance": 0, "testable": 0, "monetizable": 0, "topic": ""}}, ...]
+全候補について、次の形式のJSONだけを出力してください。説明文は不要です。
+{{"scores": [{{"id": 0, "relevance": 0, "testable": 0, "monetizable": 0, "topic": ""}}, ...]}}
 """
+
+SCORE_SCHEMA = obj_schema({"scores": arr(obj_schema(
+    {"id": INT, "relevance": INT, "testable": INT, "monetizable": INT, "topic": STR}))})
 
 
 def _score(v) -> int:
@@ -134,19 +165,22 @@ def score_all(items: list[Item], genre: str, weights: dict, llm_cfg: dict) -> li
         lines.append(s)
     prompt = SCORE_PROMPT.format(genre=genre.strip(), items="\n".join(lines))
     scores: dict[int, dict] = {}
+    last_error = None
     for attempt in range(2):  # 半分以上読めなかったら1回だけやり直す
         try:
-            got = {int(d["id"]): d for d in extract_json(call_llm(prompt, llm_cfg))
+            raw = call_llm(prompt, llm_cfg, 4000, SCORE_SCHEMA, "scores")
+            got = {int(d["id"]): d for d in unwrap(extract_json(raw), "scores")
                    if isinstance(d, dict) and str(d.get("id", "")).isdigit()}
-        except ValueError as e:  # JSONDecodeError も含む
+        except (ValueError, RuntimeError) as e:  # JSONの崩れ・出力の途中切れ
             print(f"[score] 採点結果を読めなかった（{attempt + 1}回目）: {e}")
+            last_error = e
             got = {}
         if len(got) > len(scores):
             scores = got
         if len(scores) >= len(items) / 2:
             break
     if not scores:
-        raise RuntimeError("AIの採点結果を2回とも読み取れませんでした")
+        raise RuntimeError(f"AIの採点結果を2回とも読み取れませんでした: {last_error}")
 
     results = []
     for i, it in enumerate(items):
@@ -179,16 +213,20 @@ DETAIL_PROMPT = """あなたはブログ編集長です。以下のジャンル�
 - products: 記事内で紹介できそうな有料ツール・サービス名（なければ空配列）
 
 # 出力
-JSON配列だけを出力してください。
-[{{"id": 0, "summary": "", "why": "", "try": "", "angle": "", "products": []}}, ...]
+次の形式のJSONだけを出力してください。
+{{"items": [{{"id": 0, "summary": "", "why": "", "try": "", "angle": "", "products": []}}, ...]}}
 """
+
+DETAIL_SCHEMA = obj_schema({"items": arr(obj_schema(
+    {"id": INT, "summary": STR, "why": STR, "try": STR, "angle": STR, "products": arr(STR)}))})
 
 
 def add_details(top: list[dict], genre: str, llm_cfg: dict) -> list[dict]:
     lines = [f"[{i}] ({r['item'].source}) {r['item'].title}\nURL: {r['item'].url}\n概要: {r['item'].summary}"
              for i, r in enumerate(top)]
-    raw = call_llm(DETAIL_PROMPT.format(genre=genre.strip(), items="\n\n".join(lines)), llm_cfg)
-    details = {int(d["id"]): d for d in extract_json(raw) if "id" in d}
+    raw = call_llm(DETAIL_PROMPT.format(genre=genre.strip(), items="\n\n".join(lines)), llm_cfg,
+                   4000, DETAIL_SCHEMA, "details")
+    details = {int(d["id"]): d for d in unwrap(extract_json(raw), "items") if isinstance(d, dict) and "id" in d}
     for i, r in enumerate(top):
         r["detail"] = details.get(i, {})
     return top
@@ -225,12 +263,14 @@ SALE_PROMPT = """あなたはブログ編集者です。以下の読者向けブ
 {items}
 
 # 出力
-対象になるものだけを、価値が高い順に最大{n}件、JSON配列で出力してください。該当なしなら [] 。
+対象になるものだけを、価値が高い順に最大{n}件、次の形式のJSONで出力してください。該当なしなら {{"items": []}} 。
 - what: 何がどうお得か（例「Adobe CC 年間プラン 最大40%OFF」）。候補の文面にない割引率や価格は書かない。
 - period: 期間（文面に書かれている場合のみ。不明なら空文字）
 - why: この読者にとっての意味（1文）
-[{{"id": 0, "what": "", "period": "", "why": ""}}]
+{{"items": [{{"id": 0, "what": "", "period": "", "why": ""}}]}}
 """
+
+SALE_SCHEMA = obj_schema({"items": arr(obj_schema({"id": INT, "what": STR, "period": STR, "why": STR}))})
 
 
 def keyword_hit(it: Item, keywords: list[str]) -> bool:
@@ -243,9 +283,9 @@ def judge_sales(items: list[Item], genre: str, focus: str, n: int, llm_cfg: dict
         return []
     lines = [f"[{i}] ({it.source}) {it.title} — {it.summary[:150]}" for i, it in enumerate(items)]
     raw = call_llm(SALE_PROMPT.format(genre=genre.strip(), focus=focus.strip(),
-                                      items="\n".join(lines), n=n), llm_cfg)
+                                      items="\n".join(lines), n=n), llm_cfg, 4000, SALE_SCHEMA, "sales")
     out = []
-    for d in extract_json(raw):
+    for d in unwrap(extract_json(raw), "items"):
         try:
             i = int(d["id"])
         except (KeyError, TypeError, ValueError):

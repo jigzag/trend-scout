@@ -69,7 +69,7 @@ def fake_get(url, **kw):
     if "itmedia" in url: return Resp(PH.replace("VoiceForge - AI voice cloning API", "ChatGPTに新機能").replace("producthunt.com/products/voiceforge", "itmedia.co.jp/aiplus/x.html"))
     raise AssertionError(url)
 
-def fake_llm(prompt, cfg, max_tokens=4000):
+def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
     if "セール・キャンペーン情報" in prompt:
         cands = prompt.split("# 候補")[1].split("# 出力")[0].strip().splitlines()
         assert not any("iPhoneレビュー" in c for c in cands)  # キーワードで一次ふるい済み
@@ -156,14 +156,14 @@ def test_broken_json():
     assert [d["id"] for d in got] == [0, 2]
     items = [sources.Item("X", f"t{i}", f"https://e.com/{i}") for i in range(3)]
     calls = []
-    def llm(prompt, cfg, max_tokens=4000):
+    def llm(prompt, cfg, max_tokens=4000, *a, **kw):
         calls.append(1); return raw
     with mock.patch.object(scorer, "call_llm", llm):
         res = scorer.score_all(items, "g", {"relevance": .4, "testable": .3, "monetizable": .15, "buzz": .15}, {})
     assert len(calls) == 1                       # 3件中2件読めたので、やり直さない
     top = res[0]
     assert top["item"].title == "t0" and top["monetizable"] == 5
-    def bad(prompt, cfg, max_tokens=4000):
+    def bad(prompt, cfg, max_tokens=4000, *a, **kw):
         calls.append(1); return "すみません、出力できません"
     calls.clear()
     with mock.patch.object(scorer, "call_llm", bad):
@@ -172,6 +172,45 @@ def test_broken_json():
             assert False
         except RuntimeError as e:
             assert "2回とも" in str(e) and len(calls) == 2
+
+def _check_strict(schema, path="root"):
+    """OpenAI Structured Outputs（strict）の条件: object は全項目 required・additionalProperties false。"""
+    if schema.get("type") == "object":
+        assert schema.get("additionalProperties") is False, path
+        assert sorted(schema["required"]) == sorted(schema["properties"]), path
+        for k, v in schema["properties"].items():
+            _check_strict(v, f"{path}.{k}")
+    elif schema.get("type") == "array":
+        _check_strict(schema["items"], path + "[]")
+
+def test_structured_outputs():
+    import writer
+    for s in (scorer.SCORE_SCHEMA, scorer.DETAIL_SCHEMA, scorer.SALE_SCHEMA,
+              writer.FACTS_SCHEMA, writer.OUTLINE_SCHEMA, writer.REWRITE_SCHEMA):
+        assert s["type"] == "object"  # strict はルートがオブジェクト
+        _check_strict(s)
+    os.environ["OPENAI_API_KEY"] = "sk-test"
+    sent = {}
+    def post(url, **kw):
+        sent.update(kw["json"])
+        return Resp(js={"choices": [{"finish_reason": "stop", "message": {"content":
+                    '{"scores": [{"id": 0, "relevance": 9, "testable": 8, "monetizable": 7, "topic": "A"}]}'}}]})
+    items = [sources.Item("X", "t0", "https://e.com/0")]
+    with mock.patch.object(scorer.requests, "post", post):
+        res = scorer.score_all(items, "g", {"relevance": .4, "testable": .3, "monetizable": .15},
+                               {"provider": "openai", "openai_model": "gpt-5-mini"})
+    rf = sent["response_format"]
+    assert rf["type"] == "json_schema" and rf["json_schema"]["strict"] is True
+    assert rf["json_schema"]["schema"] == scorer.SCORE_SCHEMA
+    assert res[0]["relevance"] == 9 and res[0]["topic"] == "A"
+    def cut(url, **kw):
+        return Resp(js={"choices": [{"finish_reason": "length", "message": {"content": '{"scores": [{"id"'}}]})
+    with mock.patch.object(scorer.requests, "post", cut):
+        try:
+            scorer.call_llm("x", {"provider": "openai", "openai_model": "gpt-5-mini"}, schema=scorer.SCORE_SCHEMA)
+            assert False
+        except RuntimeError as e:
+            assert "途中で切れ" in str(e)
 
 def test_line_payload():
     os.environ["LINE_CHANNEL_ACCESS_TOKEN"] = "tok"; os.environ["LINE_USER_ID"] = "U123"

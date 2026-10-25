@@ -53,6 +53,7 @@
 - Secretが `null` になる原因：1つのSecretに3つまとめて登録した / Variables タブに登録した / Environment secrets に登録した / 名前のタイプミス
 - `x-api-key header is required` や `OPENAI_API_KEY が空です` は、キーが**空**という意味（名前違いや未登録）。401 で invalid と出るのは、キーの中身が違う場合
 - LINE：公式アカウントを友だち追加していないと届かない。Channel ID は使わない（Channel secret は LINE 操作の Worker でだけ使う）。チャネルの作成は Official Account Manager から行う（LINE Developers から直接ではない）
+- 2026-10-25 朝、採点JSONの途中1件の崩れ（`:` 抜け）で全体が止まった → 崩れた要素だけ飛ばす＋Structured Outputs（strict）に切り替え。スキーマを変えるときは、全項目を required に入れ additionalProperties を false にする（tests の `_check_strict` が検査する）
 - gpt-5系では `max_tokens` が使えないので `max_completion_tokens` を使う。推論トークンも上限に含まれるので、小さくしすぎると返答が空になる
 - Cowork などの Linux VM からこのフォルダで git を操作すると、`.git` に `HEAD.lock` や `tmp_obj_*` が残ることがある。残っていたら削除する（Windows 側の git が失敗する原因になる）
 

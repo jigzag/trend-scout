@@ -65,7 +65,7 @@ BODY = ("<p>ChatGPTに試着機能が加わりました。この記事では、�
         + "<h2>まとめ</h2><p>日本での提供時期は公式サイトで確認してください。</p>")
 
 
-def fake_llm(prompt, cfg, max_tokens=4000):
+def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
     if "事実」だけを抜き出して" in prompt:
         assert "参考1:" in prompt and "参考2:" in prompt and "参考3:" not in prompt  # 同ドメイン・短文は除外
         return json.dumps({"summary": "試着機能", "facts": [{"fact": "米国Plusから提供", "src": 1}],
@@ -149,7 +149,7 @@ def test_without_tavily_and_wp(tmp=Path(tempfile.gettempdir()) / "ts_article2"):
         os.environ.pop(k, None)
     page = "<html><body><nav>メニュー</nav><article><p>" + SRC_MAIN + "</p></article></body></html>"
     fake_llm.with_memo = False
-    def no_search_llm(prompt, cfg, max_tokens=4000):
+    def no_search_llm(prompt, cfg, max_tokens=4000, *a, **kw):
         if "事実」だけを抜き出して" in prompt:
             assert "参考1:" in prompt and "参考2:" not in prompt and "メニュー" not in prompt
             return json.dumps({"summary": "", "facts": []})

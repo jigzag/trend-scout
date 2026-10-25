@@ -9,7 +9,7 @@ import html
 import json
 import re
 
-from scorer import call_llm, extract_json
+from scorer import INT, STR, arr, call_llm, extract_json, obj_schema, unwrap
 
 PR_NOTE = '<p class="pr-note">※本記事にはプロモーション（広告）が含まれる場合があります。</p>'
 NOTE_CLASS = "operator-note"   # 運営者メモの囲み。この中だけは「試した」表現を許す
@@ -139,8 +139,15 @@ HTMLタグの種類はそのまま保ち、書き直した段落だけを、入�
 {blocks}
 
 # 出力
-書き直した段落のJSON配列（文字列の配列）だけ
+次の形式のJSONだけ: {{"blocks": ["書き直した段落", ...]}}
 """
+
+FACTS_SCHEMA = obj_schema({"summary": STR, "facts": arr(obj_schema({"fact": STR, "src": INT})),
+                           "steps": arr(STR), "cautions": arr(STR), "unknowns": arr(STR)})
+OUTLINE_SCHEMA = obj_schema({"title": STR, "slug": STR, "excerpt": STR, "persona": STR,
+                             "sections": arr(obj_schema({"h2": STR, "points": arr(STR)})),
+                             "image_featured": STR, "image_scenario": STR})
+REWRITE_SCHEMA = obj_schema({"blocks": arr(STR)})
 
 
 def strip_fence(text: str) -> str:
@@ -149,14 +156,14 @@ def strip_fence(text: str) -> str:
 
 
 def extract_facts(topic: str, sources: list[dict], cfg: dict) -> dict:
-    raw = call_llm(FACTS_PROMPT.format(topic=topic, sources=_join_sources(sources)), cfg, 8000)
+    raw = call_llm(FACTS_PROMPT.format(topic=topic, sources=_join_sources(sources)), cfg, 8000, FACTS_SCHEMA, "facts")
     facts = extract_json(raw)
     return facts if isinstance(facts, dict) else {"facts": facts}
 
 
 def make_outline(genre: str, facts: dict, memo: str, cfg: dict) -> dict:
     raw = call_llm(OUTLINE_PROMPT.format(genre=genre.strip(), facts=json.dumps(facts, ensure_ascii=False),
-                                         memo=memo or "（なし）", rules=RULES), cfg, 4000)
+                                         memo=memo or "（なし）", rules=RULES), cfg, 4000, OUTLINE_SCHEMA, "outline")
     return extract_json(raw)
 
 
@@ -234,7 +241,8 @@ def fix_similarity(article: str, sources: list[dict], opt: dict, cfg: dict) -> t
         if not blocks:
             break  # 全体の割合だけ高い（固有名詞が多いなど）。段落単位では直せないので警告で返す
         try:
-            new = extract_json(call_llm(REWRITE_PROMPT.format(blocks=json.dumps(blocks, ensure_ascii=False)), cfg, 8000))
+            new = unwrap(extract_json(call_llm(REWRITE_PROMPT.format(blocks=json.dumps(blocks, ensure_ascii=False)),
+                                               cfg, 8000, REWRITE_SCHEMA, "rewrite")), "blocks")
         except Exception as e:  # noqa: BLE001
             print(f"[writer] 書き直し失敗 {e}")
             break
