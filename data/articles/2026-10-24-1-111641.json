@@ -1,0 +1,49 @@
+{
+  "title": "Claude Codeで作る解説動画の自動生成ワークフロー",
+  "slug": "claude-code-video-workflow",
+  "excerpt": "Claude Code向けのanimated-arch-diagramスキルを使い、モック画面とJSON記録から「操作→仕組み→操作→仕組み」構成の解説動画を自動生成する手順と注意点を分かりやすく整理します。",
+  "persona": "研修用の解説動画を内製したい人事担当のAさん",
+  "chars": 3775,
+  "image_prompts": {
+    "featured": "An illustration of a stylized workflow: a browser window showing a mock interface, a JSON file icon, and a filmstrip—simple flat colors, no real logos.",
+    "scenario": "An illustration of a person at a desk preparing training materials on a laptop, with simplified mock screens and a storyboard on the desk—clean, non-photorealistic style."
+  },
+  "similarity": {
+    "ratio": 0.034,
+    "longest": 34,
+    "ok": true
+  },
+  "warnings": [],
+  "memo": "",
+  "sources": [
+    {
+      "title": "仕組みを理解する動画を、Claude Codeに作らせると便利すぎる",
+      "url": "https://zenn.dev/explaza/articles/c749042ecbe232"
+    },
+    {
+      "title": "【2026年最新】最強AI Claude(クロード)とは？できることやPC操作を自動化する機能も解説！ | Rimo",
+      "url": "https://rimo.app/blogs/claude"
+    },
+    {
+      "title": "AIへの指示から始める新しいプログラミング入門！ 『1週間でClaude Codeの基礎が学べる本』を9月25日に発売 - 株式会社インプレス",
+      "url": "https://www.impress.co.jp/newsrelease/2026/09/20260925-01.html"
+    }
+  ],
+  "candidate": {
+    "title": "仕組みを理解する動画を、Claude Codeに作らせると便利すぎる",
+    "url": "https://zenn.dev/explaza/articles/c749042ecbe232"
+  },
+  "images": {
+    "featured": 25,
+    "media": [
+      25,
+      26
+    ]
+  },
+  "wordpress": {
+    "id": 27,
+    "link": "https://nocode-ai.net/?p=27",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=27&action=edit"
+  },
+  "created_at": "2026-10-25T11:16:42+09:00"
+}
