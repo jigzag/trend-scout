@@ -148,6 +148,31 @@ def test_source_failure():
         text = main.run(dry_run=True)
     assert "取得失敗: qiita" in text
 
+def test_broken_json():
+    """10/25 の本番エラー: 120件の配列の途中で ':' が抜けていた → 読める要素だけ使う。"""
+    raw = '```json\n[{"id": 0, "relevance": 8, "testable": 7, "monetizable": "5点", "topic": "A"},\n' \
+          ' {"id": 1, "relevance" 9, "testable": 1},\n {"id": 2, "relevance": 3, "testable": 2, "monetizable": 1, "topic": "B"}]\n```'
+    got = scorer.extract_json(raw)
+    assert [d["id"] for d in got] == [0, 2]
+    items = [sources.Item("X", f"t{i}", f"https://e.com/{i}") for i in range(3)]
+    calls = []
+    def llm(prompt, cfg, max_tokens=4000):
+        calls.append(1); return raw
+    with mock.patch.object(scorer, "call_llm", llm):
+        res = scorer.score_all(items, "g", {"relevance": .4, "testable": .3, "monetizable": .15, "buzz": .15}, {})
+    assert len(calls) == 1                       # 3件中2件読めたので、やり直さない
+    top = res[0]
+    assert top["item"].title == "t0" and top["monetizable"] == 5
+    def bad(prompt, cfg, max_tokens=4000):
+        calls.append(1); return "すみません、出力できません"
+    calls.clear()
+    with mock.patch.object(scorer, "call_llm", bad):
+        try:
+            scorer.score_all(items, "g", {"relevance": .4, "testable": .3, "monetizable": .15}, {})
+            assert False
+        except RuntimeError as e:
+            assert "2回とも" in str(e) and len(calls) == 2
+
 def test_line_payload():
     os.environ["LINE_CHANNEL_ACCESS_TOKEN"] = "tok"; os.environ["LINE_USER_ID"] = "U123"
     with mock.patch.object(notifier.requests, "post", return_value=Resp("{}")) as p:

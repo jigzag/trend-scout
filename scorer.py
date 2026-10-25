@@ -79,7 +79,22 @@ def extract_json(text: str):
     start = min(starts)
     closer = "]" if text[start] == "[" else "}"
     end = text.rfind(closer)
-    return json.loads(text[start:end + 1])
+    try:
+        return json.loads(text[start:end + 1])
+    except json.JSONDecodeError:
+        if closer == "}":
+            raise
+        # 配列の一部が崩れていても、読める要素だけ使う（120件中1件の崩れで全体を落とさない）
+        items = []
+        for m in re.finditer(r"\{[^{}]*\}", text[start:]):
+            try:
+                items.append(json.loads(m.group(0)))
+            except json.JSONDecodeError:
+                continue
+        if not items:
+            raise
+        print(f"[llm] JSONの一部が崩れていたため、読める {len(items)} 件だけ使う")
+        return items
 
 
 # ---------- 1段目: 一括採点 ----------
@@ -104,6 +119,12 @@ SCORE_PROMPT = """あなたはブログ編集長です。以下のジャンル�
 """
 
 
+def _score(v) -> int:
+    """0〜10の整数にする（"8" や 8.0 や "8点" も受け付け、読めなければ0）。"""
+    m = re.search(r"\d+(?:\.\d+)?", str(v if v is not None else ""))
+    return max(0, min(10, round(float(m.group(0))))) if m else 0
+
+
 def score_all(items: list[Item], genre: str, weights: dict, llm_cfg: dict) -> list[dict]:
     lines = []
     for i, it in enumerate(items):
@@ -111,13 +132,26 @@ def score_all(items: list[Item], genre: str, weights: dict, llm_cfg: dict) -> li
         if it.summary:
             s += f" — {it.summary[:120]}"
         lines.append(s)
-    raw = call_llm(SCORE_PROMPT.format(genre=genre.strip(), items="\n".join(lines)), llm_cfg)
-    scores = {int(d["id"]): d for d in extract_json(raw) if "id" in d}
+    prompt = SCORE_PROMPT.format(genre=genre.strip(), items="\n".join(lines))
+    scores: dict[int, dict] = {}
+    for attempt in range(2):  # 半分以上読めなかったら1回だけやり直す
+        try:
+            got = {int(d["id"]): d for d in extract_json(call_llm(prompt, llm_cfg))
+                   if isinstance(d, dict) and str(d.get("id", "")).isdigit()}
+        except ValueError as e:  # JSONDecodeError も含む
+            print(f"[score] 採点結果を読めなかった（{attempt + 1}回目）: {e}")
+            got = {}
+        if len(got) > len(scores):
+            scores = got
+        if len(scores) >= len(items) / 2:
+            break
+    if not scores:
+        raise RuntimeError("AIの採点結果を2回とも読み取れませんでした")
 
     results = []
     for i, it in enumerate(items):
         s = scores.get(i, {})
-        rel, tst, mon = (int(s.get(k, 0)) for k in ("relevance", "testable", "monetizable"))
+        rel, tst, mon = (_score(s.get(k)) for k in ("relevance", "testable", "monetizable"))
         buzz = float(it.extra.get("buzz", 5))
         total = round((rel * weights["relevance"] + tst * weights["testable"]
                        + mon * weights["monetizable"] + buzz * weights.get("buzz", 0)) * 10)
