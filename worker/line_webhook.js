@@ -48,11 +48,12 @@ export async function verify(body, signature, secret) {
 }
 
 async function reply(env, token, text) {
-  await fetch("https://api.line.me/v2/bot/message/reply", {
+  const r = await fetch("https://api.line.me/v2/bot/message/reply", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}` },
     body: JSON.stringify({ replyToken: token, messages: [{ type: "text", text }] }),
   });
+  if (!r.ok) console.log(`LINE reply failed ${r.status}: ${(await r.text()).slice(0, 200)}`); // 401 ならアクセストークン違い
 }
 
 async function dispatch(env, type, payload) {
@@ -70,16 +71,25 @@ async function dispatch(env, type, payload) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, rawEnv) {
+    // 登録時に紛れ込んだ前後の空白・改行を取り除く
+    const env = Object.fromEntries(Object.entries(rawEnv).map(([k, v]) => [k, typeof v === "string" ? v.trim() : v]));
     if (request.method !== "POST") return new Response("ok");
     const body = await request.text();
     if (!(await verify(body, request.headers.get("x-line-signature") || "", env.LINE_CHANNEL_SECRET))) {
+      console.log("bad signature（LINE_CHANNEL_SECRET を確認）");
       return new Response("bad signature", { status: 401 });
     }
     const events = JSON.parse(body).events || []; // LINE の「検証」ボタンは events が空
     for (const ev of events) {
       if (ev.type !== "message" || ev.message?.type !== "text") continue;
-      if (ev.source?.userId !== env.LINE_USER_ID) continue; // 運営者以外は無視
+      const uid = ev.source?.userId || "";
+      console.log(`message from ...${uid.slice(-4)}: ${String(ev.message.text).slice(0, 30)}`);
+      if (uid !== env.LINE_USER_ID) { // 運営者以外は操作させない（末尾4文字だけ返して設定ミスに気づけるようにする）
+        await reply(env, ev.replyToken, `運営者として登録されていません（あなたのIDの末尾: ${uid.slice(-4)}）。` +
+          "Cloudflare の LINE_USER_ID を確認してください。");
+        continue;
+      }
       const cmd = parseCommand(ev.message.text);
       if (cmd.type === "help") {
         await reply(env, ev.replyToken, HELP);
