@@ -1,0 +1,98 @@
+[
+  {
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 8,
+    "buzz": 8.0,
+    "topic": "Yourcast (AI summaries for audio)",
+    "total": 87,
+    "detail": {
+      "id": 0,
+      "summary": "Yourcast 2.0は、Telegram内の会話に対してAIが要約を作り、タップでジャンプできるタイムスタンプ付きにするサービス。チャットや音声の重要箇所に素早くアクセスできる機能が目玉。",
+      "why": "Telegramでやり取りするコミュニティや顧客対応をしている人が、会話の要点を素早く把握して業務効率を上げられる点が読者にとって価値になるため。",
+      "try": "YourcastのProduct Huntページからサービスにサインアップし、Telegramのテストグループ（自分で作成）を用意して会話や音声を流し、要約とタイムスタンプの生成・タップ遷移を確認する。",
+      "angle": "Telegram会話を一発で要約して指定箇所へ飛べる仕事術",
+      "products": [
+        "Yourcast",
+        "Telegram",
+        "Otter.ai",
+        "Descript"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Yourcast 2.0",
+      "url": "https://www.producthunt.com/products/yourcast",
+      "summary": "AI summaries with tap-to-jump timestamps, right in Telegram Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "testable": 9,
+    "monetizable": 8,
+    "buzz": 7.0,
+    "topic": "Clips by Plastic (lyric video ads)",
+    "total": 86,
+    "detail": {
+      "id": 1,
+      "summary": "Clips by Plasticは、曲のビートに合わせて歌詞を表示する“リリック動画広告”を自動生成するツールで、楽曲の各パート向けに短尺クリップを量産できるサービス。",
+      "why": "SNSや動画広告で音楽要素を入れたプロモ用クリップを量産したい制作担当や個人起業家にとって、手間を大幅に減らせるため実用性が高いから。",
+      "try": "楽曲ファイル（MP3等）と歌詞テキストを用意してClipsのデモかサインアップ版にアップロードし、ビート検出→歌詞タイミングの自動配置→複数フォーマットでの書き出し（縦・横・短尺）を試す。",
+      "angle": "SNSで響くリリック動画を即作成する販促テンプレート活用法",
+      "products": [
+        "Clips by Plastic",
+        "Canva",
+        "CapCut",
+        "Adobe Premiere Rush"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Clips by Plastic",
+      "url": "https://www.producthunt.com/products/clips-by-plastic",
+      "summary": "Lyric video ads for every part of your song, on the beat Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 7.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "testable": 9,
+    "monetizable": 6,
+    "buzz": 8.0,
+    "topic": "Clairic / document extraction SaaS",
+    "total": 80,
+    "detail": {
+      "id": 2,
+      "summary": "Cloudflareの高速抽出モデル『Clairic』を使い、取引文書の分類や画像からのテキスト抽出を超高速で処理する検証レポート（Qiita記事の紹介）。",
+      "why": "紙や画像ベースの請求書・契約書を大量処理したい企業担当者が、現場で使える速度と精度をイメージできるため実践的な価値があるから。",
+      "try": "Qiita記事の手順を参考に、手元の請求書や契約書PDF/画像を数十枚用意してClairic（またはCloudflare Pages/Workerのデモ環境）で分類→フィールド抽出→処理時間の計測と抽出結果の精度チェックを行う。",
+      "angle": "紙の請求書を秒単位で仕分ける業務フローの作り方",
+      "products": [
+        "Cloudflare Clairic",
+        "Google Document AI",
+        "Amazon Textract",
+        "Microsoft Form Recognizer"
+      ]
+    },
+    "item": {
+      "source": "Qiita",
+      "title": "1枚0.3秒!!Cloudflareの爆速抽出モデルClairicを試してみた",
+      "url": "https://qiita.com/kikuziro/items/3f23603152b409d4a6ca?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
+      "summary": "🎬 取引文書を 爆速分類→テキスト抽出 書類の画像をまとめてアップロードして分類から項目の抽出まで流れる様子です。シュバババーっと仕分けして内容を抽出してくれています。この記事では検証内容や結果について記載していきます。 👀 対象読者 Cloudflareの\"Cle...",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  }
+]
