@@ -35,8 +35,8 @@ sources:
   hatena:      { enabled: true, limit: 30 }   # はてブ テクノロジー人気
   zenn:        { enabled: true, limit: 20 }   # Zenn デイリートレンド
   qiita:       { enabled: true, limit: 20 }   # Qiita 人気記事
-  hackernews:  { enabled: true, limit: 30 }   # Hacker News フロントページ
-  producthunt: { enabled: true, limit: 20 }   # Product Hunt 新着
+  hackernews:  { enabled: false, limit: 30 }  # Hacker News フロントページ（2026-10-25 停止: 3週間で採用1件、英語の開発者向けが中心）
+  producthunt: { enabled: true, limit: 10 }   # Product Hunt 新着（2026-10-25 に20→10: 海外の無名サービスは日本語の参考記事が少ない）
   # 非エンジニア向けのAIニュース（任意のRSS/Atomを url で追加できる）
   itmedia_ai:  { enabled: true, limit: 20, label: "ITmedia AI+", url: "https://rss.itmedia.co.jp/rss/2.0/aiplus.xml" }
 
