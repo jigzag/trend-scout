@@ -43,12 +43,13 @@
    - 想定シナリオは架空だと明記する。試していないことを「試した」と書かない（SPEC §7）
    - 画像（アイキャッチ＋本文1枚）を 2026-10-04 に追加。モデルは `image.model`（gpt-image-2）。OpenAI の画像モデルは組織認証（Verify Organization）が必要な場合があり、本番で未確認
    - 2026-10-04 の試運転2本（はてな匿名ダイアリーの話題、WP下書き id 22/23）で、一覧ページの混入・短さ・指示語の混入などを修正済み。候補が弱い日だったので、良い候補の日に再確認する
-3. LINE だけで操作（KJ希望）：2026-10-04 に実装（`worker/line_webhook.js`、`wp_command.py`、`wp-command.yml`）。KJ が `docs/LINE_SETUP.md` の設定（GitHub トークン、Cloudflare Worker、LINE Webhook）をしたら本番確認。返信は「1〜3 [メモ]」「公開」「削除」「ヘルプ」。GitHub トークンは1年で期限切れ（作り直しが必要）
+3. LINE だけで操作：2026-10-25 に設定完了（Cloudflare Worker `line-webhook.sekinetutomu.workers.dev`）。「ヘルプ」の返信まで本番確認済み。記事作成（「1」）→「公開」「削除」は未確認。GitHub トークン（line-webhook）は 2026-10-25 に再作成、1年で期限切れ
 4. ASP登録 / Amazonアソシエイト → Ver.3 商品DBとリンク挿入
 
 ## ハマりどころ（実際に起きたこと）
 - **Actions が毎朝 `data/` を自動コミットするので、ローカルから push すると `rejected (fetch first)` になる。** push の前に必ず `git pull --rebase` を実行する
 - **エックスサーバーは初期状態で国外IPからの REST API を拒否する。** GitHub Actions は海外から動くので、Ver.2 の投稿が 403 になる。サーバーパネル →「WordPressセキュリティ設定」→「国外アクセス制限設定」→「REST API アクセス制限」を OFF にする（SITE_SETUP 手順2）
+- **Cloudflare の Secret に値を貼るとき、末尾の空白・改行や取り違えが起きやすい。** Worker は値を trim する。LINE の返事がないときは Observability のログで `LINE reply failed 401`（アクセストークン違い）や「運営者として登録されていません（末尾）」（LINE_USER_ID 違い）を見る
 - **Actions の「Re-run jobs」は、その実行が最初に使ったコミットで再実行する。** コードを修正した後は、必ず「Run workflow」で新しく実行する
 - Secretが `null` になる原因：1つのSecretに3つまとめて登録した / Variables タブに登録した / Environment secrets に登録した / 名前のタイプミス
 - `x-api-key header is required` や `OPENAI_API_KEY が空です` は、キーが**空**という意味（名前違いや未登録）。401 で invalid と出るのは、キーの中身が違う場合
