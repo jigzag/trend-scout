@@ -1,0 +1,44 @@
+{
+  "title": "Clairic×Clefで書類の自動分類と項目抽出",
+  "slug": "clairic-clef-document-extraction",
+  "excerpt": "Cloudflareの抽出特化モデルClairicと判断特化モデルClefを組み合わせ、書類種別判定と項目抽出の速度・精度・運用上の注意点を整理します。日本語画像OCRが課題で、テキスト入力での精度改善例も紹介します。",
+  "persona": "請求書や領収書の処理を効率化したい個人事業主のBさん",
+  "chars": 2761,
+  "image_prompts": {
+    "featured": "An illustration of various business documents being scanned into a cloud service, with speed lines to suggest fast automated processing.",
+    "scenario": "An illustration of a person at a desk sorting invoices and checking results on a laptop, with paper documents and a calm office setting."
+  },
+  "similarity": {
+    "ratio": 0.013,
+    "longest": 18,
+    "ok": true
+  },
+  "warnings": [
+    "コードを書く前提の話題で、読者（非エンジニア）に合わない可能性: Clef/ClairicはHTTP POSTでJSON（fieldsや画像をbase64等で含む）を送る実装例が示されており、API呼び出しのためにプログラム実装が必要である。",
+    "話題に関係する参考記事が1件だけ。事実が少ないので内容を確認してください"
+  ],
+  "memo": "",
+  "sources": [
+    {
+      "title": "1枚0.3秒!!Cloudflareの爆速抽出モデルClairicを試してみた",
+      "url": "https://qiita.com/kikuziro/items/3f23603152b409d4a6ca?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items"
+    }
+  ],
+  "candidate": {
+    "title": "1枚0.3秒!!Cloudflareの爆速抽出モデルClairicを試してみた",
+    "url": "https://qiita.com/kikuziro/items/3f23603152b409d4a6ca?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items"
+  },
+  "images": {
+    "featured": 37,
+    "media": [
+      37,
+      38
+    ]
+  },
+  "wordpress": {
+    "id": 39,
+    "link": "https://nocode-ai.net/?p=39",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=39&action=edit"
+  },
+  "created_at": "2026-10-26T11:45:59+09:00"
+}
