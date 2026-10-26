@@ -1,0 +1,45 @@
+{
+  "title": "Mac用Clips by Plasticで縦型リリック動画を量産する方法",
+  "slug": "clips-by-plastic-lyric-video-mac",
+  "excerpt": "Clips by Plasticは楽曲を読み込むだけでテンポと曲パートを検出し、歌詞を同期した縦型・正方形動画を一括生成するMac用ツールです。無料試用（出力に小さなタグ）と買い切りライセンスがあります。",
+  "persona": "SNS向けの短尺リリック動画を定期制作する個人事業主のBさん",
+  "chars": 3155,
+  "image_prompts": {
+    "featured": "Illustration of a laptop generating a stylized vertical lyric video with abstract music notes and waves.",
+    "scenario": "Illustration of a small business owner at a desk using a Mac laptop and a smartphone with vertical video thumbnails visible."
+  },
+  "similarity": {
+    "ratio": 0.014,
+    "longest": 24,
+    "ok": true
+  },
+  "warnings": [],
+  "memo": "",
+  "sources": [
+    {
+      "title": "Clips by Plastic",
+      "url": "https://www.producthunt.com/products/clips-by-plastic"
+    },
+    {
+      "title": "Lyric and lip-sync video maker for Mac · Clips",
+      "url": "https://plastic.audio/clips"
+    }
+  ],
+  "candidate": {
+    "title": "Clips by Plastic",
+    "url": "https://www.producthunt.com/products/clips-by-plastic"
+  },
+  "images": {
+    "featured": 33,
+    "media": [
+      33,
+      34
+    ]
+  },
+  "wordpress": {
+    "id": 35,
+    "link": "https://nocode-ai.net/?p=35",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=35&action=edit"
+  },
+  "created_at": "2026-10-26T09:08:58+09:00"
+}
