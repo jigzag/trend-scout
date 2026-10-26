@@ -69,6 +69,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     outline = writer.make_outline(cfg["genre"], facts, memo, lc)
     body = writer.write_body(cfg["genre"], outline, facts, memo, opt, lc)
     body = writer.review(body, facts, memo, lc)
+    body = writer.trim_hedges(body, lc)
     body, sim = writer.fix_similarity(body, all_sources, opt, lc)
     warnings = writer.check_rules(body, memo, opt.get("min_chars", 3000))
     if needs_coding:

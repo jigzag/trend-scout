@@ -107,6 +107,15 @@ def test_check_rules():
     assert any("体験" in x for x in w) and any("想定シナリオ" in x for x in w)
     ok = writer.check_rules(f'<h2>【想定シナリオ】</h2><div class="{writer.NOTE_CLASS}"><p>使ってみた感想</p></div>' + "<p>あ</p>" * 3000, "メモ")
     assert ok == []
+    hedgy = "<h2>【想定シナリオ】</h2>" + "<p>上限は明らかにされていません。</p><p>詳しくは公式サイトでご確認ください。</p>" + "<p>あ</p>" * 3000
+    assert any("2回" in x for x in writer.check_rules(hedgy, ""))
+    calls = []
+    def llm(prompt, cfg, *a, **kw):
+        calls.append(prompt); return "<p>上限は明らかにされていません。</p>" + "<p>あ</p>" * 3000
+    with mock.patch.object(writer, "call_llm", llm):
+        fixed = writer.trim_hedges(hedgy, {})
+        assert "公式サイト" not in fixed and len(calls) == 1
+        assert writer.trim_hedges(fixed, {}) == fixed and len(calls) == 1   # 1回以下なら呼ばない
     leak = writer.check_rules("<h2>【想定シナリオ】</h2><p>事実メモによると無料です。</p>", "")
     assert any("指示の言葉" in x for x in leak)
 
