@@ -66,7 +66,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     if dropped:
         print("[article] 話題と関係ない参考記事を除外: " + ", ".join(dropped))
     needs_coding, coding_reason = facts.pop("needs_coding", False), facts.pop("coding_reason", "")
-    outline = writer.make_outline(cfg["genre"], facts, memo, lc)
+    outline = writer.make_outline(cfg["genre"], facts, memo, lc, cfg.get("categories"))
     body = writer.write_body(cfg["genre"], outline, facts, memo, opt, lc)
     body = writer.review(body, facts, memo, lc)
     body = writer.trim_hedges(body, lc)
@@ -81,6 +81,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     return {
         "title": outline.get("title") or item["title"], "slug": outline.get("slug", ""),
         "excerpt": outline.get("excerpt", ""), "persona": outline.get("persona", ""),
+        "category": outline.get("category", ""),
         "body": body, "_sources": sources, "chars": len(writer.plain(body)),
         "image_prompts": {"featured": outline.get("image_featured", ""), "scenario": outline.get("image_scenario", "")},
         "similarity": sim, "warnings": warnings, "memo": memo,
@@ -90,7 +91,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
 
 
 def message(art: dict, wp: dict | None) -> str:
-    lines = ["【下書きができました】", art["title"], "",
+    lines = ["【下書きができました】", art["title"] + (f"（{art['category']}）" if art.get("category") else ""), "",
              f"本文 {art['chars']}字 / 参考記事 {len(art['sources'])}件 / "
              f"類似度 一致率{art['similarity']['ratio']:.1%}・最長{art['similarity']['longest']}字 / "
              f"画像 {len(art.get('images', {}).get('media', []))}枚"]
@@ -127,7 +128,8 @@ def add_images(art: dict, opt: dict) -> dict:
         if kind == "featured":
             out["featured"] = m["id"]
         else:
-            art["body"] = images.insert_after_scenario(art["body"], images.figure(m["url"], art.get("persona", "")))
+            first = (art.get("persona") or "").split("、")[0]
+            art["body"] = images.insert_after_scenario(art["body"], images.figure(m["url"], first))
     return out
 
 
@@ -150,7 +152,13 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
 
     wp = None
     if use_wp:
-        wp = wordpress.post_draft(art["title"], art["content"], art["slug"], art["excerpt"], pics["featured"])
+        cats = []
+        if art.get("category"):
+            try:
+                cats = [wordpress.category_id(art["category"])]
+            except Exception as e:  # noqa: BLE001  カテゴリの失敗では投稿を止めない
+                art["warnings"].append(f"カテゴリを設定できなかった: {str(e)[:120]}")
+        wp = wordpress.post_draft(art["title"], art["content"], art["slug"], art["excerpt"], pics["featured"], cats)
         print(f"[article] WordPress 下書き: {wp['edit_url']}")
     meta = {k: v for k, v in art.items() if k != "content"}
     meta["wordpress"] = wp

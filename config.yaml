@@ -4,26 +4,28 @@
 genre: |
   【読者】コードを書かない人。動画・資料・SNS発信などの制作や事務作業を、AIで楽にしたい
   個人事業主・中小企業の担当者・研修/人事担当。プログラミングの知識は前提にしない。
-  【扱う】ブラウザやアプリで使えるAIツール・SaaSの新機能、新サービスの使ってみた／比較。
+  【方針】海外で出たばかりのAIツール・新機能を、日本語の情報がまだ少ないうちに紹介し、
+  「日本の読者ならどう使えるか」を具体的に示す（2026-10-26〜）。
+  【扱う】ブラウザやアプリで使える、海外の新しいAIツール・SaaS・既存ツールの新機能。
   例: AI動画生成(Runway, Kling, Hailuo/MiniMax, Sora, Veo)、AI音声・ナレーション(ElevenLabs等)、
   スライド・資料作成(Gamma等)、ChatGPT/Claude/Geminiの新機能、ノーコード自動化(Zapier, Make)、
-  Canva・CapCut・Premiereなど制作ツールのAI機能、AIを使った業務効率化の事例。
+  Canva・CapCut・Premiereなど制作ツールのAI機能、文字起こし・議事録、AIを使った業務効率化。
+  日本のサービスや日本語の記事でも、上の条件に合えば扱ってよい。
   【対象外（関連度は0〜2にする）】コードを書く前提の話（SDK・API実装・CLI・ライブラリ・
   プログラミング言語・開発環境・エディタ拡張・エージェント開発フレームワーク）、
   Claude Code・Codex・Cursor などのコーディング用AIと、そのスキル・MOD・MCP・設定の話
   （動画や資料を作る話でも、コーディング用AIで作るなら対象外）、GitHubのリポジトリやREADME、
   AIエージェントの権限・安全対策など開発者向けの話、
   インフラ・セキュリティ・クラウド運用、研究論文、資金調達や人事などの業界ニュースのみの話。
-  【検証できる】とは、運営者がブラウザやアプリで実際に触って、画面付きで手順や結果を示せること。
-  コードを書かないと試せないものは低くする。
-  発表まとめ・イベントレポート・ニュースのまとめ記事など、読んで整理するだけで実際に触れる
-  ツールや機能がない話題は、検証を3以下にする（例: 「DevDay発表まとめ」）。
+  発表まとめ・イベントレポート・ニュースのまとめ記事など、特定のツールや機能の話でないものは、
+  使い道を3以下にする（例: 「DevDay発表まとめ」）。
 
 # 採点の重み（合計1.0）
 weights:
-  relevance: 0.40    # ジャンルとの関連度
-  testable: 0.30     # 運営者が実際に触って検証できるか（一次情報が出せるか）
-  monetizable: 0.15  # 紹介できる有料ツール・商品・アフィリエイト案件がありそうか
+  relevance: 0.30    # ジャンルとの関連度
+  usecase: 0.25      # 非エンジニアの仕事での使い道を、具体的に想像しやすいか
+  novelty: 0.20      # 日本語の情報がまだ少ないか（海外で出たばかり＝高い）
+  monetizable: 0.10  # 紹介できる有料ツール・商品・アフィリエイト案件がありそうか
   buzz: 0.15         # 話題度（各ソース内の順位から自動計算。AIは使わない）
 
 min_relevance: 5   # 関連度がこれ未満は候補から除外（0-10）
@@ -36,7 +38,10 @@ sources:
   zenn:        { enabled: true, limit: 20 }   # Zenn デイリートレンド
   qiita:       { enabled: true, limit: 20 }   # Qiita 人気記事
   hackernews:  { enabled: false, limit: 30 }  # Hacker News フロントページ（2026-10-25 停止: 3週間で採用1件、英語の開発者向けが中心）
-  producthunt: { enabled: true, limit: 10 }   # Product Hunt 新着（2026-10-25 に20→10: 海外の無名サービスは日本語の参考記事が少ない）
+  # 海外の新しいAIツール・ニュース（2026-10-26〜 海外中心の方針で主力）
+  producthunt: { enabled: true, limit: 20, label: "ProductHunt", url: "https://www.producthunt.com/feed?category=artificial-intelligence" }
+  techcrunch:  { enabled: true, limit: 20, label: "TechCrunch", url: "https://techcrunch.com/category/artificial-intelligence/feed/" }
+  theverge:    { enabled: true, limit: 10, label: "The Verge", url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml" }
   # 非エンジニア向けのAIニュース（任意のRSS/Atomを url で追加できる）
   itmedia_ai:  { enabled: true, limit: 20, label: "ITmedia AI+", url: "https://rss.itmedia.co.jp/rss/2.0/aiplus.xml" }
 
@@ -67,7 +72,7 @@ article:
   max_chars: 6000      # 参考記事1件あたり、AIに渡す最大文字数
   max_results: 8       # Tavily 検索で取る件数（この中から別サイトのものを選ぶ）
   time_range: month    # 関連記事を探す期間（day / week / month / year）
-  country: japan       # 検索で優先する国
+  country: ""          # 検索で優先する国（空＝指定なし。海外ツールは英語の記事を探す）
   # 関連記事として使わないもの（一覧ページ・まとめ・SNS。候補の元記事には適用しない）
   exclude_domains: [b.hatena.ne.jp, news.google.com, x.com, twitter.com, youtube.com, facebook.com,
                     instagram.com, tiktok.com, togetter.com, posfie.com]
@@ -81,6 +86,10 @@ article:
   # 記事用のAI設定（llm の値を上書き。空なら llm と同じ）
   llm:
     openai_reasoning_effort: medium
+
+# WordPress のカテゴリ（記事ごとにAIがこの中から1つ選ぶ。なければ自動で作る）
+categories: [動画生成, 画像生成・デザイン, 音声・ナレーション, 文字起こし・議事録, 資料・スライド作成,
+             文章作成・チャットAI, 業務効率化・自動化, SNS・マーケティング, その他のAIツール]
 
 # ===== 記事の画像（OpenAI の画像生成。WordPress 投稿時だけ作る） =====
 image:

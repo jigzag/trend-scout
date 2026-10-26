@@ -29,8 +29,10 @@ RULES = """# 守ること
 - 事実は言い切る（「〜です」「〜できます」）。「〜と案内されています」「〜と説明されています」を毎文に付けない。
   出典を示すのは、意外な数字や公式の約束（「アップロードしない」など）を書くときだけ
 - 参考記事の文章を写さない。言い回し・段落の順番・見出しも自分で組み立てる
+- 英語の参考記事を訳さない。原文の順番どおりに訳したような文章にせず、事実を日本の読者向けに自分の言葉で説明する
+- 料金はドルなど元の通貨のまま書く（円に換算しない）。製品名・機能名は原文の表記のまま書く
 - 運営者はこのツールを試していない。「試してみた」「使ってみた」「実際に使うと」など、体験したかのような表現は禁止
-- 【想定シナリオ】の節では、架空の人物（例：研修担当のAさん）の使い方の例を書く。
+- 【想定シナリオ】の節では、架空の人物（例：研修担当のAさん）の使い方の例を書く。この記事の中心になる節。
   見出しに【想定シナリオ】を付け、冒頭で架空の例だと断り、「〜できそうです」「〜という使い方が考えられます」の形で書く。
   架空の人物の感想・結果・数字（「30分短縮できた」など）は書かない
 - 日付は「9月30日」「2026年10月2日」の形で書く（「2026-09-30」は使わない）
@@ -53,7 +55,8 @@ FACTS_PROMPT = """あなたは調査担当の編集者です。次の話題に�
 # 出力（JSONオブジェクトだけ）
 - summary: 何が起きたか（2文）
 - facts: 事実の一覧。[{{"fact": "日本語で言い換えた1文", "src": 参考番号}}]。数字・料金・日付・対象（無料/有料、対応OS、提供地域）を優先。
-  料金・回数・容量・台数などは、**金額や数値をそのまま**入れる（「$49（買い切り）」「最大3台」など。「価格の案内がある」のようにぼかさない）
+  料金・回数・容量・台数などは、**金額や数値をそのまま**入れる（「$49（買い切り）」「最大3台」など。「価格の案内がある」のようにぼかさない）。
+  参考記事が英語でも、facts は日本語で書く。日本語に対応しているか、日本から使えるか、対応OS・ブラウザ・アプリが書かれていれば必ず入れる
 - steps: 使い始める手順として書かれていること（書かれていなければ空配列）
 - cautions: 制限・注意点・未確定の点
 - relevant_sources: この話題について実際に書かれていた参考番号の一覧（話題と関係ない記事の番号は入れない）
@@ -83,14 +86,17 @@ OUTLINE_PROMPT = """あなたはブログ編集長です。次のブログに載
 - title: 記事タイトル（32文字前後。読者が得られることが分かるもの。「試してみた」系は禁止）
 - slug: URL用の英小文字とハイフン（例 chatgpt-virtual-try-on）
 - excerpt: 検索結果に出る説明文（80〜120文字）
-- persona: 想定シナリオの架空の人物（例「社員研修の動画を毎月作る人事担当のAさん」）
+- persona: 想定シナリオの架空の人物を2〜3人、読点区切りで（例「社員研修の動画を作る人事担当のAさん、ネットショップを営む個人事業主のBさん、SNS運用担当のCさん」）。
+  職種や目的が重ならないように選ぶ
+- category: 記事のカテゴリ。次の中から1つ: {categories}
 - sections: 見出し(h2)の配列。[{{"h2": "", "points": ["この節で書くこと"]}}]
-  導入 → 何ができるか → 料金・条件 → 使い始め方 → 【想定シナリオ】 → 注意点 → まとめ を基本に、事実メモに合わせて調整する。
+  どんなツールか → 何ができるか → 料金・日本から使えるか・日本語対応 → 【想定シナリオ】使い方の想定（記事の半分程度）→
+  似たサービスとの違い・向いている人 → まとめ を基本に、事実メモに合わせて調整する。
   事実メモに材料がない節は作らない（料金が分からなければ料金の節は作らない）。「明らかにされていない点」だけを並べる節は作らない
 - image_featured: アイキャッチ画像の内容（英語1〜2文）。記事のテーマを象徴する場面や物のイラスト
-- image_scenario: 想定シナリオの場面の画像の内容（英語1〜2文）。persona が仕事をしている場面のイラスト
+- image_scenario: 想定シナリオの場面の画像の内容（英語1〜2文）。persona の1人目が仕事をしている場面のイラスト
   どちらも、文字・ロゴ・実在のアプリ画面・実在の人物は入れない
-{{"title": "", "slug": "", "excerpt": "", "persona": "", "sections": [], "image_featured": "", "image_scenario": ""}}
+{{"title": "", "slug": "", "excerpt": "", "persona": "", "category": "", "sections": [], "image_featured": "", "image_scenario": ""}}
 """
 
 # ---------- 3. 執筆 ----------
@@ -114,7 +120,9 @@ WRITE_PROMPT = """あなたはブログライターです。構成と事実メ�
 - 本文は {min_chars}〜{max_chars} 文字
 - HTMLだけを出力する。使ってよいタグは h2, h3, p, ul, ol, li, strong, table, tr, th, td のみ（h1・タイトル・コードフェンスは出さない）
 - 冒頭（最初のh2の前）に、この記事で分かることを2〜3文で書く。見出しに「導入」「はじめに」は使わない
-- 【想定シナリオ】は、構成の persona の人物1人について「困っていること → この機能をどの場面でどう使うか（手順に沿って）→ 期待できること」を3〜5段落の文章で書く（箇条書きで人物を並べない）。冒頭に「以下は架空の人物を想定した使い方の例です」と書く
+- 【想定シナリオ】は記事の中心。構成の persona の2〜3人それぞれに h3 の見出し（例「研修担当のAさんの場合」）を付け、
+  「困っていること → このツールをどの場面でどう使うか（手順に沿って）→ 期待できること」を2〜3段落の文章で書く。
+  節の冒頭に「以下は架空の人物を想定した使い方の例です」と書く。人物ごとに使う機能や場面を変え、同じ話を繰り返さない
 - 本文が {min_chars} 文字に届かないときは、事実メモの範囲で「どんな人に向いているか」「似たツールとの違い」「よくある疑問」を足す。
   よくある疑問は、事実メモで**答えられる質問だけ**にする（答えが「公式で確認」になる質問は入れない）。
   文字数が足りなくても、分からないことの列挙や同じ内容の繰り返しで埋めない
@@ -162,7 +170,7 @@ HTMLタグの種類はそのまま保ち、書き直した段落だけを、入�
 FACTS_SCHEMA = obj_schema({"summary": STR, "facts": arr(obj_schema({"fact": STR, "src": INT})),
                            "steps": arr(STR), "cautions": arr(STR),
                            "relevant_sources": arr(INT), "needs_coding": BOOL, "coding_reason": STR})
-OUTLINE_SCHEMA = obj_schema({"title": STR, "slug": STR, "excerpt": STR, "persona": STR,
+OUTLINE_SCHEMA = obj_schema({"title": STR, "slug": STR, "excerpt": STR, "persona": STR, "category": STR,
                              "sections": arr(obj_schema({"h2": STR, "points": arr(STR)})),
                              "image_featured": STR, "image_scenario": STR})
 REWRITE_SCHEMA = obj_schema({"blocks": arr(STR)})
@@ -179,10 +187,17 @@ def extract_facts(topic: str, sources: list[dict], cfg: dict) -> dict:
     return facts if isinstance(facts, dict) else {"facts": facts}
 
 
-def make_outline(genre: str, facts: dict, memo: str, cfg: dict) -> dict:
+def make_outline(genre: str, facts: dict, memo: str, cfg: dict, categories: list[str] | None = None) -> dict:
+    cats = categories or ["その他"]
+    schema = json.loads(json.dumps(OUTLINE_SCHEMA))
+    schema["properties"]["category"] = {"type": "string", "enum": cats}  # 決めたカテゴリ以外は選ばせない
     raw = call_llm(OUTLINE_PROMPT.format(genre=genre.strip(), facts=json.dumps(facts, ensure_ascii=False),
-                                         memo=memo or "（なし）", rules=RULES), cfg, 4000, OUTLINE_SCHEMA, "outline")
-    return extract_json(raw)
+                                         memo=memo or "（なし）", rules=RULES, categories="、".join(cats)),
+                   cfg, 4000, schema, "outline")
+    out = extract_json(raw)
+    if out.get("category") not in cats:  # Anthropic など形式を保証しない場合
+        out["category"] = cats[-1]
+    return out
 
 
 def write_body(genre: str, outline: dict, facts: dict, memo: str, opt: dict, cfg: dict) -> str:

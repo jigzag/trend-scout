@@ -46,8 +46,9 @@
 1. fetch_all(sources)          各ソースを取得。1つ失敗しても続行し、stats.failed に記録
                                各Itemに extra.buzz = ソース内順位から 0〜10 を付与
 2. dedupe → History.filter_new URL正規化とタイトル一致で重複をまとめる。14日以内に通知済みのものは除外
-3. score_all（AI 1回目）       全件を relevance / testable / monetizable（0〜10）＋ topic ラベルで採点
-   total = (rel*0.40 + test*0.30 + mon*0.15 + buzz*0.15) * 10
+3. score_all（AI 1回目）       全件を relevance / usecase / novelty / monetizable（0〜10）＋ topic ラベルで採点（2026-10-26〜）
+   total = (rel*0.30 + usecase*0.25 + novelty*0.20 + mon*0.10 + buzz*0.15) * 10（重みは config.yaml）
+   AIには「8以上は全体の1割まで」と甘く付けないよう指示
    pick_diverse                min_relevance 未満は除外し、同じ topic は1件だけで上位 top_n(3) 件を選ぶ
    add_details（AI 2回目）     上位だけ summary / why / try / angle（タイトル案） / products を生成
 3b. セール検知（AI 3回目）      全ソース + sale_watch.sources を取得 → keywords で一次ふるい
@@ -151,3 +152,11 @@ Qiita / Zenn / HN はエンジニア向けの記事が中心で、読者とず�
   - それ以外 → 使い方をリプライ
 - `wp_command.py`：公開済みの記事は LINE から削除しない。ゴミ箱の記事は公開しない。削除はゴミ箱への移動（完全削除しない）
 - `wp-command.yml` は `write-article` と同じ concurrency グループ（作成中の記事を先に公開しないため）
+
+## 10. 海外ツール中心の方針（2026-10-26〜、KJ決定）
+- 海外で出たばかりのAIツール・新機能を、日本語の情報が少ないうちに紹介し、「日本の読者ならどう使えるか」を中心に書く
+- **翻訳はしない**（翻訳権の侵害になる）。英語の記事から事実だけを抜き出し、日本語で新しく書く。料金は元の通貨のまま
+- ソース：Product Hunt（AIカテゴリ、20件）、TechCrunch AI、The Verge AI を追加。関連記事の検索は国の指定なし（英語の記事も探す）
+- 記事構成：どんなツールか → できること → 料金・日本から使えるか・日本語対応 → 【想定シナリオ】2〜3人（記事の半分）→ 違い・向いている人 → まとめ
+- カテゴリ：config.yaml の `categories` から AI が1つ選ぶ（Structured Outputs の enum で縛る）。WordPress になければ自動で作る
+- 毎朝の通知は「関連・用途・新規・収益・話題」の点と「使い方の例」を出す

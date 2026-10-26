@@ -29,14 +29,15 @@ def build_message(today: date, top: list[dict], stats: dict, sales: list[dict] |
             src += " / " + "・".join(it.extra["also_on"])
         lines += [
             f"■{n}. {it.title}",
-            f"[{src}] スコア{r['total']}（関連{r['relevance']} 検証{r['testable']} 収益{r['monetizable']} 話題{r.get('buzz', '-')}）",
+            f"[{src}] スコア{r['total']}（関連{r['relevance']} 用途{r.get('usecase', '-')} 新規{r.get('novelty', '-')} "
+            f"収益{r['monetizable']} 話題{r.get('buzz', '-')}）",
         ]
         if d.get("summary"):
             lines.append(f"概要: {d['summary']}")
         if d.get("why"):
             lines.append(f"理由: {d['why']}")
-        if d.get("try"):
-            lines.append(f"試すなら: {d['try']}")
+        if d.get("usecase") or d.get("try"):
+            lines.append(f"使い方の例: {d.get('usecase') or d['try']}")
         if d.get("angle"):
             lines.append(f"タイトル案: {d['angle']}")
         if d.get("products"):

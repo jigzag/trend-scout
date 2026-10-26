@@ -66,6 +66,8 @@ def fake_get(url, **kw):
     if "algolia" in url: return Resp(js=HN)
     if "gori.me" in url: return Resp(GORI)
     if "prtimes" in url: return Resp(PRT)
+    if "techcrunch" in url: return Resp(PH.replace("VoiceForge - AI voice cloning API", "Startup raises $10M").replace("producthunt.com/products/voiceforge", "techcrunch.com/x"))
+    if "theverge" in url: return Resp(PH.replace("VoiceForge - AI voice cloning API", "Opinion on AI").replace("producthunt.com/products/voiceforge", "theverge.com/x"))
     if "itmedia" in url: return Resp(PH.replace("VoiceForge - AI voice cloning API", "ChatGPTに新機能").replace("producthunt.com/products/voiceforge", "itmedia.co.jp/aiplus/x.html"))
     raise AssertionError(url)
 
@@ -83,7 +85,7 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
             i = int(line[1:line.index("]")])
             hit = any(k in line for k in ("MiniMax", "TTS", "voice", "n8n", "Remotion"))
             topic = "音声合成" if ("TTS" in line or "voice" in line) else line[:20]
-            out.append({"id": i, "relevance": 9 if hit else 1, "testable": 8 if hit else 2,
+            out.append({"id": i, "relevance": 9 if hit else 1, "usecase": 8 if hit else 2, "novelty": 7 if hit else 3,
                         "monetizable": 6 if hit else 0, "topic": topic})
         return "```json\n" + json.dumps(out) + "\n```"
     n = prompt.count("\nURL: ")
@@ -130,6 +132,8 @@ def test_full_run(tmp_path=Path(tempfile.gettempdir()) / "ts_run"):
     assert "Qiita" in text  # 重複したMiniMax記事に also_on が付く
     assert not ("TTS beats" in text and "VoiceForge" in text)  # 同じ話題は1件だけ
     assert "utm_source" not in text
+    assert "取得失敗" not in text
+    assert "用途8 新規7" in text and "使い方の例: 手順" in text
     assert "【セール・キャンペーン】" in text and "プライム感謝祭" in text and "30%OFF" in text
     assert "食品" not in text
     assert len(text) < 5000

@@ -133,21 +133,29 @@ SCORE_PROMPT = """あなたはブログ編集長です。以下のジャンル�
 
 # 採点基準（各0〜10の整数）
 - relevance: ジャンルとの関連度。無関係なら0〜2。
-- testable: 運営者が実際に触って検証・体験談を書けるか。ニュースや論評だけで手を動かせないなら低く。
+- usecase: プログラミングをしない人が、仕事（動画・資料・SNS・事務など）でどう使えるかを具体的に想像しやすいか。
+  特定のツールや機能の話でない（業界ニュース・論評・まとめ）なら低く。
+- novelty: 日本語の情報がまだ少ないか。海外で出たばかりのツールや、日本ではまだ紹介されていない新機能なら高く。
+  日本のメディアですでに大きく報じられている話題や、日本語の記事が元の候補なら中くらい（5前後）。
 - monetizable: 記事内で紹介できる有料ツール・サービス・商品（アフィリエイト案件になりそうなもの）があるか。
   無料OSSや、紹介報酬制度がなさそうな製品だけなら低く。
 - topic: 何の話題か（製品名・機能名レベルの短いラベル。例「Claude Code Mods」）。同じ話題の候補には同じラベルを付ける。
+
+# 点の付け方
+甘く付けないこと。候補全体を見比べて、本当に記事にしたいものだけに8以上を付ける（8以上は全体の1割程度まで）。
 
 # 候補
 {items}
 
 # 出力
 全候補について、次の形式のJSONだけを出力してください。説明文は不要です。
-{{"scores": [{{"id": 0, "relevance": 0, "testable": 0, "monetizable": 0, "topic": ""}}, ...]}}
+{{"scores": [{{"id": 0, "relevance": 0, "usecase": 0, "novelty": 0, "monetizable": 0, "topic": ""}}, ...]}}
 """
 
 SCORE_SCHEMA = obj_schema({"scores": arr(obj_schema(
-    {"id": INT, "relevance": INT, "testable": INT, "monetizable": INT, "topic": STR}))})
+    {"id": INT, "relevance": INT, "usecase": INT, "novelty": INT, "monetizable": INT, "topic": STR}))})
+
+CRITERIA = ("relevance", "usecase", "novelty", "monetizable")  # AIが付ける点（buzz はコード側で計算）
 
 
 def _score(v) -> int:
@@ -185,12 +193,10 @@ def score_all(items: list[Item], genre: str, weights: dict, llm_cfg: dict) -> li
     results = []
     for i, it in enumerate(items):
         s = scores.get(i, {})
-        rel, tst, mon = (_score(s.get(k)) for k in ("relevance", "testable", "monetizable"))
+        pts = {k: _score(s.get(k)) for k in CRITERIA}
         buzz = float(it.extra.get("buzz", 5))
-        total = round((rel * weights["relevance"] + tst * weights["testable"]
-                       + mon * weights["monetizable"] + buzz * weights.get("buzz", 0)) * 10)
-        results.append({"item": it, "relevance": rel, "testable": tst, "monetizable": mon,
-                        "buzz": buzz, "topic": str(s.get("topic", "")).strip(), "total": total})
+        total = round((sum(pts[k] * weights.get(k, 0) for k in CRITERIA) + buzz * weights.get("buzz", 0)) * 10)
+        results.append({"item": it, **pts, "buzz": buzz, "topic": str(s.get("topic", "")).strip(), "total": total})
     # 同点なら、はてブ数などの反応が大きい方を優先
     results.sort(key=lambda r: (r["total"], r["item"].signal or 0), reverse=True)
     return results
@@ -208,17 +214,17 @@ DETAIL_PROMPT = """あなたはブログ編集長です。以下のジャンル�
 # 各候補について作るもの
 - summary: 何の話題か（日本語1〜2文。英語の話題も日本語で）
 - why: このブログで記事にする価値（1文）
-- try: 運営者が今日〜明日で実際に試すなら何をすればいいか（具体的な手順1〜2文）
+- usecase: 日本の読者（非エンジニア）なら、仕事でどう使えそうか（具体的な場面を1〜2文）
 - angle: 記事タイトル案（読者が得られることが分かるもの、32文字程度。「試してみた」「使ってみた」は使わない）
 - products: 記事内で紹介できそうな有料ツール・サービス名（なければ空配列）
 
 # 出力
 次の形式のJSONだけを出力してください。
-{{"items": [{{"id": 0, "summary": "", "why": "", "try": "", "angle": "", "products": []}}, ...]}}
+{{"items": [{{"id": 0, "summary": "", "why": "", "usecase": "", "angle": "", "products": []}}, ...]}}
 """
 
 DETAIL_SCHEMA = obj_schema({"items": arr(obj_schema(
-    {"id": INT, "summary": STR, "why": STR, "try": STR, "angle": STR, "products": arr(STR)}))})
+    {"id": INT, "summary": STR, "why": STR, "usecase": STR, "angle": STR, "products": arr(STR)}))})
 
 
 def add_details(top: list[dict], genre: str, llm_cfg: dict) -> list[dict]:

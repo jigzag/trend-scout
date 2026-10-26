@@ -48,11 +48,14 @@ def fake_post(url, **kw):
         fake_post.media += 1
         mid = 100 + fake_post.media
         return Resp({"id": mid, "source_url": f"https://nocode-ai.net/wp-content/uploads/{mid}.jpg"})
+    if url.endswith("/wp-json/wp/v2/categories"):
+        assert kw["json"] == {"name": "動画生成"}
+        return Resp({"id": 7})
     if "/wp-json/wp/v2/media/" in url:
         return Resp({"id": 1})
     if url.endswith("/wp-json/wp/v2/posts"):
         assert kw["json"]["status"] == "draft" and kw["auth"] == ("nonpro", "xxxx xxxx")
-        assert kw["json"]["featured_media"] == 101
+        assert kw["json"]["featured_media"] == 101 and kw["json"]["categories"] == [7]
         return Resp({"id": 42, "link": "https://nocode-ai.net/?p=42"})
     raise AssertionError(url)
 fake_post.images = fake_post.media = 0
@@ -72,8 +75,11 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
                            "steps": [], "cautions": [], "unknowns": ["日本での提供時期"], **fake_llm.facts_extra},
                           ensure_ascii=False)
     if "記事の構成を作って" in prompt:
+        schema = a[0] if a else kw.get("schema")
+        assert not schema or "動画生成" in schema["properties"]["category"]["enum"]   # 決めたカテゴリだけ選ばせる
         return json.dumps({"title": "ChatGPTの試着機能でできること", "slug": "chatgpt-virtual-try-on",
-                           "excerpt": "説明", "persona": "研修担当のAさん", "sections": []}, ensure_ascii=False)
+                           "excerpt": "説明", "persona": "研修担当のAさん、個人事業主のBさん", "category": "動画生成",
+                           "sections": []}, ensure_ascii=False)
     if "記事本文を書いて" in prompt:
         assert ("無料版は3回まで" in prompt) == fake_llm.with_memo
         return "```html\n" + BODY + "\n```"
@@ -127,7 +133,10 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
                        "OPENAI_API_KEY": "sk-test"})
     sent = {}
     fake_llm.with_memo = True
-    def no_net(url, **kw): raise AssertionError(f"ネットに出ようとした: {url}")
+    def no_net(url, **kw):
+        if url.endswith("/wp-json/wp/v2/categories"):
+            return Resp([{"id": 3, "name": "画像生成・デザイン"}])   # 「動画生成」はまだない → 作る
+        raise AssertionError(f"ネットに出ようとした: {url}")
     with mock.patch.object(research.requests, "post", fake_post), \
          mock.patch.object(research.requests, "get", no_net), \
          mock.patch.object(writer, "call_llm", fake_llm), \

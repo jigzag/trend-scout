@@ -62,8 +62,19 @@ def trash(post_id: int) -> None:
     _check(requests.delete(f"{_base()}/wp-json/wp/v2/posts/{post_id}", auth=_auth(), timeout=60))
 
 
+def category_id(name: str) -> int:
+    """カテゴリ名からIDを返す。なければ作る。"""
+    found = _check(requests.get(f"{_base()}/wp-json/wp/v2/categories", auth=_auth(),
+                                params={"search": name, "per_page": 100}, timeout=60))
+    for c in found:
+        if c.get("name") == name:
+            return c["id"]
+    return _check(requests.post(f"{_base()}/wp-json/wp/v2/categories", auth=_auth(),
+                                json={"name": name}, timeout=60))["id"]
+
+
 def post_draft(title: str, content: str, slug: str = "", excerpt: str = "",
-               featured_media: int | None = None) -> dict:
+               featured_media: int | None = None, categories: list[int] | None = None) -> dict:
     """下書きとして投稿し {id, link, edit_url} を返す。公開はしない。"""
     body = {"title": title, "content": content, "status": "draft"}
     if slug:
@@ -72,6 +83,8 @@ def post_draft(title: str, content: str, slug: str = "", excerpt: str = "",
         body["excerpt"] = excerpt
     if featured_media:
         body["featured_media"] = featured_media
+    if categories:
+        body["categories"] = categories
     js = _check(requests.post(f"{_base()}/wp-json/wp/v2/posts", auth=_auth(), json=body, timeout=60))
     return {"id": js["id"], "link": js.get("link", ""),
             "edit_url": f"{_base()}/wp-admin/post.php?post={js['id']}&action=edit"}
