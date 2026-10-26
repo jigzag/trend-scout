@@ -1,0 +1,45 @@
+{
+  "title": "Yourcast 2.0 — TelegramでAI要約とタイムスタンプを使う方法",
+  "slug": "yourcast-2-0-telegram-ai",
+  "excerpt": "Yourcast 2.0はTelegram上で動くポッドキャストボットの大型アップデート。AI要約と要約内のタイムスタンプで音声の該当箇所にジャンプでき、OPMLインポートや最大2GB対応、Telegram Starsでの有料プランも導入されています。",
+  "persona": "社内ポッドキャストや外部音声を整理して共有したい研修担当のAさん",
+  "chars": 2628,
+  "image_prompts": {
+    "featured": "Illustration of a person holding a smartphone showing a podcast waveform and floating AI summary bubbles.",
+    "scenario": "Illustration of a training coordinator at a desk listening to a podcast on a phone while taking notes."
+  },
+  "similarity": {
+    "ratio": 0.017,
+    "longest": 23,
+    "ok": true
+  },
+  "warnings": [],
+  "memo": "",
+  "sources": [
+    {
+      "title": "Yourcast 2.0",
+      "url": "https://www.producthunt.com/products/yourcast"
+    },
+    {
+      "title": "Yourcast 2.0 (t.me) Review & Alternatives 2026 | PoweredByAI",
+      "url": "https://poweredbyai.app/project/yourcast-2-0"
+    }
+  ],
+  "candidate": {
+    "title": "Yourcast 2.0",
+    "url": "https://www.producthunt.com/products/yourcast"
+  },
+  "images": {
+    "featured": 30,
+    "media": [
+      30,
+      31
+    ]
+  },
+  "wordpress": {
+    "id": 32,
+    "link": "https://nocode-ai.net/?p=32",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=32&action=edit"
+  },
+  "created_at": "2026-10-26T09:01:42+09:00"
+}
