@@ -146,6 +146,8 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
          mock.patch.object(article, "BASE", tmp),          mock.patch.object(affiliate, "PATH", tmp / "aff.yaml"):
         affiliate.command("add", "ChatGPT/チャットGPT", "https://px.a8.net/svt/ejp?a8mat=TEST")
         affiliate.command("add", "Gemini", "https://example.com/gemini")   # 記事に出てこない → 入らない
+        affiliate.command("add", "ココナラ", "https://px.a8.net/svt/ejp?a8mat=COCO")
+        affiliate.command("category", "ココナラ", "動画", categories=["動画生成", "画像生成・デザイン"])
         art = article.run(1, memo="無料版は3回まで", config_path=Path(article.__file__).parent / "config.yaml")
     assert art["wordpress"]["edit_url"] == "https://nocode-ai.net/wp-admin/post.php?post=42&action=edit"
     assert COPIED not in art["content"]                      # 似すぎた段落は書き直された
@@ -165,9 +167,11 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert "uploads/102.jpg" in art["content"] and "AI生成" in art["content"]
     assert art["content"].index("uploads/102.jpg") > art["content"].index("想定シナリオ")
     assert art["content"].count("a8mat=TEST") == 2 and "example.com/gemini" not in art["content"]
-    assert 'rel="sponsored noopener"' in art["content"] and art["affiliates"] == ["ChatGPT"]
+    assert 'rel="sponsored noopener"' in art["content"] and art["affiliates"] == ["ChatGPT", "ココナラ"]
     assert art["content"].index("affiliate-box") > art["content"].index("想定シナリオ")
-    assert "アフィリンク 1件（ChatGPT）" in sent["text"]
+    assert art["content"].count("a8mat=COCO") == 1 and "プロに頼む方法" in art["content"]   # カテゴリ「動画生成」の記事
+    assert art["content"].index("a8mat=COCO") > art["content"].rindex("a8mat=TEST")        # 最後に出す
+    assert "アフィリンク 2件（ChatGPT、ココナラ）" in sent["text"]
     print(sent["text"])
 
 
@@ -256,6 +260,19 @@ def test_affiliate(tmp=Path(tempfile.gettempdir()) / "ts_aff.yaml"):
         affiliate.command("add", "X", "ftp://bad", path=tmp); raise AssertionError
     except ValueError:
         pass
+    cats = ["動画生成", "画像生成・デザイン", "音声・ナレーション"]
+    assert "画像生成・デザイン、動画生成" in affiliate.command("category", "Clips", "画像、動画", path=tmp, categories=cats)
+    affiliate.command("add", "Clips", "https://new.example", path=tmp)                  # リンク更新でカテゴリは消えない
+    assert affiliate.load(tmp)[0]["categories"] == ["画像生成・デザイン", "動画生成"]
+    assert "カテゴリ:" in affiliate.command("list", path=tmp)
+    try:
+        affiliate.command("category", "Clips", "料理", path=tmp, categories=cats); raise AssertionError
+    except ValueError:
+        pass
+    assert "解除" in affiliate.command("category", "Clips", "なし", path=tmp, categories=cats)
+    assert "先に" in affiliate.command("category", "Notta", "動画", path=tmp, categories=cats)
+    e = {"name": "ココナラ", "link": "https://c", "categories": ["動画生成"]}
+    assert affiliate.by_category([e], "動画生成") == [e] and affiliate.by_category([e], "動画生成", [e]) == []
     assert "削除しました" in affiliate.command("remove", "Clips by Plastic", path=tmp)
     assert "台帳にありません" in affiliate.command("remove", "Clips", path=tmp)
 
@@ -265,7 +282,7 @@ def test_worker_parse():
     import subprocess
     worker = Path(__file__).resolve().parents[1] / "worker" / "line_webhook.js"
     js = (f"import {{ parseCommand as p }} from {json.dumps(worker.as_uri())};"
-          "console.log(JSON.stringify(['1','２ 無料版は3回まで','3：メモ\\n2行目','4','公開','公開 23','削除','ボツ　23','こんにちは','リンク Clips by Plastic/Clips https://px.a8.net/a?b=1','リンク一覧','リンク削除 Clips','リンク Clips','リンク Clips <a href=x>x</a>'].map(p)));")
+          "console.log(JSON.stringify(['1','２ 無料版は3回まで','3：メモ\\n2行目','4','公開','公開 23','削除','ボツ　23','こんにちは','リンク Clips by Plastic/Clips https://px.a8.net/a?b=1','リンク一覧','リンク削除 Clips','リンク Clips','リンク Clips <a href=x>x</a>','リンクカテゴリ ココナラ 画像、動画'].map(p)));")
     try:
         out = subprocess.run(["node", "--input-type=module", "-e", js], capture_output=True, text=True,
                              encoding="utf-8", timeout=30)
@@ -283,6 +300,7 @@ def test_worker_parse():
                                                           "link": "https://px.a8.net/a?b=1"}}
     assert r[10]["payload"]["action"] == "list" and r[11]["payload"] == {"action": "remove", "name": "Clips", "link": ""}
     assert r[12]["type"] == "help" and r[13]["payload"]["link"] == '<a href=x>x</a>'
+    assert r[14]["payload"] == {"action": "category", "name": "ココナラ", "link": "画像、動画"}
 
 
 if __name__ == "__main__":

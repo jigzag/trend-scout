@@ -5,6 +5,7 @@
   python affiliate.py --add "Clips by Plastic/Clips" "https://px.a8.net/..."   # 登録（別名は / で区切る）
   python affiliate.py --add "Clips" '<a href="...">...</a><img ...>'           # ASP のHTMLをそのまま登録してもよい
   python affiliate.py --remove "Clips by Plastic"
+  python affiliate.py --category "ココナラ" "画像、動画"   # カテゴリで出すリンク（ツール名が本文になくても、そのカテゴリの記事の最後に1行入れる）
   python affiliate.py --list
 """
 from __future__ import annotations
@@ -24,6 +25,7 @@ from notifier import send_line
 PATH = BASE / "data" / "affiliates.yaml"
 BOX_CLASS = "affiliate-box"
 MAX_LINKS = 2  # 1記事に入れるツールの数
+PITCH = "自分で作るのが難しければ、プロに頼む方法もあります"  # カテゴリで出すリンクの前置き（台帳の pitch で変えられる）
 
 
 def load(path=None) -> list[dict]:
@@ -62,7 +64,7 @@ def add(entries: list[dict], name_part: str, link: str, today: str = "") -> tupl
     if old:
         known = [n.lower() for n in names(old)]
         aliases = (old.get("aliases") or []) + [n for n in parts if n.lower() not in known]
-        entry = {"name": old["name"], "aliases": aliases, "link": link, "added": today}
+        entry = {**old, "aliases": aliases, "link": link, "added": today}  # カテゴリ設定は残す
         entries[entries.index(old)] = entry
     else:
         entry = {"name": parts[0], "aliases": parts[1:], "link": link, "added": today}
@@ -96,6 +98,26 @@ def match(entries: list[dict], title: str, text: str, limit: int = MAX_LINKS) ->
     return [e for _, e in found[:limit]]
 
 
+def by_category(entries: list[dict], category: str, exclude: list[dict] = ()) -> list[dict]:
+    """そのカテゴリに割り当てたリンク（本文で一致したものは除く）。"""
+    if not category:
+        return []
+    return [e for e in entries if category in (e.get("categories") or []) and e not in exclude]
+
+
+def resolve_categories(text: str, categories: list[str]) -> list[str]:
+    """「画像、動画」のような短い書き方を、config のカテゴリ名に直す。「なし」で解除。"""
+    out = []
+    for word in (w.strip() for w in re.split(r"[、,，/／\s　]+", text) if w.strip()):
+        if word in ("なし", "解除"):
+            return []
+        hits = [c for c in categories if word in c]
+        if not hits:
+            raise ValueError(f"「{word}」に当たるカテゴリがありません。使えるのは: " + "、".join(categories))
+        out += [c for c in hits if c not in out]
+    return out
+
+
 def link_html(e: dict) -> str:
     link = e["link"]
     if link.startswith("<"):
@@ -110,26 +132,44 @@ def box(found: list[dict]) -> str:
             f"<ul>{items}</ul></div>")
 
 
-def insert(body: str, found: list[dict]) -> str:
-    """想定シナリオの章の終わり（次の h2 の前）と、本文の最後にリンクの囲みを入れる。"""
-    if not found:
-        return body
-    b = box(found)
-    i = body.find("想定シナリオ")
-    if i != -1:
-        j = body.find("<h2", body.find("</h2>", i))
-        if j != -1:
-            body = body[:j] + b + "\n" + body[j:]
-    return body + "\n" + b
+def category_html(cat_links: list[dict]) -> str:
+    lines = []
+    for e in cat_links:
+        link = e["link"] if e["link"].startswith("<") else (
+            f'<a href="{html.escape(e["link"])}" target="_blank" rel="sponsored noopener">{html.escape(e["name"])}</a>')
+        lines.append(f"<p>{html.escape(e.get('pitch') or PITCH)} → {link}</p>")
+    return f'<div class="{BOX_CLASS} blank-box">' + "".join(lines) + "</div>"
 
 
-def command(action: str, name: str = "", link: str = "", path=None) -> str:
+def insert(body: str, found: list[dict], cat_links: list[dict] = ()) -> str:
+    """想定シナリオの章の終わり（次の h2 の前）と、本文の最後にリンクの囲みを入れる。
+    カテゴリで出すリンクは本文の最後に1回だけ（ツールの囲みより後）。"""
+    if found:
+        b = box(found)
+        i = body.find("想定シナリオ")
+        if i != -1:
+            j = body.find("<h2", body.find("</h2>", i))
+            if j != -1:
+                body = body[:j] + b + "\n" + body[j:]
+        body = body + "\n" + b
+    if cat_links:
+        body = body + "\n" + category_html(cat_links)
+    return body
+
+
+def _load_categories() -> list[str]:
+    cfg = yaml.safe_load((BASE / "config.yaml").read_text(encoding="utf-8"))
+    return cfg.get("categories") or []
+
+
+def command(action: str, name: str = "", link: str = "", path=None, categories: list[str] | None = None) -> str:
     entries = load(path)
     if action == "list":
         if not entries:
             return "【リンク台帳】まだ登録がありません\n登録: リンク ツール名 URL"
         return "【リンク台帳】\n" + "\n".join(
-            f"・{'／'.join(names(e))}" for e in entries) + f"\n（{len(entries)}件）"
+            f"・{'／'.join(names(e))}" + (f"（カテゴリ: {'、'.join(e['categories'])}）" if e.get("categories") else "")
+            for e in entries) + f"\n（{len(entries)}件）"
     if action == "add":
         today = datetime.now(JST).strftime("%Y-%m-%d")
         e, replaced = add(entries, name, link, today)
@@ -142,6 +182,16 @@ def command(action: str, name: str = "", link: str = "", path=None) -> str:
             return f"「{name}」は台帳にありません"
         save(entries, path)
         return f"【リンクを削除しました】\n{e['name']}"
+    if action == "category":
+        e = find(entries, name)
+        if not e:
+            return f"「{name}」は台帳にありません。先に「リンク {name} URL」で登録してください"
+        e["categories"] = resolve_categories(link, categories if categories is not None else _load_categories())
+        save(entries, path)
+        if not e["categories"]:
+            return f"【カテゴリを解除しました】\n{e['name']}"
+        return (f"【カテゴリを設定しました】\n{e['name']} → {'、'.join(e['categories'])}\n"
+                f"これらのカテゴリの記事の最後に「{e.get('pitch') or PITCH} → {e['name']}」を入れます")
     raise ValueError(f"unknown action: {action}")
 
 
@@ -150,12 +200,15 @@ def main() -> None:
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--add", nargs=2, metavar=("NAME", "LINK"))
     g.add_argument("--remove", metavar="NAME")
+    g.add_argument("--category", nargs=2, metavar=("NAME", "CATEGORIES"))
     g.add_argument("--list", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
     try:
         if args.add:
             text = command("add", *args.add)
+        elif args.category:
+            text = command("category", *args.category)
         elif args.remove:
             text = command("remove", args.remove)
         else:

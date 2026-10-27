@@ -12,6 +12,7 @@
 //   削除 / 削除 23          … 下書きをゴミ箱へ
 //   リンク ツール名 URL      … アフィリエイトリンクを台帳に登録（ツール名は / で別名を足せる。URLの代わりにASPのHTMLでもよい）
 //   リンク削除 ツール名 / リンク一覧
+//   リンクカテゴリ ツール名 画像、動画 … そのカテゴリの記事の最後に必ず出す（「なし」で解除）
 //   ヘルプ                  … 使い方
 
 const HELP = [
@@ -23,6 +24,7 @@ const HELP = [
   "（公開 23 のように投稿IDも指定できます）",
   "リンク ツール名 URL … アフィリエイトリンクを登録（例: リンク Clips https://px.a8.net/...）",
   "リンク削除 ツール名 / リンク一覧",
+  "リンクカテゴリ ツール名 画像、動画 … そのカテゴリの記事に必ず出す（なし で解除）",
 ].join("\n");
 
 export function parseCommand(raw) {
@@ -36,6 +38,8 @@ export function parseCommand(raw) {
   m = text.match(/^(?:削除|ボツ)(?:[\s　]*(\d+))?$/);
   if (m) return { type: "wp-command", payload: { action: "trash", id: m[1] || "" } };
   if (/^リンク一覧$/.test(text)) return { type: "affiliate-link", payload: { action: "list", name: "", link: "" } };
+  m = text.match(/^リンクカテゴリ[\s　]+(\S+)[\s　]+(.+)$/);
+  if (m) return { type: "affiliate-link", payload: { action: "category", name: m[1].trim(), link: m[2].trim() } };
   m = text.match(/^リンク削除[\s　]+(.+)$/);
   if (m) return { type: "affiliate-link", payload: { action: "remove", name: m[1].trim(), link: "" } };
   m = text.match(/^リンク[\s　]+([\s\S]+?)[\s　]+((?:https?:\/\/|<)[\s\S]+)$/);
@@ -45,7 +49,7 @@ export function parseCommand(raw) {
 
 const REPLY = {
   "write-article": (p) => `受け付けました。候補${p.n}で記事を作ります${p.memo ? "（メモあり）" : ""}。数分お待ちください。`,
-  "affiliate-link": (p) => ({ add: "リンクを登録します。", remove: "リンクを削除します。", list: "台帳を確認します。" })[p.action] +
+  "affiliate-link": (p) => ({ add: "リンクを登録します。", remove: "リンクを削除します。", category: "カテゴリを設定します。", list: "台帳を確認します。" })[p.action] +
     "少しお待ちください。",
   "wp-command": (p) => (p.action === "publish" ? "公開します。少しお待ちください。" : "ゴミ箱へ移します。少しお待ちください。"),
 };

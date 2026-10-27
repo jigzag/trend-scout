@@ -6,16 +6,16 @@ on:
   workflow_dispatch:        # Actions画面からも実行できる
     inputs:
       action:
-        description: "add=登録 / remove=削除 / list=一覧"
+        description: "add=登録 / remove=削除 / category=カテゴリ設定 / list=一覧"
         default: list
         type: choice
-        options: [add, remove, list]
+        options: [add, remove, category, list]
       name:
         description: "ツール名（別名は / で区切る。例: Clips by Plastic/Clips）"
         required: false
         default: ""
       link:
-        description: "リンクのURL、または ASP の HTML"
+        description: "リンクのURL、または ASP の HTML（category のときはカテゴリ。例: 画像、動画）"
         required: false
         default: ""
 
@@ -48,6 +48,7 @@ jobs:
           case "$ARG_ACTION" in
             add) python affiliate.py --add "$ARG_NAME" "$ARG_LINK" ;;
             remove) python affiliate.py --remove "$ARG_NAME" ;;
+            category) python affiliate.py --category "$ARG_NAME" "$ARG_LINK" ;;
             *) python affiliate.py --list ;;
           esac
       - name: Save

@@ -145,9 +145,11 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
     use_wp = not dry_run and wordpress.configured()
     img_opt = cfg.get("image") or {}
     pics = add_images(art, img_opt) if use_wp and img_opt.get("enabled") else {"featured": None, "media": []}
-    found = affiliate.match(affiliate.load(), art["title"], writer.plain(art["body"]))
-    art["body"] = affiliate.insert(art["body"], found)
-    art["affiliates"] = [e["name"] for e in found]
+    ledger = affiliate.load()
+    found = affiliate.match(ledger, art["title"], writer.plain(art["body"]))
+    cat_links = affiliate.by_category(ledger, art.get("category", ""), found)
+    art["body"] = affiliate.insert(art["body"], found, cat_links)
+    art["affiliates"] = [e["name"] for e in found + cat_links]
     art["content"] = writer.assemble(art.pop("body"), art.pop("_sources"))
     art["images"] = pics
 
