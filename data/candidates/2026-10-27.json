@@ -1,0 +1,98 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 7,
+    "monetizable": 8,
+    "buzz": 9.0,
+    "topic": "N8N Chat UI",
+    "total": 85,
+    "detail": {
+      "id": 0,
+      "summary": "n8n Chat UIは、ノーコードのワークフロー自動化プラットフォームn8nに組み込める、ブランドカスタマイズ可能なAIチャットウィジェット。コーディング不要で自社サイトや社内ツールにAIチャットを置ける。",
+      "why": "日本の中小企業や個人事業主が、自社ブランドで顧客対応や社内ヘルプをAI化する際に、エンジニアを雇わずに導入できる点が価値。",
+      "usecase": "コーポレートサイトにFAQチャットを置いて問い合わせ工数を削減したり、社内の経費・手続き問い合わせをAIチャットで一次対応させて総務の負担を減らす。既存のCRMやGoogle Sheetsとn8nで連携して回答の履歴保存・通知も自動化できる。",
+      "angle": "ノーコードで自社ブランドのAIチャットを導入する方法（費用と手順）",
+      "products": [
+        "n8n Cloud",
+        "OpenAI / ChatGPT",
+        "Anthropic / Claude",
+        "Zapier （併用例）"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "N8N Chat UI",
+      "url": "https://www.producthunt.com/products/n8n-chat-ui-2",
+      "summary": "Beautiful, no-code, on-brand AI chat widgets for n8n Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "usecase": 8,
+    "novelty": 7,
+    "monetizable": 6,
+    "buzz": 8.5,
+    "topic": "Kiwi assistant",
+    "total": 80,
+    "detail": {
+      "id": 1,
+      "summary": "Kiwiは“先回り”してメッセージを送ってくれるプロアクティブAIアシスタント。リマインドや提案をチャット形式でプッシュしてくれるサービスとして紹介されている。",
+      "why": "日常業務のタスク管理や顧客フォローで“今やるべきこと”を知らせてくれる仕組みは、日本の忙しい個人事業主・営業担当に刺さるため、使いどころを具体的に示す価値がある。",
+      "usecase": "営業担当は商談後のフォロー文案や次のアクションをスマホに先回りで提示してもらい、すぐ送信／予定登録できる。SNS運用者は投稿のネタやリライト案を朝イチで受け取り、作業効率が上がる。",
+      "angle": "“先に教えてくれる”AIで業務を進める——朝イチ通知で生産性を上げる運用術",
+      "products": [
+        "Kiwi（有償プランがある場合）",
+        "スマホ標準のリマインダー/カレンダー連携ツール"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Kiwi",
+      "url": "https://www.producthunt.com/products/kiwi-7",
+      "summary": "A proactive AI assistant that texts you before you ask Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.5
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 7,
+    "monetizable": 6,
+    "buzz": 5.0,
+    "topic": "Loqui dictation",
+    "total": 77,
+    "detail": {
+      "id": 2,
+      "summary": "LoquiはMac上の任意のアプリで音声を話すだけで“送信可能なテキスト”に変換してくれるユーティリティ。ショートカットやキーボード操作不要でディクテーションを完結させる点が特徴。",
+      "why": "日本語での音声入力・議事録作成を手軽に行いたい非エンジニア層（経理・研修担当・SNS制作者）にとって、Macだけで完結する音声→テキストの時短ツールはすぐ活用できるため価値が高い。",
+      "usecase": "オンライン会議中にワンアクションで要点をメモしてチャットへ送る、動画の字幕用テキストを素早く作る、SNS用の短い文章を音声で作成してコピー＆ペーストする場面で便利。",
+      "angle": "Macで話すだけで文章が作れる！現場で使える音声→テキスト運用ガイド",
+      "products": [
+        "Loqui（有料版があれば）",
+        "Otter.ai（代替／比較）",
+        "Descript（字幕・編集用途での比較）"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Loqui",
+      "url": "https://www.producthunt.com/products/loqui-2",
+      "summary": "Turns your voice into ready-to-send text in any Mac app Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 5.0
+      }
+    }
+  }
+]
