@@ -62,6 +62,7 @@ fake_post.images = fake_post.media = 0
 
 
 BODY = ("<p>ChatGPTに試着機能が加わりました。この記事では、できることと注意点をまとめます。</p>"
+        + writer.EASY_DIV + "<p><strong>ざっくり言うと</strong></p><ul><li>服を着た自分の姿を、写真で確かめられる道具です</li></ul></div>"
         "<h2>何ができるのか</h2><p>" + COPIED + "</p>"
         + "<h2>使い始め方</h2><p>商品カードから試着ボタンを押して写真を選びます。</p>" * 30
         + "<h2>【想定シナリオ】研修担当のAさんの場合</h2><p>以下は架空の例です。Aさんなら、制服の着用イメージ作りに使えそうです。</p>"
@@ -111,7 +112,8 @@ def test_similarity_detects_copy():
 def test_check_rules():
     w = writer.check_rules("<p>実際に使ってみると便利でした。</p>", "")
     assert any("体験" in x for x in w) and any("想定シナリオ" in x for x in w)
-    ok = writer.check_rules(f'<h2>【想定シナリオ】</h2><div class="{writer.NOTE_CLASS}"><p>使ってみた感想</p></div>' + "<p>あ</p>" * 3000, "メモ")
+    assert any("ざっくり" in x for x in writer.check_rules("<h2>【想定シナリオ】</h2>" + "<p>あ</p>" * 3000, ""))
+    ok = writer.check_rules(writer.EASY_DIV + f'</div><h2>【想定シナリオ】</h2><div class="{writer.NOTE_CLASS}"><p>使ってみた感想</p></div>' + "<p>あ</p>" * 3000, "メモ")
     assert ok == []
     hedgy = "<h2>【想定シナリオ】</h2>" + "<p>上限は明らかにされていません。</p><p>詳しくは公式サイトでご確認ください。</p>" + "<p>あ</p>" * 3000
     assert any("2回" in x for x in writer.check_rules(hedgy, ""))
@@ -147,6 +149,7 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert COPIED not in art["content"]                      # 似すぎた段落は書き直された
     assert art["similarity"]["ok"]
     assert art["content"].startswith(writer.PR_NOTE)
+    assert "easy-box memo-box" in art["content"] and not any("ざっくり" in w for w in art["warnings"])
     assert "参考にした情報" in art["content"] and "https://other.example/c" in art["content"]
     assert "itmedia.co.jp/b/2" not in art["content"]          # 同じドメインは1件だけ
     assert "下書きができました" in sent["text"] and "?p=42&preview=true" in sent["text"] and "「公開」" in sent["text"]

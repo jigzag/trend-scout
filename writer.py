@@ -13,6 +13,8 @@ from scorer import BOOL, INT, STR, arr, call_llm, extract_json, obj_schema, unwr
 
 PR_NOTE = '<p class="pr-note">※本記事にはプロモーション（広告）が含まれる場合があります。</p>'
 NOTE_CLASS = "operator-note"   # 運営者メモの囲み。この中だけは「試した」表現を許す
+EASY_CLASS = "easy-box"        # 冒頭の「ざっくり言うと」の囲み（Cocoon の memo-box の見た目を借りる）
+EASY_DIV = f'<div class="{EASY_CLASS} memo-box common-icon-box block-box">'
 
 # 運営者が試していない記事で使ってはいけない表現（運営者メモの囲みの外）
 EXPERIENCE_WORDS = re.compile(r"試してみ|使ってみ|実際に試|実際に使|触ってみ|検証してみ|やってみ")
@@ -21,7 +23,10 @@ HEDGE_WORDS = re.compile(r"公式(?:サイト|情報|発表|案内|ページ|ヘ
                          r"|明らかにされていません|明示されていません|記載(?:が|は)ありません|公表されていません")
 
 RULES = """# 守ること
-- 読者はプログラミングをしない人。専門用語は使わないか、使うならひとこと説明する。です・ます調
+- 読者はプログラミングをしない人。AIにくわしくない人が読んでも分かるように書く。です・ます調
+- 1文は短く（40字くらいまで）。1つの文に言いたいことは1つ
+- 専門用語・カタカナ語・英語は、できるだけふつうの言葉に言い換える。どうしても使うときは、初めて出たところで
+  かっこ書きで説明する（例：「API（ほかのアプリとつなぐための窓口）」「エージェント（指示すると自分で作業を進めてくれるAI）」）
 - 書いてよい事実は「事実メモ」にあるものだけ。料金・回数・日付・対応環境などを推測で足さない。
   事実メモにないことは**書かない（触れない）**。「分からないこと」を並べて文字数を稼がない
 - 「公式サイトで確認してください」「明らかにされていません」「記載がありません」のような逃げの表現は、
@@ -118,8 +123,12 @@ WRITE_PROMPT = """あなたはブログライターです。構成と事実メ�
 
 # 書き方
 - 本文は {min_chars}〜{max_chars} 文字
-- HTMLだけを出力する。使ってよいタグは h2, h3, p, ul, ol, li, strong, table, tr, th, td のみ（h1・タイトル・コードフェンスは出さない）
+- HTMLだけを出力する。使ってよいタグは h2, h3, p, ul, ol, li, strong, table, tr, th, td のみ（h1・タイトル・コードフェンスは出さない。div は「ざっくり言うと」と「運営者のひとこと」の囲みだけ）
 - 冒頭（最初のh2の前）に、この記事で分かることを2〜3文で書く。見出しに「導入」「はじめに」は使わない
+- そのすぐ後（最初のh2の前）に、次の形で「ざっくり言うと」の囲みを必ず入れる。
+  {easy_div}<p><strong>ざっくり言うと</strong></p><ul><li>…</li><li>…</li><li>…</li></ul></div>
+  中身は3〜4項目の箇条書き。AIにくわしくない中学生でも分かる言葉だけで書く（専門用語・英語・カタカナの製品機能名は使わない）。
+  「何をしてくれる道具か（身近なものにたとえて『〜みたいなもの』）」「何がうれしいか」「いくらで、だれ向けか」が分かるようにする
 - 【想定シナリオ】は記事の中心。構成の persona の2〜3人それぞれに h3 の見出し（例「研修担当のAさんの場合」）を付け、
   「困っていること → このツールをどの場面でどう使うか（手順に沿って）→ 期待できること」を2〜3段落の文章で書く。
   節の冒頭に「以下は架空の人物を想定した使い方の例です」と書く。人物ごとに使う機能や場面を変え、同じ話を繰り返さない
@@ -145,6 +154,8 @@ REVIEW_PROMPT = """あなたは校閲者です。記事を事実メモと照ら�
 1. 事実メモにない数字・料金・日付・仕様が書かれていたら、その文ごと削除する（「公式サイトで確認」に置き換えない）
 2. 体験したかのような表現（運営者のひとこと の囲みの外）を、一般的な説明に直す
 3. 【想定シナリオ】が架空の例だと分かる書き方になっているか。架空の人物の結果や数字があれば消す
+3b. 「ざっくり言うと」の囲み（class="{easy_class}" の div）は消さない。中に専門用語や英語があれば、やさしい言葉に直す。
+   本文の専門用語も、初めて出たところにかっこ書きの説明がなければ足す
 4. 誤字・不自然な日本語・同じ内容の繰り返し
 5. 「公式サイトで確認してください」「明らかにされていません」「記載がありません」などの逃げの表現は、記事全体で1回まで残し、
    それ以外は文ごと消す。「〜と案内されています」「〜と説明されています」は、言い切りの形に直す
@@ -204,14 +215,15 @@ def write_body(genre: str, outline: dict, facts: dict, memo: str, opt: dict, cfg
     raw = call_llm(WRITE_PROMPT.format(
         genre=genre.strip(), outline=json.dumps(outline, ensure_ascii=False),
         facts=json.dumps(facts, ensure_ascii=False), memo=memo or "（なし）", rules=RULES,
-        min_chars=opt.get("min_chars", 3000), max_chars=opt.get("max_chars_body", 4000), note_class=NOTE_CLASS),
+        min_chars=opt.get("min_chars", 3000), max_chars=opt.get("max_chars_body", 4000), note_class=NOTE_CLASS,
+        easy_div=EASY_DIV),
         cfg, 16000)
     return strip_fence(raw)
 
 
 def review(article: str, facts: dict, memo: str, cfg: dict) -> str:
     raw = call_llm(REVIEW_PROMPT.format(facts=json.dumps(facts, ensure_ascii=False), memo=memo or "（なし）",
-                                        rules=RULES, article=article), cfg, 16000)
+                                        rules=RULES, article=article, easy_class=EASY_CLASS), cfg, 16000)
     out = strip_fence(raw)
     # 校閲で極端に短くなったら（途中で切れた等）元の記事を使う
     return out if len(plain(out)) >= len(plain(article)) * 0.6 else article
@@ -318,6 +330,8 @@ def check_rules(article: str, memo: str, min_chars: int = 3000) -> list[str]:
     words = sorted(set(EXPERIENCE_WORDS.findall(outside)))
     if words:
         warnings.append("体験したかのような表現: " + "、".join(words))
+    if EASY_CLASS not in article:
+        warnings.append("「ざっくり言うと」の囲みがない")
     if "想定シナリオ" not in article:
         warnings.append("【想定シナリオ】の節がない")
     hedges = len(HEDGE_WORDS.findall(plain(article)))
