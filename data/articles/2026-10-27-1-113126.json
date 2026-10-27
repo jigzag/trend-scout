@@ -1,0 +1,52 @@
+{
+  "title": "ノーコードで作るブランドAIチャット導入ガイド",
+  "slug": "n8n-chat-ui-guide",
+  "excerpt": "N8N Chat UIはn8nワークフローと連携するノーコードのブランド化可能なAIチャットウィジェットです。ライブプレビューや音声入力、ファイルアップロード、公式プラグインの使い方を実務向けに解説します。",
+  "persona": "研修用の案内を自動化したい人事担当のAさん、ネットショップの問い合わせを減らしたい個人事業主のBさん、顧客対応を効率化したい中小企業のCS担当のCさん",
+  "category": "業務効率化・自動化",
+  "chars": 2107,
+  "image_prompts": {
+    "featured": "Illustration of a customizable chat widget design panel and a website page showing the widget, no logos or real screens.",
+    "scenario": "Illustration of the first persona (HR staff) at a desk customizing a chat widget on a laptop, simple office setting, no real people or logos."
+  },
+  "similarity": {
+    "ratio": 0.021,
+    "longest": 37,
+    "ok": true
+  },
+  "warnings": [
+    "本文が短い（2107字）"
+  ],
+  "memo": "",
+  "sources": [
+    {
+      "title": "N8N Chat UI",
+      "url": "https://www.producthunt.com/products/n8n-chat-ui-2"
+    },
+    {
+      "title": "N8N Chat UI — Capabilities, Use Cases, and FAQ | Superpower Daily",
+      "url": "https://superpowerdaily.com/tools/n8n-chat-ui"
+    },
+    {
+      "title": "Wix Chat Widget App for n8n - N8N Chat UI",
+      "url": "https://n8nchatui.com/plugins/wix"
+    }
+  ],
+  "candidate": {
+    "title": "N8N Chat UI",
+    "url": "https://www.producthunt.com/products/n8n-chat-ui-2"
+  },
+  "images": {
+    "featured": 44,
+    "media": [
+      44,
+      45
+    ]
+  },
+  "wordpress": {
+    "id": 46,
+    "link": "https://nocode-ai.net/?p=46",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=46&action=edit"
+  },
+  "created_at": "2026-10-27T11:31:28+09:00"
+}
