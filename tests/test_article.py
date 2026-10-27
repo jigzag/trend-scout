@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import article, research, writer, wordpress  # noqa: E402
+import affiliate, article, research, writer, wordpress  # noqa: E402
 
 SRC_MAIN = ("OpenAIは10月2日、ChatGPTにバーチャル試着機能を追加したと発表した。利用者が自分の写真をアップロードすると、"
             "商品の服やアクセサリーを合成した画像を表示する。まず米国のPlusユーザーから提供を始める。" * 8)
@@ -143,7 +143,9 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
          mock.patch.object(research.requests, "get", no_net), \
          mock.patch.object(writer, "call_llm", fake_llm), \
          mock.patch.object(article, "send_line", lambda t: sent.setdefault("text", t)), \
-         mock.patch.object(article, "BASE", tmp):
+         mock.patch.object(article, "BASE", tmp),          mock.patch.object(affiliate, "PATH", tmp / "aff.yaml"):
+        affiliate.command("add", "ChatGPT/チャットGPT", "https://px.a8.net/svt/ejp?a8mat=TEST")
+        affiliate.command("add", "Gemini", "https://example.com/gemini")   # 記事に出てこない → 入らない
         art = article.run(1, memo="無料版は3回まで", config_path=Path(article.__file__).parent / "config.yaml")
     assert art["wordpress"]["edit_url"] == "https://nocode-ai.net/wp-admin/post.php?post=42&action=edit"
     assert COPIED not in art["content"]                      # 似すぎた段落は書き直された
@@ -162,6 +164,10 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert fake_post.images == 2 and saved["images"] == {"featured": 101, "media": [101, 102]}
     assert "uploads/102.jpg" in art["content"] and "AI生成" in art["content"]
     assert art["content"].index("uploads/102.jpg") > art["content"].index("想定シナリオ")
+    assert art["content"].count("a8mat=TEST") == 2 and "example.com/gemini" not in art["content"]
+    assert 'rel="sponsored noopener"' in art["content"] and art["affiliates"] == ["ChatGPT"]
+    assert art["content"].index("affiliate-box") > art["content"].index("想定シナリオ")
+    assert "アフィリンク 1件（ChatGPT）" in sent["text"]
     print(sent["text"])
 
 
@@ -232,12 +238,34 @@ def test_wp_command(tmp=Path(tempfile.gettempdir()) / "ts_wpcmd"):
         assert "ゴミ箱" in wp_command.run("trash", "23") and calls[-1] == ("delete", 23)
 
 
+def test_affiliate(tmp=Path(tempfile.gettempdir()) / "ts_aff.yaml"):
+    tmp.unlink(missing_ok=True)
+    assert "まだ登録がありません" in affiliate.command("list", path=tmp)
+    assert "登録しました" in affiliate.command("add", "Clips by Plastic／Clips", "https://a.example/x", path=tmp)
+    assert "更新しました" in affiliate.command("add", "clips", "<a href='https://px.a8.net/y'>Clips</a><img src='p.gif'>", path=tmp)
+    es = affiliate.load(tmp)
+    assert len(es) == 1 and es[0]["name"] == "Clips by Plastic" and es[0]["link"].startswith("<a")  # 別名でも同じツールとして上書き
+    es = [{"name": "Clef", "aliases": [], "link": "https://c.example"}, {"name": "動画メーカー", "aliases": [], "link": "https://d.example"}]
+    assert affiliate.match(es, "Clefairyの話", "") == []                   # 単語の途中には一致しない
+    assert [e["name"] for e in affiliate.match(es, "", "clef と動画メーカー。Clef")] == ["Clef", "動画メーカー"]
+    body = "<p>導入</p><h2>【想定シナリオ】</h2><p>例</p><h2>まとめ</h2><p>終わり</p>"
+    out = affiliate.insert(body, es[:1])
+    assert out.count("affiliate-box") == 2 and out.index("affiliate-box") < out.index("まとめ")
+    assert "<img src='p.gif'>" in affiliate.box([{"name": "x", "link": "<a href='h'>x</a><img src='p.gif'>"}])  # ASPのHTMLはそのまま
+    try:
+        affiliate.command("add", "X", "ftp://bad", path=tmp); raise AssertionError
+    except ValueError:
+        pass
+    assert "削除しました" in affiliate.command("remove", "Clips by Plastic", path=tmp)
+    assert "台帳にありません" in affiliate.command("remove", "Clips", path=tmp)
+
+
 def test_worker_parse():
     """Cloudflare Worker の返信の読み取り（node があるときだけ）。"""
     import subprocess
     worker = Path(__file__).resolve().parents[1] / "worker" / "line_webhook.js"
     js = (f"import {{ parseCommand as p }} from {json.dumps(worker.as_uri())};"
-          "console.log(JSON.stringify(['1','２ 無料版は3回まで','3：メモ\\n2行目','4','公開','公開 23','削除','ボツ　23','こんにちは'].map(p)));")
+          "console.log(JSON.stringify(['1','２ 無料版は3回まで','3：メモ\\n2行目','4','公開','公開 23','削除','ボツ　23','こんにちは','リンク Clips by Plastic/Clips https://px.a8.net/a?b=1','リンク一覧','リンク削除 Clips','リンク Clips','リンク Clips <a href=x>x</a>'].map(p)));")
     try:
         out = subprocess.run(["node", "--input-type=module", "-e", js], capture_output=True, text=True,
                              encoding="utf-8", timeout=30)
@@ -251,6 +279,10 @@ def test_worker_parse():
     assert r[3]["type"] == "help" and r[8]["type"] == "help"
     assert r[4] == {"type": "wp-command", "payload": {"action": "publish", "id": ""}}
     assert r[5]["payload"]["id"] == "23" and r[6]["payload"]["action"] == "trash" and r[7]["payload"]["id"] == "23"
+    assert r[9] == {"type": "affiliate-link", "payload": {"action": "add", "name": "Clips by Plastic/Clips",
+                                                          "link": "https://px.a8.net/a?b=1"}}
+    assert r[10]["payload"]["action"] == "list" and r[11]["payload"] == {"action": "remove", "name": "Clips", "link": ""}
+    assert r[12]["type"] == "help" and r[13]["payload"]["link"] == '<a href=x>x</a>'
 
 
 if __name__ == "__main__":

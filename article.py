@@ -18,6 +18,7 @@ from pathlib import Path
 
 import yaml
 
+import affiliate
 import images
 import research
 import wordpress
@@ -94,7 +95,9 @@ def message(art: dict, wp: dict | None) -> str:
     lines = ["【下書きができました】", art["title"] + (f"（{art['category']}）" if art.get("category") else ""), "",
              f"本文 {art['chars']}字 / 参考記事 {len(art['sources'])}件 / "
              f"類似度 一致率{art['similarity']['ratio']:.1%}・最長{art['similarity']['longest']}字 / "
-             f"画像 {len(art.get('images', {}).get('media', []))}枚"]
+             f"画像 {len(art.get('images', {}).get('media', []))}枚 / "
+             f"アフィリンク {len(art.get('affiliates', []))}件"
+             + (f"（{'、'.join(art['affiliates'])}）" if art.get("affiliates") else "")]
     if art["warnings"]:
         lines += ["", "確認してほしい点:"] + [f"・{w}" for w in art["warnings"]]
     lines.append("")
@@ -142,6 +145,9 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
     use_wp = not dry_run and wordpress.configured()
     img_opt = cfg.get("image") or {}
     pics = add_images(art, img_opt) if use_wp and img_opt.get("enabled") else {"featured": None, "media": []}
+    found = affiliate.match(affiliate.load(), art["title"], writer.plain(art["body"]))
+    art["body"] = affiliate.insert(art["body"], found)
+    art["affiliates"] = [e["name"] for e in found]
     art["content"] = writer.assemble(art.pop("body"), art.pop("_sources"))
     art["images"] = pics
 

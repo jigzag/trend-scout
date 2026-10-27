@@ -1,0 +1,59 @@
+name: affiliate-link
+
+on:
+  repository_dispatch:      # LINE の「リンク ツール名 URL」「リンク削除」「リンク一覧」から（client_payload: action, name, link）
+    types: [affiliate-link]
+  workflow_dispatch:        # Actions画面からも実行できる
+    inputs:
+      action:
+        description: "add=登録 / remove=削除 / list=一覧"
+        default: list
+        type: choice
+        options: [add, remove, list]
+      name:
+        description: "ツール名（別名は / で区切る。例: Clips by Plastic/Clips）"
+        required: false
+        default: ""
+      link:
+        description: "リンクのURL、または ASP の HTML"
+        required: false
+        default: ""
+
+permissions:
+  contents: write           # data/affiliates.yaml をコミットするため
+
+concurrency:
+  group: write-article      # 記事生成中に台帳を変えない
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Run
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          # 名前とリンクは環境変数で渡す（スクリプトに直接埋め込まない）
+          ARG_ACTION: ${{ inputs.action || github.event.client_payload.action }}
+          ARG_NAME: ${{ inputs.name || github.event.client_payload.name || '' }}
+          ARG_LINK: ${{ inputs.link || github.event.client_payload.link || '' }}
+        run: |
+          case "$ARG_ACTION" in
+            add) python affiliate.py --add "$ARG_NAME" "$ARG_LINK" ;;
+            remove) python affiliate.py --remove "$ARG_NAME" ;;
+            *) python affiliate.py --list ;;
+          esac
+      - name: Save
+        run: |
+          git config user.name "trend-scout-bot"
+          git config user.email "trend-scout-bot@users.noreply.github.com"
+          git add data/affiliates.yaml 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "affiliate: $(date -u +%F)"
+          git pull --rebase && git push
