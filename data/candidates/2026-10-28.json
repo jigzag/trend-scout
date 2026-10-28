@@ -1,0 +1,101 @@
+[
+  {
+    "relevance": 8,
+    "usecase": 8,
+    "novelty": 8,
+    "monetizable": 7,
+    "buzz": 7.5,
+    "topic": "Spacesheep",
+    "total": 78,
+    "detail": {
+      "id": 0,
+      "summary": "Spacesheepは“チームで読むためのAI作成ドキュメント”を謳う新サービス。AIが要約・構造化したドキュメントをチーム向けに生成・共有し、コメントや議論を組み込める仕組みを提供するプロダクトです。",
+      "why": "海外で出たばかりで日本語情報が少なく、ドキュメント作成やナレッジ共有をAIで効率化したい非エンジニア層に具体的な活用法を示せるため。",
+      "usecase": "営業報告や研修マテリアルをAIに基づいて短時間で整形し、社内向けの読み物（要点＋議論トピック）として配布。会議の議事録を受けて次のアクションやFAQ形式の読みやすいドキュメントを生成する場面で役立ちます。",
+      "angle": "チームの情報共有を速くするAIドキュメントの実務活用法",
+      "products": [
+        "Notion",
+        "Confluence",
+        "Google Docs",
+        "Readwise"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Spacesheep",
+      "url": "https://www.producthunt.com/products/spacesheep",
+      "summary": "Documents of the future, made by AI, read by your team Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 7.5
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 9,
+    "novelty": 7,
+    "monetizable": 8,
+    "buzz": 6.5,
+    "topic": "Nuvio (financial admin)",
+    "total": 78,
+    "detail": {
+      "id": 1,
+      "summary": "Nuvio 5.0は“あなたの財務事務を引き受けるAIエージェント”をうたう最新版で、請求書処理・経費精算・キャッシュフロー管理などを会話ベースで自動化する機能強化が特徴です。",
+      "why": "個人事業主や中小企業の担当者にとって経理・財務事務は負担が大きく、日本語での利用イメージを示すと導入検討が進むため。",
+      "usecase": "毎月の請求書整理・未回収チェックをAIに尋ねて一覧化し、振込期日や入金予定を元に優先対応リストを作成する。年末調整や確定申告前の帳票チェックの予備診断にも使える想定です。",
+      "angle": "経理のルーチンを減らすAIエージェント導入の現実解",
+      "products": [
+        "Freee",
+        "Money Forward（マネーフォワード）",
+        "QuickBooks",
+        "MFクラウド"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Nuvio 5.0",
+      "url": "https://www.producthunt.com/products/nuvio",
+      "summary": "Hand your financial admin to your AI agent Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 6.5
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 8,
+    "novelty": 8,
+    "monetizable": 6,
+    "buzz": 7.0,
+    "topic": "Off Grid AI",
+    "total": 76,
+    "detail": {
+      "id": 2,
+      "summary": "Off Grid AIはスマホ・PC上でプライベートに動くローカルAIをうたうツールで、オンラインにデータを送らずに生成や検索ができる点を売りにしています。",
+      "why": "機密資料や顧客情報を外部に出したくない日本の中小企業担当者や研修担当にとって、現場で使える「オフラインAI」の選択肢を早期に紹介する価値があるため。",
+      "usecase": "クライアントの打ち合わせメモや社内の人事評価メモを端末内で要約・編集して共有用に整える。外部アップロードが制限される案件の議事録起こしや要点抽出にも有効です。",
+      "angle": "社外に出さないAI処理で守る業務データの活用術",
+      "products": [
+        "Apple（iPhone／Macのローカル実行環境）",
+        "Llama 2",
+        "Mistral",
+        "PrivateGPT"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Off Grid AI",
+      "url": "https://www.producthunt.com/products/off-grid-ai",
+      "summary": "Private AI on your phone and computer. Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 7.0
+      }
+    }
+  }
+]
