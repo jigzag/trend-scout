@@ -1,0 +1,54 @@
+{
+  "title": "Spacesheepの使い方：AI出力を共有スペースへ",
+  "slug": "spacesheep-workspace",
+  "excerpt": "SpacesheepはAIの出力を「スペース」という共有ドキュメントやダッシュボードに変えます。コメントや共同編集、Google Drive/GitHub同期、電子署名などの機能でチームのやり取りを一元化できます。はじめは無料で利用できます。",
+  "persona": "研修資料を管理する人事担当のAさん、SNS用コンテンツを整理する個人事業主のBさん、社内ワークフローを改善する非IT担当のCさん",
+  "category": "業務効率化・自動化",
+  "chars": 3639,
+  "image_prompts": {
+    "featured": "An illustration of a collaborative digital workspace showing floating documents, dashboards and mockups with people exchanging comments.",
+    "scenario": "An illustration of a HR manager at a desk reviewing an interactive document on a tablet, with comment bubbles and a signature area visible."
+  },
+  "similarity": {
+    "ratio": 0.078,
+    "longest": 65,
+    "ok": false
+  },
+  "warnings": [
+    "コードを書く前提の話題で、読者（非エンジニア）に合わない可能性: 利用にはCLIコマンド（npx spacesheep deploy / login / install 等）の実行、SPACESHEEP_KEY等の環境変数設定、場合によってはMCPプラグイン導入やCI用シークレット設定が必要なため。",
+    "参考記事との類似が高い（一致率7.8%、最長65字）"
+  ],
+  "memo": "",
+  "sources": [
+    {
+      "title": "Spacesheep",
+      "url": "https://www.producthunt.com/products/spacesheep"
+    },
+    {
+      "title": "Spacesheep MCP Server | Awesome MCP Servers",
+      "url": "https://mcpservers.org/servers/spacesheep-dev"
+    },
+    {
+      "title": "spacesheep (YC F26) - A shared workspace for you and your agents.",
+      "url": "https://www.linkedin.com/company/spacesheepdev"
+    }
+  ],
+  "candidate": {
+    "title": "Spacesheep",
+    "url": "https://www.producthunt.com/products/spacesheep"
+  },
+  "affiliates": [],
+  "images": {
+    "featured": 48,
+    "media": [
+      48,
+      49
+    ]
+  },
+  "wordpress": {
+    "id": 50,
+    "link": "https://nocode-ai.net/?p=50",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=50&action=edit"
+  },
+  "created_at": "2026-10-28T10:19:02+09:00"
+}

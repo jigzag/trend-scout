@@ -1,0 +1,81 @@
+<p class="pr-note">※本記事にはプロモーション（広告）が含まれる場合があります。</p>
+<p>この記事で分かることは次の通りです。Spacesheepは、AIの出力をそのまま共有できる「スペース」（共有ページ）に変えます。チームでコメントや共同編集、署名をまとめる運用が考えられます。</p>
+
+<div class="easy-box memo-box common-icon-box block-box"><p><strong>ざっくり言うと</strong></p><ul><li>AIが出した文章や画面を、そのままチームで見られる共有ページにする道具です。</li><li>ページに意見を書いたり、誰かに署名してもらったりできます。</li><li>はじめは無料で使い始められます。</li></ul></div>
+
+<h2>どんなツールか</h2>
+<p>Spacesheepは、AIエージェント（指示で作業を進めるAI）の出力を「スペース」（共有ページ）に変えるサービスです。</p>
+<p>スペースは、インタラクティブな文書やライブの見せ方、モックアップ、簡単なアプリのように扱えます。</p>
+<p>作ったスペースは、特定の人だけ、チームだけ、または公開のいずれかで共有できます。</p>
+<p>行単位でコメントを付けられます。共同編集もできます。すべてのバージョンは保存されます。</p>
+<p>サービスは spacesheep.dev として提供されています。運営側が用意したホスト型のサーバーとOAuth（ブラウザ承認）で動きます。</p>
+<p>開発の一部パーツはMITライセンスで公開されています。npmのパッケージ名は「spacesheep」です。</p>
+<p>Spacesheepは「YC F26」としても表記されています。</p>
+
+<h2>何ができるか</h2>
+<p>AIやエージェントが作った内容をそのままスペースにできます。作ったページは人とAIの両方が読み、コメントし、編集できます。</p>
+<p>スペースはドキュメント、ダッシュボード、モックアップ、アプリなどの形で扱えます。全ての編集履歴は保存されます。</p>
+<p>作成したスペースはGoogle Driveと同期できます。GitHubと同期することもできます。</p>
+<p>電子署名機能があります。署名は当事者のメールに送られ、そのメールで名前と日付をページ上に挿入する仕組みです。署名を呼び出すための関数は request_signatures({ uuid, parties: … }) として用意されています。</p>
+<p>重要な点として、エージェントが他の人の代わりに署名することはできません（agent can never sign for anyone）。</p>
+<p>エージェントやSlack経由、あるいはSpacesheep自身のAIと連携できます。Claude、ChatGPT、Grokといったホスト型アシスタントとは、接続のための追加が必要な場合があります。</p>
+<p>公開や同期の操作は、ブラウザ拡張、コマンド操作（CLI：コマンドを打って操作する仕組み）、MCPプラグイン（ホスト型アシスタントに接続する小さな追加機能）などで行えます。</p>
+<p>CLI および MCP 上で実行可能な操作例には、deploy、edit、read_space、list_spaces、share_space、add_comment などがあります。</p>
+
+<h2>導入の流れ（公開・同期・連携）</h2>
+<p>ここでは公開や連携を始めるときの流れを、事実に基づいて示します。</p>
+<p>既に使っているAIに「use spacesheep.dev …」と依頼すると、AIがスペースを生成して共有する流れがあります。AIがページを作り、指定した相手と共有できます。</p>
+<p>ブラウザ経由や対話環境では、npx spacesheep login を実行してブラウザの承認を得ます。承認の完了を最大10分待つ場合があります。</p>
+<p>公開はコマンドで行えます。例として npx -y spacesheep@latest deploy ./dist を実行すると、フォルダや.htmlファイルを公開してURLが出力されます。</p>
+<p>非対話のサーバーやCI（自動処理環境）では長期キーを使って接続します。長期キーは ss_で始まる形式で、npx -y spacesheep@latest connect ss_… [name] を使って接続します。</p>
+<p>CI連携の一例として、GitHub Actionsで SPACESHEEP_KEY をシークレットに入れ、micmmakarov/spacesheep-cli@v1 を使う手順が示されています。</p>
+<p>Chrome拡張を使うと、開いているページやファイルを1クリックでSpacesheepに公開できます。2回目のクリックで同じスペースを更新できます。</p>
+<p>エージェント側の導入例として、npx -y spacesheep@latest install を実行してマシンをサインインさせる方法があります。複数のマシンには --ssh host1,host2 のようなオプションを使う例があります。</p>
+<p>ホスト型アシスタントへ接続するには、まず Claude 等にプラグインを組み込む必要があります。例としては次のようなコマンドが用いられます：claude plugin marketplace add && claude plugin install spacesheep@spacesheep、または claude mcp add --transport http --scope user spacesheep。プラグインを導入した後はセッションを再起動してください。</p>
+
+<h2>【想定シナリオ】</h2>
+<figure class="wp-block-image size-large"><img src="https://nocode-ai.net/wp-content/uploads/2026/10/spacesheep-workspace-scenario.jpg" alt="研修資料を管理する人事担当のAさん"/><figcaption>イメージ画像（AI生成）</figcaption></figure>
+<p>以下は架空の人物を想定した使い方の例です。使い方のイメージを示します。こうした場面で使えるという使い方が考えられます。</p>
+
+<h3>研修担当のAさんの場合</h3>
+<p>困っていること：研修資料が点在し、参加者からの修正要望を集めにくい状況です。</p>
+<p>使い方の例：AIに研修資料の草案を作らせます。生成された資料をSpacesheepでスペースにします。スペースを研修参加者に共有し、行ごとのコメントで現場の意見を集めるという使い方が考えられます。</p>
+<p>期待できること：コメントで集めた指示を基に、AIや編集者が同じページ上で修正し、全ての版を残す運用が考えられます。受講確認が必要なら、電子署名機能で参加者に署名を求める流れが想定できます。</p>
+
+<h3>SNS用コンテンツを整理する個人事業主のBさんの場合</h3>
+<p>困っていること：SNS投稿案や画像のモックアップが散らばり、管理が面倒です。</p>
+<p>使い方の例：AIに投稿案やモックアップを作らせます。ブラウザ拡張を使って開いているページを1クリックでSpacesheepに公開します。更新も同じ拡張でワンクリックです。こうした使い方が考えられます。</p>
+<p>期待できること：作った素材をGoogle DriveやGitHubと同期して保存できます。チームの協力者がコメントで修正案を出し、共同編集で仕上げる運用が考えられます。</p>
+
+<h3>非IT担当のCさん（社内レポートの担当）の場合</h3>
+<p>困っていること：社内データをまとめた報告書を、関係者と速やかに共有したいが手間がかかる状況です。</p>
+<p>使い方の例：AIにデータ要約やレポート案を作らせ、Spacesheepでライブダッシュボード風のスペースを作ります。チームに共有して行ごとのコメントで修正点を集めます。必要に応じてGoogle DriveやGitHubと同期するという使い方が考えられます。</p>
+<p>期待できること：ダッシュボードを見ながら意見を出し合い、修正履歴を残して運用できます。署名が必要な場合は電子署名の仕組みで当事者にメールを送り署名を集める流れが想定できます。</p>
+
+<h2>似たサービスとの違い・向いている人</h2>
+<p>特徴は、AIエージェントの出力を直接スペースにして、そのまま共有・編集・バージョン管理できる点です。</p>
+<p>署名のワークフローが組み込まれている点も特徴です。署名は当事者がメールで行い、エージェントが代行することはできません。</p>
+<p>公開や同期の手段が多様です。Chrome拡張、CLI、MCPプラグインなどからページを公開・更新できます。</p>
+<p>向いている人は、AIの出力をチームで共有し、コメントや版管理、署名を一元化したい担当者です。</p>
+
+<h2>よくある疑問</h2>
+<ul>
+<li><strong>スペースはどこに保存できますか？</strong>
+<p>作成したスペースはGoogle DriveまたはGitHubと同期できます。</p></li>
+<li><strong>署名は自動で済ませられますか？</strong>
+<p>署名は当事者のメールで行います。エージェントが代理で署名することはできません。</p></li>
+<li><strong>公開や更新はどのように行えますか？</strong>
+<p>ブラウザ拡張で1クリック公開や更新ができます。コマンド操作（例：npx -y spacesheep@latest deploy ./dist）でも公開できます。</p></li>
+<li><strong>はじめてでも使えますか？</strong>
+<p>Product Huntの案内では「It's free to start（はじめは無料）」とされています。</p></li>
+</ul>
+
+<h2>まとめ</h2>
+<ul>
+<li>SpacesheepはAIの出力を共有ページ「スペース」に変えるサービスです。</li>
+<li>スペースはドキュメント、ダッシュボード、モックアップ、アプリのように扱えます。コメントや共同編集、全版の保存ができます。</li>
+<li>Google DriveやGitHubと同期できます。電子署名機能も備わっていますが、署名は当事者が行う設計です。</li>
+<li>公開はChrome拡張やCLI、MCPプラグイン経由で行えます。非対話環境では長期キー（ss_…）で接続できます。</li>
+<li>まずは無料で始められる点を踏まえ、資料共有やコンテンツ管理の運用に組み込むという使い方が考えられます。</li>
+</ul>
+<h2>参考にした情報</h2><ul><li><a href="https://www.producthunt.com/products/spacesheep" target="_blank" rel="noopener">Spacesheep</a></li><li><a href="https://mcpservers.org/servers/spacesheep-dev" target="_blank" rel="noopener">Spacesheep MCP Server | Awesome MCP Servers</a></li><li><a href="https://www.linkedin.com/company/spacesheepdev" target="_blank" rel="noopener">spacesheep (YC F26) - A shared workspace for you and your agents.</a></li></ul>
