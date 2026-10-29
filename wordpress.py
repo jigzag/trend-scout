@@ -31,11 +31,11 @@ def _check(r: requests.Response) -> dict:
     return r.json()
 
 
-def upload_media(data: bytes, filename: str, alt: str = "") -> dict:
+def upload_media(data: bytes, filename: str, alt: str = "", mime: str = "image/jpeg") -> dict:
     """画像をメディアライブラリに上げて {id, url} を返す。"""
     js = _check(requests.post(
         f"{_base()}/wp-json/wp/v2/media", auth=_auth(), data=data, timeout=120,
-        headers={"Content-Disposition": f'attachment; filename="{filename}"', "Content-Type": "image/jpeg"}))
+        headers={"Content-Disposition": f'attachment; filename="{filename}"', "Content-Type": mime}))
     if alt:
         requests.post(f"{_base()}/wp-json/wp/v2/media/{js['id']}", auth=_auth(),
                       json={"alt_text": alt}, timeout=60)

@@ -6,7 +6,8 @@ from pathlib import Path
 from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import affiliate, article, research, writer, wordpress  # noqa: E402
+import affiliate, article, research, shots, writer, wordpress  # noqa: E402
+from datetime import datetime  # noqa: E402
 
 SRC_MAIN = ("OpenAIは10月2日、ChatGPTにバーチャル試着機能を追加したと発表した。利用者が自分の写真をアップロードすると、"
             "商品の服やアクセサリーを合成した画像を表示する。まず米国のPlusユーザーから提供を始める。" * 8)
@@ -65,6 +66,7 @@ BODY = ("<p>ChatGPTに試着機能が加わりました。この記事では、�
         + writer.EASY_DIV + "<p><strong>ざっくり言うと</strong></p><ul><li>服を着た自分の姿を、写真で確かめられる道具です</li></ul></div>"
         "<h2>何ができるのか</h2><p>" + COPIED + "</p>"
         + "<h2>使い始め方</h2><p>商品カードから試着ボタンを押して写真を選びます。</p>" * 30
+        + "<h3>ステップ1：試着ボタンから始める</h3><p>商品カードの試着ボタンを押します。</p><h3>ステップ2：写真を選ぶ</h3><p>写真を選びます。</p>"
         + "<h2>【想定シナリオ】研修担当のAさんの場合</h2><p>以下は架空の例です。Aさんなら、制服の着用イメージ作りに使えそうです。</p>"
         + "<h2>まとめ</h2><p>日本での提供時期は公式サイトで確認してください。</p>")
 
@@ -72,9 +74,19 @@ BODY = ("<p>ChatGPTに試着機能が加わりました。この記事では、�
 def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
     if "事実」だけを抜き出して" in prompt:
         assert "参考1:" in prompt and "参考2:" in prompt and "参考3:" not in prompt  # 同ドメイン・短文は除外
+        links = prompt.split("# リンク候補", 1)[1].split("# 出力")[0]
+        assert "twitter.com" not in links and "itmedia.co.jp/menu" not in links   # SNS・同じサイト内は候補にしない
+        ok = "3. https://tryon.example/（公式サイト）" in links and "4. https://tryon.example/app" in links
         return json.dumps({"summary": "試着機能", "facts": [{"fact": "米国Plusから提供", "src": 1}],
-                           "steps": [], "cautions": [], "unknowns": ["日本での提供時期"], **fake_llm.facts_extra},
+                           "steps": [], "cautions": [], "unknowns": ["日本での提供時期"],
+                           "official_link": 3 if ok else 0, "download_link": 4 if ok else 99, **fake_llm.facts_extra},
                           ensure_ascii=False)
+    if "スクリーンショットです" in prompt:
+        assert len(kw["images"]) == 2 and kw["images"][0] == ("image/jpeg", b"JPEGDATA")
+        assert "1. ステップ1：試着ボタンから始める" in prompt
+        fake_llm.placed += 1
+        return json.dumps({"shots": [{"image": 1, "match": True, "heading": 1, "caption": "試着ボタンの画面"},
+                                     {"image": 2, "match": False, "heading": 0, "caption": "別のアプリ"}]}, ensure_ascii=False)
     if "記事の構成を作って" in prompt:
         schema = a[0] if a else kw.get("schema")
         assert not schema or "動画生成" in schema["properties"]["category"]["enum"]   # 決めたカテゴリだけ選ばせる
@@ -104,6 +116,10 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
 fake_llm.with_memo = False
 fake_llm.facts_extra = {}
 fake_llm.clarified = 0
+fake_llm.placed = 0
+PAGE = ('<html><body><nav><a href="https://www.itmedia.co.jp/menu">メニュー</a></nav><article>'
+        '<a href="https://twitter.com/share?u=x">ポスト</a><a href="/a/2">同じサイト</a>'
+        '<a href="https://tryon.example/">公式サイト</a><a href="https://tryon.example/app#dl">アプリ</a></article></body></html>')
 
 
 def _setup(tmp: Path):
@@ -147,6 +163,8 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     sent = {}
     fake_llm.with_memo = True
     def no_net(url, **kw):
+        if url == CAND[0]["item"]["url"]:
+            return Resp(text=PAGE)   # 元記事のリンク（公式サイトの候補）
         if url.endswith("/wp-json/wp/v2/categories"):
             return Resp([{"id": 3, "name": "画像生成・デザイン"}])   # 「動画生成」はまだない → 作る
         raise AssertionError(f"ネットに出ようとした: {url}")
@@ -154,7 +172,12 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
          mock.patch.object(research.requests, "get", no_net), \
          mock.patch.object(writer, "call_llm", fake_llm), \
          mock.patch.object(article, "send_line", lambda t: sent.setdefault("text", t)), \
+         mock.patch.object(shots, "call_llm", fake_llm), mock.patch.object(shots, "PENDING", tmp / "shots"), \
          mock.patch.object(article, "BASE", tmp),          mock.patch.object(affiliate, "PATH", tmp / "aff.yaml"):
+        (tmp / "shots").mkdir()
+        now = f"{datetime.now(article.JST):%Y%m%d-%H%M%S}"
+        for name in (f"{now}-1.jpg", f"{now}-2.jpg", "20200101-000000-3.jpg"):
+            (tmp / "shots" / name).write_bytes(b"JPEGDATA")
         affiliate.command("add", "ChatGPT/チャットGPT", "https://px.a8.net/svt/ejp?a8mat=TEST")
         affiliate.command("add", "Gemini", "https://example.com/gemini")   # 記事に出てこない → 入らない
         affiliate.command("add", "ココナラ", "https://px.a8.net/svt/ejp?a8mat=COCO")
@@ -174,7 +197,17 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert saved["wordpress"]["id"] == 42 and saved["memo"] == "無料版は3回まで"
     assert files[0].with_suffix(".html").exists()
     assert not any("参考記事が1件" in w for w in saved["warnings"])
-    assert fake_post.images == 2 and saved["images"] == {"featured": 101, "media": [101, 102]}
+    assert fake_post.images == 2 and saved["images"] == {"featured": 101, "media": [101, 102, 103]}
+    # スクショ：合う見出しの段落の後ろに入り、使った画像と古い画像は消え、合わない画像は残る
+    c = art["content"]
+    assert fake_llm.placed == 1 and c.count("operator-shot") == 1 and "試着ボタンの画面（運営者のパソコンで撮影）" in c
+    assert c.index("商品カードの試着ボタンを押します。") < c.index("uploads/103.jpg") < c.index("ステップ2")
+    assert [p.name for p in (tmp / "shots").iterdir()] == [f"{now}-2.jpg"]
+    assert "スクショ 1枚" in sent["text"] and any("スクショ1枚は" in w for w in art["warnings"])
+    # リンク：公式サイトは「ざっくり言うと」の下、登録ページは最初の手順の段落の後ろ
+    assert art["official_url"] == "https://tryon.example/" and art["download_url"] == "https://tryon.example/app"
+    assert c.index("easy-box") < c.index('公式サイト：<a href="https://tryon.example/"') < c.index("<h2")
+    assert c.index("商品カードの試着ボタンを押します。") < c.index("登録ページ：") < c.index("uploads/103.jpg")
     assert "uploads/102.jpg" in art["content"] and "AI生成" in art["content"]
     assert art["content"].index("uploads/102.jpg") > art["content"].index("想定シナリオ")
     assert art["content"].count("a8mat=TEST") == 2 and "example.com/gemini" not in art["content"]
@@ -205,6 +238,7 @@ def test_without_tavily_and_wp(tmp=Path(tempfile.gettempdir()) / "ts_article2"):
          mock.patch.object(article, "BASE", tmp):
         art = article.run(1, dry_run=True, config_path=Path(article.__file__).parent / "config.yaml")
     assert art["wordpress"] is None and len(art["sources"]) == 1
+    assert art["official_url"] == "" and art["download_url"] == "" and "official-link" not in art["content"]  # 範囲外の番号は捨てる
     assert any("参考記事が1件" in w for w in art["warnings"])
 
 
@@ -298,7 +332,7 @@ def test_worker_parse():
     import subprocess
     worker = Path(__file__).resolve().parents[1] / "worker" / "line_webhook.js"
     js = (f"import {{ parseCommand as p }} from {json.dumps(worker.as_uri())};"
-          "console.log(JSON.stringify(['1','２ 無料版は3回まで','3：メモ\\n2行目','4','公開','公開 23','削除','ボツ　23','こんにちは','リンク Clips by Plastic/Clips https://px.a8.net/a?b=1','リンク一覧','リンク削除 Clips','リンク Clips','リンク Clips <a href=x>x</a>','リンクカテゴリ ココナラ 画像、動画'].map(p)));")
+          "console.log(JSON.stringify(['1','２ 無料版は3回まで','3：メモ\\n2行目','4','公開','公開 23','削除','ボツ　23','こんにちは','リンク Clips by Plastic/Clips https://px.a8.net/a?b=1','リンク一覧','リンク削除 Clips','リンク Clips','リンク Clips <a href=x>x</a>','リンクカテゴリ ココナラ 画像、動画','スクショ確認','スクショ取消'].map(p)));")
     try:
         out = subprocess.run(["node", "--input-type=module", "-e", js], capture_output=True, text=True,
                              encoding="utf-8", timeout=30)
@@ -317,6 +351,53 @@ def test_worker_parse():
     assert r[10]["payload"]["action"] == "list" and r[11]["payload"] == {"action": "remove", "name": "Clips", "link": ""}
     assert r[12]["type"] == "help" and r[13]["payload"]["link"] == '<a href=x>x</a>'
     assert r[14]["payload"] == {"action": "category", "name": "ココナラ", "link": "画像、動画"}
+    assert r[15] == {"type": "line-shot", "payload": {"action": "list", "id": ""}} and r[16]["payload"]["action"] == "clear"
+
+
+def test_worker_image():
+    """LINE に画像を送ると line-shot を起動し、まとめ送りなら最後の1枚にだけ返事する（node があるときだけ）。"""
+    import subprocess
+    worker = Path(__file__).resolve().parents[1] / "worker" / "line_webhook.js"
+    js = f"""
+import w, {{ verify }} from {json.dumps(worker.as_uri())};
+const calls = [];
+globalThis.fetch = async (url, opt) => {{ calls.push([url, JSON.parse(opt.body)]); return {{ status: 204, ok: true }}; }};
+const ev = (i, set) => ({{ type: "message", replyToken: "r" + i, source: {{ userId: "U1" }},
+  message: {{ type: "image", id: "55" + i, ...(set ? {{ imageSet: {{ id: "s", index: i, total: 2 }} }} : {{}}) }} }});
+const body = JSON.stringify({{ events: [ev(1, true), ev(2, true), ev(3, false)] }});
+const key = await crypto.subtle.importKey("raw", new TextEncoder().encode("sec"), {{ name: "HMAC", hash: "SHA-256" }}, false, ["sign"]);
+const sig = btoa(String.fromCharCode(...new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body)))));
+await w.fetch(new Request("https://x/", {{ method: "POST", body, headers: {{ "x-line-signature": sig }} }}),
+  {{ LINE_CHANNEL_SECRET: "sec", LINE_CHANNEL_ACCESS_TOKEN: "t", LINE_USER_ID: "U1", GITHUB_TOKEN: "g", GITHUB_REPO: "a/b" }});
+console.log(JSON.stringify(calls));
+"""
+    try:
+        out = subprocess.run(["node", "--input-type=module", "-e", js], capture_output=True, text=True,
+                             encoding="utf-8", timeout=30)
+    except FileNotFoundError:
+        print("  (node がないので省略)"); return
+    assert out.returncode == 0, out.stderr
+    calls = json.loads(out.stdout.strip().splitlines()[-1])
+    disp = [b for u, b in calls if u.endswith("/dispatches")]
+    assert [b["client_payload"] for b in disp] == [{"action": "save", "id": f"55{i}"} for i in (1, 2, 3)]
+    assert all(b["event_type"] == "line-shot" for b in disp)
+    replies = [b for u, b in calls if u.endswith("/reply")]
+    assert [r["replyToken"] for r in replies] == ["r2", "r3"] and "（2枚）" in replies[0]["messages"][0]["text"]
+
+
+def test_shots_prune(tmp=Path(tempfile.gettempdir()) / "ts_shots"):
+    shutil.rmtree(tmp, ignore_errors=True)
+    tmp.mkdir()
+    for name in ("20261020-090000-1.jpg", "20261028-090000-2.png", "memo.txt"):
+        (tmp / name).write_bytes(b"x")
+    old = shots.prune(tmp, datetime(2026, 10, 29, tzinfo=article.JST))
+    assert [p.name for p in old] == ["20261020-090000-1.jpg"] and [p.name for p in shots.pending(tmp)] == ["20261028-090000-2.png"]
+    assert shots.mime_of(b"\x89PNG\r\n\x1a\nabc") == "image/png" and shots.mime_of(b"\xff\xd8") == "image/jpeg"
+    try:
+        shots.save("../etc", tmp); raise AssertionError("数字以外のIDを通した")
+    except ValueError:
+        pass
+    assert shots.clear(tmp) == 1 and shots.pending(tmp) == []
 
 
 if __name__ == "__main__":

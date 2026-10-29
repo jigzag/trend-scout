@@ -4,6 +4,7 @@
 """
 from __future__ import annotations
 
+import base64
 import json
 import os
 import re
@@ -46,9 +47,11 @@ def unwrap(obj, key: str):
 
 
 def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000, schema: dict | None = None,
-             schema_name: str = "result") -> str:
-    """schema を渡すと、OpenAI では Structured Outputs（strict）で形式どおりのJSONを保証させる。"""
+             schema_name: str = "result", images: list[tuple[str, bytes]] | None = None) -> str:
+    """schema を渡すと、OpenAI では Structured Outputs（strict）で形式どおりのJSONを保証させる。
+    images は [(MIMEタイプ, データ)]。プロンプトの後ろに順番どおり添える（スクショの読み取り用）。"""
     provider = cfg.get("provider", "anthropic")
+    b64 = [(mime, base64.b64encode(data).decode()) for mime, data in images or []]
     if provider == "anthropic":
         r = requests.post(
             "https://api.anthropic.com/v1/messages",
@@ -60,7 +63,9 @@ def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000, schema: dict | None
             json={
                 "model": cfg["anthropic_model"],
                 "max_tokens": max_tokens,
-                "messages": [{"role": "user", "content": prompt}],
+                "messages": [{"role": "user", "content": [{"type": "text", "text": prompt}] + [
+                    {"type": "image", "source": {"type": "base64", "media_type": m, "data": d}} for m, d in b64]
+                    if b64 else prompt}],
             },
             timeout=120,
         )
@@ -74,7 +79,9 @@ def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000, schema: dict | None
             "model": cfg["openai_model"],
             # gpt-5系は推論トークンもこの上限に含まれるため多めに取る
             "max_completion_tokens": max(max_tokens, 16000),
-            "messages": [{"role": "user", "content": prompt}],
+            "messages": [{"role": "user", "content": [{"type": "text", "text": prompt}] + [
+                {"type": "image_url", "image_url": {"url": f"data:{m};base64,{d}"}} for m, d in b64]
+                if b64 else prompt}],
         }
         if cfg["openai_model"].startswith(("gpt-5", "o")):
             body["reasoning_effort"] = cfg.get("openai_reasoning_effort", "low")

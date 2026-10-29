@@ -63,6 +63,9 @@ FACTS_PROMPT = """あなたは調査担当の編集者です。次の話題に�
 # 参考記事
 {sources}
 
+# リンク候補（参考記事と、元記事に貼られていたリンク）
+{links}
+
 # 出力（JSONオブジェクトだけ）
 - summary: 何が起きたか（2文）
 - facts: 事実の一覧。[{{"fact": "日本語で言い換えた1文", "src": 参考番号}}]。数字・料金・日付・対象（無料/有料、対応OS、提供地域）を優先。
@@ -78,12 +81,16 @@ FACTS_PROMPT = """あなたは調査担当の編集者です。次の話題に�
 - reader_fit: 個人が一人でアカウントを作れば使い始められるなら true。特定の業務システム（HubSpot・Salesforce・会計ソフト等）が前提、
   専門職（マーケター・経理など）向けの分析/管理ツール、法人契約が前提なら false
 - fit_reason: reader_fit が false の理由（1文。true なら空文字）
+- official_link: リンク候補のうち、このツールの公式サイト（トップページ・製品ページ）の番号。ニュース・ブログ・まとめ記事・
+  別の製品のページは選ばない。当てはまるものがない・自信がないなら 0
+- download_link: リンク候補のうち、このツールのダウンロードページ（Webサービスならアカウント登録・ログインのページ）の番号。
+  公式のもの（公式サイトや開発元のGitHubなど）だけ。ない・自信がないなら 0
 - needs_coding: 読者がこの話題を試すのに、プログラムを書く・コマンドを打つ・設定ファイル（JSON等）を編集する必要があるなら true
 - coding_reason: needs_coding が true の理由（1文。false なら空文字）
 文章をそのまま写さず、短く言い換えること。推測は入れないこと。
 **この話題に直接関係する事実だけ**を入れること。会社や製品全般の紹介、別の製品・別の機能の話、書籍やイベントの宣伝など、
 この話題を説明するのに不要なものは、参考記事に書かれていても入れない。
-{{"summary": "", "facts": [], "tool_type": "web", "requirements": [], "steps": [], "cautions": [], "relevant_sources": [], "reader_fit": true, "fit_reason": "", "needs_coding": false, "coding_reason": ""}}
+{{"summary": "", "facts": [], "tool_type": "web", "requirements": [], "steps": [], "cautions": [], "relevant_sources": [], "reader_fit": true, "fit_reason": "", "official_link": 0, "download_link": 0, "needs_coding": false, "coding_reason": ""}}
 """
 
 # ---------- 2. 構成 ----------
@@ -198,6 +205,7 @@ FACTS_SCHEMA = obj_schema({"summary": STR, "facts": arr(obj_schema({"fact": STR,
                            "tool_type": {"type": "string", "enum": ["app", "web", "feature"]}, "requirements": arr(STR),
                            "steps": arr(STR), "cautions": arr(STR),
                            "relevant_sources": arr(INT), "reader_fit": BOOL, "fit_reason": STR,
+                           "official_link": INT, "download_link": INT,
                            "needs_coding": BOOL, "coding_reason": STR})
 OUTLINE_SCHEMA = obj_schema({"title": STR, "slug": STR, "excerpt": STR, "persona": STR, "category": STR,
                              "sections": arr(obj_schema({"h2": STR, "points": arr(STR)})),
@@ -210,10 +218,54 @@ def strip_fence(text: str) -> str:
     return re.sub(r"\s*```\s*$", "", text)
 
 
-def extract_facts(topic: str, sources: list[dict], cfg: dict) -> dict:
-    raw = call_llm(FACTS_PROMPT.format(topic=topic, sources=_join_sources(sources)), cfg, 8000, FACTS_SCHEMA, "facts")
+def extract_facts(topic: str, sources: list[dict], cfg: dict, links: list[dict] | None = None) -> dict:
+    """links（[{url, text}]）を渡すと、公式サイト・ダウンロードページを番号で選ばせ、
+    facts["official_url"] / facts["download_url"] に入れる（候補にないURLは入らない）。"""
+    links = links or []
+    listed = "\n".join(f"{i}. {c['url']}（{c['text']}）" for i, c in enumerate(links, 1)) or "（なし）"
+    raw = call_llm(FACTS_PROMPT.format(topic=topic, sources=_join_sources(sources), links=listed),
+                   cfg, 8000, FACTS_SCHEMA, "facts")
     facts = extract_json(raw)
-    return facts if isinstance(facts, dict) else {"facts": facts}
+    facts = facts if isinstance(facts, dict) else {"facts": facts}
+    for key in ("official", "download"):
+        n = facts.pop(f"{key}_link", 0)
+        facts[f"{key}_url"] = links[n - 1]["url"] if isinstance(n, int) and 1 <= n <= len(links) else ""
+    return facts
+
+
+# ---------- 公式サイト・ダウンロードページへのリンク ----------
+LINK_CLASS = "official-link"
+STEP_HEADING = re.compile(r"(?s)<h3[^>]*>(?:(?!</h3>).)*(?:ダウンロード|インストール|登録|アカウント|入手|はじめ|始め)(?:(?!</h3>).)*</h3>")
+
+
+def link_p(label: str, url: str) -> str:
+    shown = re.sub(r"^https?://(www\.)?", "", url).rstrip("/")
+    shown = shown if len(shown) <= 50 else shown[:48] + "…"
+    return (f'<p class="{LINK_CLASS}">{label}：<a href="{html.escape(url)}" target="_blank" rel="noopener">'
+            f"{html.escape(shown)}</a></p>")
+
+
+def add_links(body: str, official: str, download: str, tool_type: str = "") -> str:
+    """公式サイトを「ざっくり言うと」の下に、ダウンロード（登録）ページを手順の該当ステップに入れる。
+    URLは事実抽出で候補から番号で選ばれたものだけ（AIに本文へ書かせると、存在しないURLになりうるため）。"""
+    if official:
+        p = link_p("公式サイト", official)
+        i = body.find(EASY_CLASS)
+        end = body.find("</div>", i) if i != -1 else -1
+        if end != -1:
+            body = body[:end + 6] + "\n" + p + body[end + 6:]
+        else:
+            j = body.find("<h2")
+            body = body[:j] + p + "\n" + body[j:] if j != -1 else p + body
+    url = download or official
+    m = STEP_HEADING.search(body) if url else None
+    if m:
+        label = ("ダウンロードページ" if tool_type == "app" else "登録ページ") if download else "公式サイト"
+        nxt = body.find("<h", m.end())
+        close = body.find("</p>", m.end())
+        at = close + 4 if close != -1 and (nxt == -1 or close < nxt) else m.end()
+        body = body[:at] + "\n" + link_p(label, url) + body[at:]
+    return body
 
 
 # ツールの種類ごとの記事の流れ（読者がいちばん知りたいことを厚くする）

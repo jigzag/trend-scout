@@ -1,0 +1,53 @@
+name: line-shot
+
+on:
+  repository_dispatch:      # LINE に画像を送ったとき・「スクショ確認」「スクショ取消」（client_payload: action, id）
+    types: [line-shot]
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "list=枚数を確認 / clear=全部消す"
+        default: list
+        type: choice
+        options: [list, clear]
+
+permissions:
+  contents: write           # data/shots/ をコミットするため
+
+# concurrency は付けない（まとめて送った画像の実行が、待ち行列で打ち消されないように）
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Run
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          ARG_ACTION: ${{ inputs.action || github.event.client_payload.action }}
+          ARG_ID: ${{ github.event.client_payload.id || '' }}
+        run: |
+          case "$ARG_ACTION" in
+            save) python shots.py --save "$ARG_ID" ;;
+            clear) python shots.py --clear ;;
+            *) python shots.py --list ;;
+          esac
+      - name: Save
+        run: |
+          git config user.name "trend-scout-bot"
+          git config user.email "trend-scout-bot@users.noreply.github.com"
+          git add -A data/shots/ 2>/dev/null || true
+          git diff --cached --quiet && exit 0
+          git commit -m "shots: $(date -u +%F)"
+          # 同時に何枚も届くと push がぶつかるので、取り込み直して数回やり直す
+          for i in 1 2 3 4 5; do
+            git pull --rebase && git push && exit 0
+            sleep $((i * 3))
+          done
+          exit 1

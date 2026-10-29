@@ -21,6 +21,7 @@ import yaml
 import affiliate
 import images
 import research
+import shots
 import wordpress
 import writer
 from main import BASE, JST
@@ -58,7 +59,8 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
         raise RuntimeError(f"参考記事の本文を1件も取得できませんでした: {item['url']}")
     print(f"[article] 参考記事 {len(sources)}件: " + ", ".join(s["url"] for s in sources))
 
-    facts = writer.extract_facts(topic, sources, lc)
+    links = research.link_candidates(item["url"], sources)
+    facts = writer.extract_facts(topic, sources, lc, links)
     # 話題と関係なかった参考記事は、出典にも載せない（元記事=参考1は必ず残す）
     keep = {i for i in facts.pop("relevant_sources", None) or range(1, len(sources) + 1) if isinstance(i, int)} | {1}
     all_sources = sources  # 類似度チェックは、AIに見せた全参考記事と照合する
@@ -74,6 +76,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     body = writer.trim_hedges(body, lc)
     body, clarity = writer.clarify(body, lc)
     body, sim = writer.fix_similarity(body, all_sources, opt, lc)
+    body = writer.add_links(body, facts.get("official_url", ""), facts.get("download_url", ""), facts.get("tool_type", ""))
     warnings = writer.check_rules(body, memo, opt.get("min_chars", 3000), facts.get("tool_type", ""))
     if not reader_fit:
         warnings.insert(0, f"個人がすぐ使えるツールではない可能性（ボツ推奨）: {fit_reason}")
@@ -89,6 +92,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
         "title": outline.get("title") or item["title"], "slug": outline.get("slug", ""),
         "excerpt": outline.get("excerpt", ""), "persona": outline.get("persona", ""),
         "category": outline.get("category", ""), "tool_type": facts.get("tool_type", ""),
+        "official_url": facts.get("official_url", ""), "download_url": facts.get("download_url", ""),
         "body": body, "_sources": sources, "chars": len(writer.plain(body)),
         "image_prompts": {"featured": outline.get("image_featured", ""), "scenario": outline.get("image_scenario", "")},
         "similarity": sim, "warnings": warnings, "memo": memo, "clarity": clarity,
@@ -102,7 +106,8 @@ def message(art: dict, wp: dict | None) -> str:
              f"本文 {art['chars']}字 / 参考記事 {len(art['sources'])}件 / "
              f"類似度 一致率{art['similarity']['ratio']:.1%}・最長{art['similarity']['longest']}字 / "
              f"画像 {len(art.get('images', {}).get('media', []))}枚 / "
-             f"アフィリンク {len(art.get('affiliates', []))}件"
+             + (f"スクショ {art['shots']}枚 / " if art.get("shots") else "")
+             + f"アフィリンク {len(art.get('affiliates', []))}件"
              + (f"（{'、'.join(art['affiliates'])}）" if art.get("affiliates") else "")]
     if art["warnings"]:
         lines += ["", "確認してほしい点:"] + [f"・{w}" for w in art["warnings"]]
@@ -142,6 +147,26 @@ def add_images(art: dict, opt: dict) -> dict:
     return out
 
 
+def add_shots(art: dict, pics: dict, lc: dict) -> None:
+    """運営者が LINE で送ったスクショを手順の節に入れる。使った画像は消す（このツールの画面でないものは残す）。"""
+    shots.prune()
+    files = shots.pending()
+    if not files:
+        return
+    try:
+        art["body"], used, ids = shots.place(art["body"], art["title"], files, lc, wordpress.upload_media)
+    except Exception as e:  # noqa: BLE001  スクショの失敗では記事を止めない
+        art["warnings"].append(f"スクショを入れられなかった: {str(e)[:150]}")
+        return
+    for p in used:
+        p.unlink()
+    pics["media"] += ids
+    art["shots"] = len(used)
+    if len(files) > len(used):
+        art["warnings"].append(f"スクショ{len(files) - len(used)}枚は、この記事に合わないので入れなかった"
+                               "（次の記事で使う。不要なら「スクショ取消」）")
+
+
 def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
         config_path: Path = BASE / "config.yaml") -> dict:
     cfg = yaml.safe_load(config_path.read_text(encoding="utf-8"))
@@ -151,6 +176,8 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
     use_wp = not dry_run and wordpress.configured()
     img_opt = cfg.get("image") or {}
     pics = add_images(art, img_opt) if use_wp and img_opt.get("enabled") else {"featured": None, "media": []}
+    if use_wp:
+        add_shots(art, pics, llm_cfg(cfg))
     ledger = affiliate.load()
     found = affiliate.match(ledger, art["title"], writer.plain(art["body"]))
     cat_links = affiliate.by_category(ledger, art.get("category", ""), found)

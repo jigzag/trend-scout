@@ -13,6 +13,8 @@
 //   リンク ツール名 URL      … アフィリエイトリンクを台帳に登録（ツール名は / で別名を足せる。URLの代わりにASPのHTMLでもよい）
 //   リンク削除 ツール名 / リンク一覧
 //   リンクカテゴリ ツール名 画像、動画 … そのカテゴリの記事の最後に必ず出す（「なし」で解除）
+//   （画像を送る）          … スクショとして保存し、次に作る記事の手順に入れる
+//   スクショ確認 / スクショ取消
 //   ヘルプ                  … 使い方
 
 const HELP = [
@@ -25,6 +27,8 @@ const HELP = [
   "リンク ツール名 URL … アフィリエイトリンクを登録（例: リンク Clips https://px.a8.net/...）",
   "リンク削除 ツール名 / リンク一覧",
   "リンクカテゴリ ツール名 画像、動画 … そのカテゴリの記事に必ず出す（なし で解除）",
+  "画像を送る … スクショとして保存し、次に作る記事の手順に入れる",
+  "スクショ確認 / スクショ取消",
 ].join("\n");
 
 export function parseCommand(raw) {
@@ -37,6 +41,8 @@ export function parseCommand(raw) {
   if (m) return { type: "wp-command", payload: { action: "publish", id: m[1] || "" } };
   m = text.match(/^(?:削除|ボツ)(?:[\s　]*(\d+))?$/);
   if (m) return { type: "wp-command", payload: { action: "trash", id: m[1] || "" } };
+  if (/^スクショ(確認|一覧)$/.test(text)) return { type: "line-shot", payload: { action: "list", id: "" } };
+  if (/^スクショ(取消|取り消し|削除)$/.test(text)) return { type: "line-shot", payload: { action: "clear", id: "" } };
   if (/^リンク一覧$/.test(text)) return { type: "affiliate-link", payload: { action: "list", name: "", link: "" } };
   m = text.match(/^リンクカテゴリ[\s　]+(\S+)[\s　]+(.+)$/);
   if (m) return { type: "affiliate-link", payload: { action: "category", name: m[1].trim(), link: m[2].trim() } };
@@ -51,6 +57,7 @@ const REPLY = {
   "write-article": (p) => `受け付けました。候補${p.n}で記事を作ります${p.memo ? "（メモあり）" : ""}。数分お待ちください。`,
   "affiliate-link": (p) => ({ add: "リンクを登録します。", remove: "リンクを削除します。", category: "カテゴリを設定します。", list: "台帳を確認します。" })[p.action] +
     "少しお待ちください。",
+  "line-shot": (p) => (p.action === "clear" ? "スクショを消します。" : "スクショを確認します。") + "少しお待ちください。",
   "wp-command": (p) => (p.action === "publish" ? "公開します。少しお待ちください。" : "ゴミ箱へ移します。少しお待ちください。"),
 };
 
@@ -97,12 +104,24 @@ export default {
     }
     const events = JSON.parse(body).events || []; // LINE の「検証」ボタンは events が空
     for (const ev of events) {
-      if (ev.type !== "message" || ev.message?.type !== "text") continue;
+      const kind = ev.type === "message" ? ev.message?.type : "";
+      if (kind !== "text" && kind !== "image") continue;
       const uid = ev.source?.userId || "";
-      console.log(`message from ...${uid.slice(-4)}: ${String(ev.message.text).slice(0, 30)}`);
+      console.log(`${kind} from ...${uid.slice(-4)}: ${String(ev.message.text || ev.message.id).slice(0, 30)}`);
       if (uid !== env.LINE_USER_ID) { // 運営者以外は操作させない（末尾4文字だけ返して設定ミスに気づけるようにする）
         await reply(env, ev.replyToken, `運営者として登録されていません（あなたのIDの末尾: ${uid.slice(-4)}）。` +
           "Cloudflare の LINE_USER_ID を確認してください。");
+        continue;
+      }
+      if (kind === "image") { // 画像の中身は Actions が LINE から取る（Worker では重い処理をしない）
+        const status = await dispatch(env, "line-shot", { action: "save", id: ev.message.id });
+        const set = ev.message.imageSet; // まとめて送ると1枚ずつ届くので、最後の1枚にだけ返事する
+        if (status !== 204) {
+          await reply(env, ev.replyToken, `GitHub の起動に失敗しました（${status}）。GITHUB_TOKEN の権限か期限を確認してください。`);
+        } else if (!set || set.index === set.total) {
+          await reply(env, ev.replyToken, `スクショを受け取りました${set ? `（${set.total}枚）` : ""}。` +
+            "保存に1分ほどかかるので、少し待ってから番号を送ると記事の手順に入ります。");
+        }
         continue;
       }
       const cmd = parseCommand(ev.message.text);

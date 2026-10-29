@@ -6,7 +6,7 @@ from __future__ import annotations
 import html
 import os
 import re
-from urllib.parse import urlsplit
+from urllib.parse import urljoin, urlsplit
 
 import requests
 
@@ -42,6 +42,46 @@ def html_to_text(raw: str) -> str:
     text = html.unescape(re.sub(r"<[^>]+>", " ", raw))
     lines = [re.sub(r"[ \t　]+", " ", ln).strip() for ln in text.splitlines()]
     return "\n".join(ln for ln in lines if len(ln) >= 2)
+
+
+# 公式サイトの候補にしないリンク（SNS・共有ボタン・ブックマーク）
+SKIP_DOMAIN = re.compile(r"(^|\.)(twitter\.com|x\.com|facebook\.com|instagram\.com|threads\.net|linkedin\.com|"
+                         r"youtube\.com|youtu\.be|b\.hatena\.ne\.jp|line\.me|getpocket\.com|reddit\.com)$")
+
+
+def page_links(url: str, limit: int = 40) -> list[dict]:
+    """元記事の本文に貼られた、別サイトへのリンク [{url, text}]（公式サイト・ダウンロードページの候補）。"""
+    r = requests.get(url, headers=UA, timeout=20)
+    r.raise_for_status()
+    r.encoding = r.apparent_encoding or r.encoding
+    raw = re.sub(r"(?is)<(script|style|nav|header|footer|aside)[^>]*>.*?</\1>", " ", r.text)
+    out, seen = [], set()
+    for href, inner in re.findall(r"""(?is)<a\s[^>]*?href=["']([^"']+)["'][^>]*>(.*?)</a>""", raw):
+        link = urljoin(url, html.unescape(href).strip()).split("#")[0]
+        dom = _domain(link)
+        if not link.startswith(("http://", "https://")) or dom == _domain(url) or SKIP_DOMAIN.search(dom) or link in seen:
+            continue
+        seen.add(link)
+        out.append({"url": link, "text": re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", inner))).strip()[:60]})
+        if len(out) >= limit:
+            break
+    return out
+
+
+def link_candidates(main_url: str, sources: list[dict]) -> list[dict]:
+    """公式サイト・ダウンロードページの候補。参考記事そのもの＋元記事の中のリンク。
+    AI には番号で選ばせるので、ここにないURLが記事に出ることはない。"""
+    cands = [{"url": s["url"], "text": s.get("title", "")} for s in sources]
+    try:
+        cands += page_links(main_url)
+    except Exception as e:  # noqa: BLE001  リンクが取れなくても記事は書ける
+        print(f"[research] 元記事のリンクを取れなかった: {e}")
+    seen, out = set(), []
+    for c in cands:
+        if c["url"] not in seen:
+            seen.add(c["url"])
+            out.append(c)
+    return out
 
 
 def fetch_direct(url: str) -> str:
