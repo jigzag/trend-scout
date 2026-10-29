@@ -160,7 +160,7 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     os.environ.update({"TAVILY_API_KEY": "tvly-x", "WP_URL": "https://nocode-ai.net/", "WP_USER": "nonpro",
                        "WP_APP_PASSWORD": "xxxx xxxx", "LINE_CHANNEL_ACCESS_TOKEN": "t", "LINE_USER_ID": "U1",
                        "OPENAI_API_KEY": "sk-test"})
-    sent = {}
+    sent, shot_urls = {}, []
     fake_llm.with_memo = True
     def no_net(url, **kw):
         if url == CAND[0]["item"]["url"]:
@@ -173,6 +173,7 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
          mock.patch.object(writer, "call_llm", fake_llm), \
          mock.patch.object(article, "send_line", lambda t: sent.setdefault("text", t)), \
          mock.patch.object(shots, "call_llm", fake_llm), mock.patch.object(shots, "PENDING", tmp / "shots"), \
+         mock.patch.object(shots, "capture", lambda url: shot_urls.append(url) or b"JPEGDATA"), \
          mock.patch.object(article, "BASE", tmp),          mock.patch.object(affiliate, "PATH", tmp / "aff.yaml"):
         (tmp / "shots").mkdir()
         now = f"{datetime.now(article.JST):%Y%m%d-%H%M%S}"
@@ -197,17 +198,21 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert saved["wordpress"]["id"] == 42 and saved["memo"] == "無料版は3回まで"
     assert files[0].with_suffix(".html").exists()
     assert not any("参考記事が1件" in w for w in saved["warnings"])
-    assert fake_post.images == 2 and saved["images"] == {"featured": 101, "media": [101, 102, 103]}
+    assert fake_post.images == 2 and saved["images"] == {"featured": 101, "media": [101, 102, 103, 104]}
+    # 公式サイトの画面：ダウンロード（登録）ページを撮り、手順の中のリンクの直後に入れる
+    assert shot_urls == ["https://tryon.example/app"] and "公式サイトの画面あり" in sent["text"]
+    assert art["content"].index("登録ページ：") < art["content"].index("uploads/103.jpg") < art["content"].index("uploads/104.jpg")
+    assert "出典：公式サイト（tryon.example）" in art["content"]
     # スクショ：合う見出しの段落の後ろに入り、使った画像と古い画像は消え、合わない画像は残る
     c = art["content"]
     assert fake_llm.placed == 1 and c.count("operator-shot") == 1 and "試着ボタンの画面（運営者のパソコンで撮影）" in c
-    assert c.index("商品カードの試着ボタンを押します。") < c.index("uploads/103.jpg") < c.index("ステップ2")
+    assert c.index("商品カードの試着ボタンを押します。") < c.index("uploads/104.jpg") < c.index("ステップ2")
     assert [p.name for p in (tmp / "shots").iterdir()] == [f"{now}-2.jpg"]
     assert "スクショ 1枚" in sent["text"] and any("スクショ1枚は" in w for w in art["warnings"])
     # リンク：公式サイトは「ざっくり言うと」の下、登録ページは最初の手順の段落の後ろ
     assert art["official_url"] == "https://tryon.example/" and art["download_url"] == "https://tryon.example/app"
     assert c.index("easy-box") < c.index('公式サイト：<a href="https://tryon.example/"') < c.index("<h2")
-    assert c.index("商品カードの試着ボタンを押します。") < c.index("登録ページ：") < c.index("uploads/103.jpg")
+    assert c.index("商品カードの試着ボタンを押します。") < c.index("登録ページ：") < c.index("uploads/104.jpg")
     assert "uploads/102.jpg" in art["content"] and "AI生成" in art["content"]
     assert art["content"].index("uploads/102.jpg") > art["content"].index("想定シナリオ")
     assert art["content"].count("a8mat=TEST") == 2 and "example.com/gemini" not in art["content"]

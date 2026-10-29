@@ -101,6 +101,8 @@ def _insert_at(body: str, h3_end: int) -> int:
     at = close + 4 if close != -1 and (nxt == -1 or close < nxt) else h3_end
     if body[at:].lstrip().startswith(f'<p class="{LINK_CLASS}">'):
         at = body.find("</p>", at) + 4
+    if body[at:].lstrip().startswith('<figure class="wp-block-image size-large page-shot">'):
+        at = body.find("</figure>", at) + 9
     return at
 
 
@@ -139,6 +141,41 @@ def place(body: str, title: str, files: list[Path], cfg: dict, upload) -> tuple[
         at = _insert_at(body, heads[h - 1].end())
         body = body[:at] + figs[h] + body[at:]
     return body, used, media
+
+
+# ---------- 公式サイトの画面を自動で撮る ----------
+def capture(url: str) -> bytes:
+    """ヘッドレスブラウザでページを開いて、最初の1画面を JPEG で撮る。
+    Playwright は記事生成の Actions でだけ入れる（requirements.txt には入れない）。入っていなければ ImportError。"""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        try:
+            page = browser.new_page(viewport={"width": 1280, "height": 800}, locale="ja-JP")
+            page.goto(url, wait_until="domcontentloaded", timeout=30000)
+            try:
+                page.wait_for_load_state("networkidle", timeout=10000)
+            except Exception:  # noqa: BLE001  広告などで終わらないページは、そのまま撮る
+                pass
+            page.wait_for_timeout(1500)
+            return page.screenshot(type="jpeg", quality=75)
+        finally:
+            browser.close()
+
+
+def page_figure(url: str, img_url: str) -> str:
+    dom = re.sub(r"^https?://(www\.)?", "", url).split("/")[0]
+    return (f'<figure class="wp-block-image size-large page-shot"><img src="{html.escape(img_url)}" '
+            f'alt="{html.escape(dom)} の画面"/><figcaption>出典：公式サイト（{html.escape(dom)}）</figcaption></figure>')
+
+
+def insert_page_shot(body: str, url: str, fig: str) -> str:
+    """そのURLへのリンク段落（手順の中にあればそちら）の後ろに入れる。リンクがなければ入れない。"""
+    at = body.rfind(f'<p class="{LINK_CLASS}">', 0, body.rfind(f'href="{html.escape(url)}"') + 1)
+    if at == -1 or f'href="{html.escape(url)}"' not in body:
+        return body
+    end = body.find("</p>", at) + 4
+    return body[:end] + "\n" + fig + body[end:]
 
 
 def main() -> None:

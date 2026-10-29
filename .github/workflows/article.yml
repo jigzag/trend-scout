@@ -36,6 +36,9 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
+      - name: Install browser   # 公式サイトの画面を撮る用（失敗しても記事は作る）
+        continue-on-error: true
+        run: pip install "playwright>=1.47,<2" && python -m playwright install --with-deps chromium
       - name: Write article
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

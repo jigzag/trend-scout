@@ -106,6 +106,7 @@ def message(art: dict, wp: dict | None) -> str:
              f"本文 {art['chars']}字 / 参考記事 {len(art['sources'])}件 / "
              f"類似度 一致率{art['similarity']['ratio']:.1%}・最長{art['similarity']['longest']}字 / "
              f"画像 {len(art.get('images', {}).get('media', []))}枚 / "
+             + ("公式サイトの画面あり / " if art.get("page_shot") else "")
              + (f"スクショ {art['shots']}枚 / " if art.get("shots") else "")
              + f"アフィリンク {len(art.get('affiliates', []))}件"
              + (f"（{'、'.join(art['affiliates'])}）" if art.get("affiliates") else "")]
@@ -147,6 +148,29 @@ def add_images(art: dict, opt: dict) -> dict:
     return out
 
 
+def add_page_shot(art: dict, pics: dict) -> None:
+    """ダウンロード（登録）ページ、なければ公式サイトの画面を撮って、そのリンクの後ろに入れる。"""
+    url = art.get("download_url") or art.get("official_url")
+    if not url:
+        return
+    try:
+        data = shots.capture(url)
+    except ImportError:
+        print("[article] Playwright がないので公式サイトの画面は撮らない")
+        return
+    except Exception as e:  # noqa: BLE001
+        art["warnings"].append(f"公式サイトの画面を撮れなかった: {str(e)[:120]}")
+        return
+    try:
+        m = wordpress.upload_media(data, f"{art['slug'] or 'article'}-site.jpg", f"{art['title']} 公式サイト")
+    except Exception as e:  # noqa: BLE001
+        art["warnings"].append(f"公式サイトの画面を上げられなかった: {str(e)[:120]}")
+        return
+    art["body"] = shots.insert_page_shot(art["body"], url, shots.page_figure(url, m["url"]))
+    pics["media"].append(m["id"])
+    art["page_shot"] = url
+
+
 def add_shots(art: dict, pics: dict, lc: dict) -> None:
     """運営者が LINE で送ったスクショを手順の節に入れる。使った画像は消す（このツールの画面でないものは残す）。"""
     shots.prune()
@@ -176,6 +200,8 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
     use_wp = not dry_run and wordpress.configured()
     img_opt = cfg.get("image") or {}
     pics = add_images(art, img_opt) if use_wp and img_opt.get("enabled") else {"featured": None, "media": []}
+    if use_wp and img_opt.get("page_shot"):
+        add_page_shot(art, pics)
     if use_wp:
         add_shots(art, pics, llm_cfg(cfg))
     ledger = affiliate.load()
