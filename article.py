@@ -74,7 +74,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     body = writer.trim_hedges(body, lc)
     body, clarity = writer.clarify(body, lc)
     body, sim = writer.fix_similarity(body, all_sources, opt, lc)
-    warnings = writer.check_rules(body, memo, opt.get("min_chars", 3000))
+    warnings = writer.check_rules(body, memo, opt.get("min_chars", 3000), facts.get("tool_type", ""))
     if not reader_fit:
         warnings.insert(0, f"個人がすぐ使えるツールではない可能性（ボツ推奨）: {fit_reason}")
     if len(clarity["words"]) + len(clarity["sentences"]) >= 15:
@@ -88,7 +88,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     return {
         "title": outline.get("title") or item["title"], "slug": outline.get("slug", ""),
         "excerpt": outline.get("excerpt", ""), "persona": outline.get("persona", ""),
-        "category": outline.get("category", ""),
+        "category": outline.get("category", ""), "tool_type": facts.get("tool_type", ""),
         "body": body, "_sources": sources, "chars": len(writer.plain(body)),
         "image_prompts": {"featured": outline.get("image_featured", ""), "scenario": outline.get("image_scenario", "")},
         "similarity": sim, "warnings": warnings, "memo": memo, "clarity": clarity,

@@ -78,6 +78,9 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
     if "記事の構成を作って" in prompt:
         schema = a[0] if a else kw.get("schema")
         assert not schema or "動画生成" in schema["properties"]["category"]["enum"]   # 決めたカテゴリだけ選ばせる
+        app = fake_llm.facts_extra.get("tool_type") == "app"
+        assert ("導入手順（記事の中心" in prompt) == app and ("1〜2人" in prompt) == app   # 種類で記事の流れを変える
+        assert "研修担当" not in prompt
         return json.dumps({"title": "ChatGPTの試着機能でできること", "slug": "chatgpt-virtual-try-on",
                            "excerpt": "説明", "persona": "研修担当のAさん、個人事業主のBさん", "category": "動画生成",
                            "sections": []}, ensure_ascii=False)
@@ -212,7 +215,7 @@ def test_irrelevant_source_and_coding(tmp=Path(tempfile.gettempdir()) / "ts_arti
     for k in ("WP_URL", "WP_USER", "WP_APP_PASSWORD"):
         os.environ.pop(k, None)
     fake_llm.with_memo = False
-    fake_llm.facts_extra = {"relevant_sources": [1], "needs_coding": True, "coding_reason": "JSONを書く必要がある",
+    fake_llm.facts_extra = {"relevant_sources": [1], "needs_coding": True, "coding_reason": "JSONを書く必要がある", "tool_type": "app",
                             "reader_fit": False, "fit_reason": "HubSpotが前提"}
     try:
         with mock.patch.object(research.requests, "post", fake_post),              mock.patch.object(writer, "call_llm", fake_llm),              mock.patch.object(article, "BASE", tmp):
@@ -221,6 +224,7 @@ def test_irrelevant_source_and_coding(tmp=Path(tempfile.gettempdir()) / "ts_arti
         fake_llm.facts_extra = {}
     assert [s["url"] for s in art["sources"]] == ["https://www.itmedia.co.jp/a/1"]
     assert "個人がすぐ使えるツールではない可能性（ボツ推奨）: HubSpotが前提" in art["warnings"]
+    assert any("導入手順がステップごと" in w for w in art["warnings"]) and art["tool_type"] == "app"
     assert "other.example" not in art["content"]
     assert art["warnings"][0].startswith("コードを書く前提") and "JSON" in art["warnings"][0]
     assert any("参考記事が1件" in w for w in art["warnings"])
