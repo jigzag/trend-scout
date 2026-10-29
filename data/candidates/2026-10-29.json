@@ -1,0 +1,103 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 7,
+    "monetizable": 9,
+    "buzz": 8.5,
+    "topic": "Tulu",
+    "total": 85,
+    "detail": {
+      "id": 0,
+      "summary": "Tuluは、SMB（中小事業者）向けにマーケティング業務を自律的に実行・分析するSaaSサービス。プロモーション施策の自動化や効果測定をワンストップで行うことを目指す。",
+      "why": "非エンジニアの個人事業主や中小企業担当者が、手間のかかるマーケ実務（配信・分析・改善）をAIで自動化できる点が日本読者にとって実用的。",
+      "usecase": "SNS投稿やメールの配信スケジュール作成、効果測定レポートの自動生成、顧客セグメントごとのキャンペーン最適化など、限られた人員で継続的なマーケ運用を行う場面で役立つ。日次のKPI報告書を自動作成して経営者に提出する運用にも向く。",
+      "angle": "中小企業の“忙しい担当者”向けAIマーケ自動化ガイド",
+      "products": [
+        "Tulu",
+        "Zapier",
+        "Make (Integromat)",
+        "Mailchimp",
+        "HubSpot"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Tulu",
+      "url": "https://www.producthunt.com/products/tulu",
+      "summary": "Autonomous marketing operations & analytics for SMBs Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.5
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 9,
+    "novelty": 7,
+    "monetizable": 9,
+    "buzz": 10.0,
+    "topic": "AppStoreScreenshots",
+    "total": 84,
+    "detail": {
+      "id": 1,
+      "summary": "App Store Screenshotsは、アプリのスクリーンショットを自動デザインするツールで、コーディング不要の“デザインエージェント”が最適なレイアウトやキャプションを生成する。",
+      "why": "個人開発者だけでなく、ノーコードでアプリ紹介素材を作りたい事業者にとって、短時間でプロ仕様のASO素材を準備できる点が魅力。",
+      "usecase": "スマホアプリやサービスのプロダクトページ用スクリーンショットを、英語のテンプレートや自動翻訳を活用して日本語向けに最適化し、広告用クリエイティブを短時間で量産する場面で便利。既存の画像や画面キャプチャを読み込んで自動サイズ調整・キャプション挿入を行う。",
+      "angle": "ASO強化：成果が出るスクショ自動作成の実務手順",
+      "products": [
+        "App Store Screenshots",
+        "Canva Pro",
+        "Figma",
+        "CapCut"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "App Store Screenshots",
+      "url": "https://www.producthunt.com/products/app-store-screenshots",
+      "summary": "Your coding agent designs your app store screenshots Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "usecase": 8,
+    "novelty": 8,
+    "monetizable": 7,
+    "buzz": 8.0,
+    "topic": "Clairic",
+    "total": 82,
+    "detail": {
+      "id": 2,
+      "summary": "Cloudflareの新AIモデル「Clairic」は、文章や画像など非構造化データから金額・日付・住所などの値を抽出し、JSON形式で出力できる抽出特化モデルのプレビュー版。",
+      "why": "領収書や契約書、メールの自動仕分け・経費精算など、事務作業の自動化を考える日本の中小企業・個人事業主にとって即戦力になり得るツールだから。",
+      "usecase": "紙やPDFで届く請求書や領収書の金額・日付を自動抽出して会計ソフトに取り込む、候補日をメールから抜き出してスケジュール候補を自動生成するなど、手入力を減らす現場で役立つ。",
+      "angle": "請求書・契約書の手作業ゼロへ──Clairicで実現する事務自動化",
+      "products": [
+        "Cloudflare Clairic",
+        "Airtable",
+        "Notion",
+        "freee",
+        "Money Forward"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "Cloudflare、AIモデル「Clairic」をプレビュー公開 ――文章や画像から金額・日付などを抽出、JSON形式で出力 | gihyo.jp",
+      "url": "https://gihyo.jp/article/2026/10/clairic",
+      "summary": "Cloudflare⁠⁠、AIモデル「Clairic」をプレビュー公開 ――文章や画像から金額⁠⁠・日付などを抽出⁠⁠、JSON形式で出力 Cloudflareは2026年10月19日、文章や画像などの非構造化データから値を抽出するAIモデル「Clairic」のプレビュー提供を発表した。入力中の情報を使って計算するほか、類似事例をもとに値を推定したり、過...",
+      "signal": 33,
+      "signal_label": "33users",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  }
+]
