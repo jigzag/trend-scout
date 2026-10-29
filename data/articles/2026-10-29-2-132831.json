@@ -1,0 +1,84 @@
+{
+  "title": "オフラインで動く無料AI「Survival LLM」導入ガイド",
+  "slug": "survival-llm-offline-guide",
+  "excerpt": "Survival LLMは自分のPC上で動く無料のオフラインAIです。セットアップの手順や必要容量、使い方と注意点を日本語でわかりやすくまとめます。",
+  "persona": "防災情報を発信する個人クリエイターのAさん,出張先で資料をオフライン参照したい会社員のBさん",
+  "category": "文章作成・チャットAI",
+  "tool_type": "app",
+  "chars": 4027,
+  "image_prompts": {
+    "featured": "Illustration of a laptop on a desk with an offline AI assistant icon and folders, symbolizing local data and privacy.",
+    "scenario": "Illustration of a person working on a laptop in a train or cafe, with documents and an offline AI assistant symbol nearby."
+  },
+  "similarity": {
+    "ratio": 0.017,
+    "longest": 23,
+    "ok": true
+  },
+  "warnings": [
+    "分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "LLM",
+      "オープンソース",
+      "オフライン",
+      "ローカル",
+      "モデル",
+      "ライブラリ",
+      "AIエンジン",
+      "アプリ本体",
+      "zip",
+      "解凍",
+      ".bat",
+      "Gatekeeper",
+      "GB/MB",
+      "Apple Silicon",
+      "64-bit"
+    ],
+    "sentences": [
+      "約93万件のWikipedia人気記事や医療情報、wikiHow、iFixitなど多数の資料が含まれます。",
+      "災害対応や生活の知恵を手元で参照したい人に便利です。",
+      "パソコンの搭載メモリ量に応じて、適切なAIモデルを自動で選んでダウンロードします。",
+      "メモリが多い機種ではより大きなモデルが使われ、回答の精度向上が期待できます。",
+      "回答にはどの記事を参照したかの一覧が付き、クリックすると該当箇所がハイライトされます。",
+      "発信前の確認作業が楽になるため、情報を出す場面で役立ちます。",
+      "アカウント作成やトラッキングが不要な設計で、プライバシーを重視する個人に向いています。",
+      "参照元を一覧で示し、元記事の該当箇所をハイライトできるため、情報の裏取りがしやすい点が特長です。",
+      "セットアップにはインターネット接続が必須で、初回起動時にOSのセキュリティ警告の対処が必要になることがあります."
+    ]
+  },
+  "sources": [
+    {
+      "title": "無料で災害や非常時にオフラインで動作できるサバイバル知識満載のAIアシスタント「Survival LLM」、停電時の食料の安全な保管方法・火傷の手当て方法・水の浄化方法などを信頼できる情報源から回答し出典も表示可能",
+      "url": "https://gigazine.net/news/20261029-survival-llm/"
+    },
+    {
+      "title": "Survival LLM",
+      "url": "https://www.brangus.io/survival-llm"
+    },
+    {
+      "title": "Survival LLM: AI assistant and emergency library that runs on your own computer | Hacker News",
+      "url": "https://news.ycombinator.com/item?id=50264853"
+    }
+  ],
+  "candidate": {
+    "title": "無料で災害や非常時にオフラインで動作できるサバイバル知識満載のAIアシスタント「Survival LLM」、停電時の食料の安全な保管方法・火傷の手当て方法・水の浄化方法などを信頼できる情報源から回答し出典も表示可能",
+    "url": "https://gigazine.net/news/20261029-survival-llm/"
+  },
+  "affiliates": [],
+  "images": {
+    "featured": 60,
+    "media": [
+      60,
+      61
+    ]
+  },
+  "wordpress": {
+    "id": 62,
+    "link": "https://nocode-ai.net/?p=62",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=62&action=edit"
+  },
+  "created_at": "2026-10-29T13:28:33+09:00"
+}
