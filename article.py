@@ -67,12 +67,18 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     if dropped:
         print("[article] 話題と関係ない参考記事を除外: " + ", ".join(dropped))
     needs_coding, coding_reason = facts.pop("needs_coding", False), facts.pop("coding_reason", "")
+    reader_fit, fit_reason = facts.pop("reader_fit", True), facts.pop("fit_reason", "")
     outline = writer.make_outline(cfg["genre"], facts, memo, lc, cfg.get("categories"))
     body = writer.write_body(cfg["genre"], outline, facts, memo, opt, lc)
     body = writer.review(body, facts, memo, lc)
     body = writer.trim_hedges(body, lc)
+    body, clarity = writer.clarify(body, lc)
     body, sim = writer.fix_similarity(body, all_sources, opt, lc)
     warnings = writer.check_rules(body, memo, opt.get("min_chars", 3000))
+    if not reader_fit:
+        warnings.insert(0, f"個人がすぐ使えるツールではない可能性（ボツ推奨）: {fit_reason}")
+    if len(clarity["words"]) + len(clarity["sentences"]) >= 15:
+        warnings.append("分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）")
     if needs_coding:
         warnings.insert(0, f"コードを書く前提の話題で、読者（非エンジニア）に合わない可能性: {coding_reason}")
     if len(sources) < 2:
@@ -85,7 +91,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
         "category": outline.get("category", ""),
         "body": body, "_sources": sources, "chars": len(writer.plain(body)),
         "image_prompts": {"featured": outline.get("image_featured", ""), "scenario": outline.get("image_scenario", "")},
-        "similarity": sim, "warnings": warnings, "memo": memo,
+        "similarity": sim, "warnings": warnings, "memo": memo, "clarity": clarity,
         "sources": [{"title": s["title"], "url": s["url"]} for s in sources],
         "candidate": {"title": item["title"], "url": item["url"]},
     }

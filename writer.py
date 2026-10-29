@@ -24,7 +24,9 @@ HEDGE_WORDS = re.compile(r"公式(?:サイト|情報|発表|案内|ページ|ヘ
 
 RULES = """# 守ること
 - 読者はプログラミングをしない人。AIにくわしくない人が読んでも分かるように書く。です・ます調
-- 1文は短く（40字くらいまで）。1つの文に言いたいことは1つ
+- 1文は60字くらいまで。ただし事実を1行ずつ並べない。「なので」「たとえば」「つまり」でつなぎ、話の流れが分かるように書く
+- 機能を書いたら、読者の仕事や生活のどんな場面で、何がうれしいのかを必ず添える（機能名だけを並べない）
+- 読者の判断に関係ない情報（フォロワー数・使っている技術・開発元の資金調達・どこでローンチしたか など）は書かない
 - 専門用語・カタカナ語・英語は、できるだけふつうの言葉に言い換える。どうしても使うときは、初めて出たところで
   かっこ書きで説明する（例：「API（ほかのアプリとつなぐための窓口）」「エージェント（指示すると自分で作業を進めてくれるAI）」）
 - 書いてよい事実は「事実メモ」にあるものだけ。料金・回数・日付・対応環境などを推測で足さない。
@@ -65,12 +67,15 @@ FACTS_PROMPT = """あなたは調査担当の編集者です。次の話題に�
 - steps: 使い始める手順として書かれていること（書かれていなければ空配列）
 - cautions: 制限・注意点・未確定の点
 - relevant_sources: この話題について実際に書かれていた参考番号の一覧（話題と関係ない記事の番号は入れない）
+- reader_fit: 個人が一人でアカウントを作れば使い始められるなら true。特定の業務システム（HubSpot・Salesforce・会計ソフト等）が前提、
+  専門職（マーケター・経理など）向けの分析/管理ツール、法人契約が前提なら false
+- fit_reason: reader_fit が false の理由（1文。true なら空文字）
 - needs_coding: 読者がこの話題を試すのに、プログラムを書く・コマンドを打つ・設定ファイル（JSON等）を編集する必要があるなら true
 - coding_reason: needs_coding が true の理由（1文。false なら空文字）
 文章をそのまま写さず、短く言い換えること。推測は入れないこと。
 **この話題に直接関係する事実だけ**を入れること。会社や製品全般の紹介、別の製品・別の機能の話、書籍やイベントの宣伝など、
 この話題を説明するのに不要なものは、参考記事に書かれていても入れない。
-{{"summary": "", "facts": [], "steps": [], "cautions": [], "relevant_sources": [], "needs_coding": false, "coding_reason": ""}}
+{{"summary": "", "facts": [], "steps": [], "cautions": [], "relevant_sources": [], "reader_fit": true, "fit_reason": "", "needs_coding": false, "coding_reason": ""}}
 """
 
 # ---------- 2. 構成 ----------
@@ -95,8 +100,9 @@ OUTLINE_PROMPT = """あなたはブログ編集長です。次のブログに載
   職種や目的が重ならないように選ぶ
 - category: 記事のカテゴリ。次の中から1つ: {categories}
 - sections: 見出し(h2)の配列。[{{"h2": "", "points": ["この節で書くこと"]}}]
-  どんなツールか → 何ができるか → 料金・日本から使えるか・日本語対応 → 【想定シナリオ】使い方の想定（記事の半分程度）→
-  似たサービスとの違い・向いている人 → まとめ を基本に、事実メモに合わせて調整する。
+  こんなことで困っていませんか（読者の困りごと）→ このツールで何が変わるか（できることを、うれしさとセットで）→
+  使い始めるまでの流れ → 料金・日本から使えるか・日本語対応 → 【想定シナリオ】使い方の想定（記事の半分程度）→
+  気をつけること・向いている人 → まとめ を基本に、事実メモに合わせて調整する。
   事実メモに材料がない節は作らない（料金が分からなければ料金の節は作らない）。「明らかにされていない点」だけを並べる節は作らない
 - image_featured: アイキャッチ画像の内容（英語1〜2文）。記事のテーマを象徴する場面や物のイラスト
 - image_scenario: 想定シナリオの場面の画像の内容（英語1〜2文）。persona の1人目が仕事をしている場面のイラスト
@@ -180,7 +186,8 @@ HTMLタグの種類はそのまま保ち、書き直した段落だけを、入�
 
 FACTS_SCHEMA = obj_schema({"summary": STR, "facts": arr(obj_schema({"fact": STR, "src": INT})),
                            "steps": arr(STR), "cautions": arr(STR),
-                           "relevant_sources": arr(INT), "needs_coding": BOOL, "coding_reason": STR})
+                           "relevant_sources": arr(INT), "reader_fit": BOOL, "fit_reason": STR,
+                           "needs_coding": BOOL, "coding_reason": STR})
 OUTLINE_SCHEMA = obj_schema({"title": STR, "slug": STR, "excerpt": STR, "persona": STR, "category": STR,
                              "sections": arr(obj_schema({"h2": STR, "points": arr(STR)})),
                              "image_featured": STR, "image_scenario": STR})
@@ -250,6 +257,58 @@ def trim_hedges(article: str, cfg: dict) -> str:
         return article
     out = strip_fence(call_llm(HEDGE_PROMPT.format(article=article), cfg, 16000))
     return out if len(plain(out)) >= len(plain(article)) * 0.6 else article
+
+
+# ---------- 4c. 分かりやすさチェック ----------
+CLARITY_PROMPT = """あなたは、AIにくわしくない読者です。パソコンやスマホは使えますが、IT用語・マーケティング用語・英語の略語は知りません。
+次の記事を読んで、説明なしでは意味が分からない言葉と、読んでも「で、自分に何がうれしいの？」となる文を挙げてください。
+
+# 記事
+{text}
+
+# 出力（JSONだけ）
+- words: 説明なしでは分からない言葉（記事に出てくる表記のまま。最大15個。なければ空配列）
+- sentences: 意味が分からない文、または読者にとって何がうれしいのか分からない文（記事からそのまま抜き出す。最大10個）
+{{"words": [], "sentences": []}}
+"""
+CLARITY_SCHEMA = obj_schema({"words": arr(STR), "sentences": arr(STR)})
+
+EASY_FIX_PROMPT = """次の記事には、AIにくわしくない読者には分からない言葉と文があります。分かるように直した完成版のHTMLを出力してください。
+- 言葉：ふつうの言葉に言い換える。言い換えられないときは、初めて出たところにかっこで短い説明を足す
+- 文：読者の仕事や生活で何がうれしいのかが分かる文に書き直す。読者に関係ない文なら消す
+- 事実（数字・料金・機能・日付）は変えない・足さない。HTMLタグ、見出し、囲み（div）はそのまま残す
+- 挙げていない部分は変えない
+
+# 分からない言葉
+{words}
+
+# 分からない文
+{sentences}
+
+# 記事
+{article}
+
+# 出力
+直したHTMLだけ（説明やコードフェンスは不要）
+"""
+
+
+def clarify(article: str, cfg: dict) -> tuple[str, dict]:
+    """AIにくわしくない読者の立場で読ませ、分からない言葉・文を挙げさせて直す。返り値: (記事, {"words": [...], "sentences": [...]})"""
+    found = extract_json(call_llm(CLARITY_PROMPT.format(text=plain_text(article)), cfg, 8000, CLARITY_SCHEMA, "clarity"))
+    words, sentences = found.get("words") or [], found.get("sentences") or []
+    report = {"words": words, "sentences": sentences}
+    if not words and not sentences:
+        return article, report
+    out = strip_fence(call_llm(EASY_FIX_PROMPT.format(
+        words="、".join(words) or "（なし）", sentences="\n".join(f"- {s}" for s in sentences) or "（なし）",
+        article=article), cfg, 16000))
+    return (out if len(plain(out)) >= len(plain(article)) * 0.6 else article), report
+
+
+def plain_text(article: str) -> str:
+    """読者が読む形（タグを外し、段落ごとに改行）。"""
+    return re.sub(r"\n{2,}", "\n", re.sub(r"<[^>]+>", "\n", article)).strip()
 
 
 # ---------- 類似度チェック ----------

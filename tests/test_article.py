@@ -86,6 +86,13 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
         return "```html\n" + BODY + "\n```"
     if "校閲者です" in prompt:
         return prompt.split("# 記事\n", 1)[1].split("\n\n# 出力")[0]
+    if "AIにくわしくない読者です" in prompt:
+        assert "<" not in prompt.split("# 記事\n", 1)[1].split("\n\n# 出力")[0]   # タグを外して読ませる
+        return json.dumps({"words": ["Plus"], "sentences": []}, ensure_ascii=False)
+    if "分かるように直した完成版" in prompt:
+        assert "Plus" in prompt
+        fake_llm.clarified += 1
+        return prompt.split("# 記事\n", 1)[1].split("\n\n# 出力")[0]
     if "似すぎています" in prompt:
         blocks = json.loads(prompt.split("# 段落（JSON配列）\n", 1)[1].split("\n\n# 出力")[0])
         return json.dumps(["<p>自分の写真を使って、服や小物を身に着けたイメージを確認できます。</p>" for _ in blocks],
@@ -93,6 +100,7 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
     raise AssertionError(prompt[:80])
 fake_llm.with_memo = False
 fake_llm.facts_extra = {}
+fake_llm.clarified = 0
 
 
 def _setup(tmp: Path):
@@ -172,6 +180,8 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert art["content"].count("a8mat=COCO") == 1 and "プロに頼む方法" in art["content"]   # カテゴリ「動画生成」の記事
     assert art["content"].index("a8mat=COCO") > art["content"].rindex("a8mat=TEST")        # 最後に出す
     assert "アフィリンク 2件（ChatGPT、ココナラ）" in sent["text"]
+    assert fake_llm.clarified >= 1 and art["clarity"]["words"] == ["Plus"]
+    assert not any("ボツ推奨" in w for w in art["warnings"])
     print(sent["text"])
 
 
@@ -202,13 +212,15 @@ def test_irrelevant_source_and_coding(tmp=Path(tempfile.gettempdir()) / "ts_arti
     for k in ("WP_URL", "WP_USER", "WP_APP_PASSWORD"):
         os.environ.pop(k, None)
     fake_llm.with_memo = False
-    fake_llm.facts_extra = {"relevant_sources": [1], "needs_coding": True, "coding_reason": "JSONを書く必要がある"}
+    fake_llm.facts_extra = {"relevant_sources": [1], "needs_coding": True, "coding_reason": "JSONを書く必要がある",
+                            "reader_fit": False, "fit_reason": "HubSpotが前提"}
     try:
         with mock.patch.object(research.requests, "post", fake_post),              mock.patch.object(writer, "call_llm", fake_llm),              mock.patch.object(article, "BASE", tmp):
             art = article.run(1, dry_run=True, config_path=Path(article.__file__).parent / "config.yaml")
     finally:
         fake_llm.facts_extra = {}
     assert [s["url"] for s in art["sources"]] == ["https://www.itmedia.co.jp/a/1"]
+    assert "個人がすぐ使えるツールではない可能性（ボツ推奨）: HubSpotが前提" in art["warnings"]
     assert "other.example" not in art["content"]
     assert art["warnings"][0].startswith("コードを書く前提") and "JSON" in art["warnings"][0]
     assert any("参考記事が1件" in w for w in art["warnings"])
