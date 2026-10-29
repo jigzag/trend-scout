@@ -1,0 +1,46 @@
+{
+  "title": "Tuluで自動化するSMB向けマーケ分析入門",
+  "slug": "tulu-autonomous-marketing",
+  "excerpt": "TuluはSMB向けの自律的なマーケティング運用と分析を謳うSaaSです。HubSpotの収益データ連携、オフライン支出提出、WhatsApp通知、内蔵チャットなどで運用を自動化できます。14日間の無料トライアル（クレジットカード不要）あり。",
+  "persona": "中小企業のマーケ担当のAさん、研修で社内資料を作るBさん、ネット広告を出す個人事業主のCさん",
+  "category": "SNS・マーケティング",
+  "chars": 2196,
+  "image_prompts": {
+    "featured": "Illustration of a small business marketing dashboard showing campaign timelines, notifications, and a chatbot interface.",
+    "scenario": "Illustration of a small company marketing manager checking campaign alerts on a laptop, with notification icons and a timeline chart."
+  },
+  "similarity": {
+    "ratio": 0.017,
+    "longest": 35,
+    "ok": true
+  },
+  "warnings": [
+    "本文が短い（2196字）",
+    "話題に関係する参考記事が1件だけ。事実が少ないので内容を確認してください"
+  ],
+  "memo": "",
+  "sources": [
+    {
+      "title": "Tulu",
+      "url": "https://www.producthunt.com/products/tulu"
+    }
+  ],
+  "candidate": {
+    "title": "Tulu",
+    "url": "https://www.producthunt.com/products/tulu"
+  },
+  "affiliates": [],
+  "images": {
+    "featured": 52,
+    "media": [
+      52,
+      53
+    ]
+  },
+  "wordpress": {
+    "id": 54,
+    "link": "https://nocode-ai.net/?p=54",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=54&action=edit"
+  },
+  "created_at": "2026-10-29T10:43:50+09:00"
+}
