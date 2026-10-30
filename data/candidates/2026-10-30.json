@@ -1,0 +1,95 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 7,
+    "monetizable": 7,
+    "buzz": 10.0,
+    "topic": "Gemini Docs",
+    "total": 86,
+    "detail": {
+      "id": 0,
+      "summary": "GoogleのGeminiチャット上で、PDFやGoogleドキュメント、スプレッドシート、スライドなどファイルを直接生成・プレビュー・編集できる機能が公開された。チャット内でファイル操作とテキスト生成が完結する。",
+      "why": "日本語情報が少ない新機能で、非エンジニアの読者が普段使うドキュメント作成ワークフローを劇的に短縮できる点を具体的に示せるため。",
+      "usecase": "会議メモからその場で整形済みの議事録PDFを生成して共有したり、企画書の箇条書きを渡してスライドに自動反映させ、細部をチャットで指示して修正する流れが一人で完結する。社内の承認用にフォーマットを合わせた添付資料を素早く作る場面でも有効。",
+      "angle": "Geminiでドキュメント制作をチャットだけで完結させる方法",
+      "products": [
+        "Google Gemini / Gemini Advanced",
+        "Google Workspace（Docs, Sheets, Slides）"
+      ]
+    },
+    "item": {
+      "source": "The Verge",
+      "title": "You can generate and edit Google Docs files directly in Gemini chats now",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1022519/google-gemini-file-editing-documents-pdfs",
+      "summary": "Now you can generate, preview, and edit PDFs, Google Docs, Google Sheets, slide decks, Markdown files, TXT files, and code directly within Google Gemini. The new file editing capabilities are availabl",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 7,
+    "monetizable": 8,
+    "buzz": 4.0,
+    "topic": "IFTTT.ai",
+    "total": 78,
+    "detail": {
+      "id": 1,
+      "summary": "IFTTTがAI機能を前面に出した「IFTTT.ai」を展開し、自然言語での指示からさまざまなアプリ連携・自動化が組めるようになった。ノーコードでトリガーとアクションを作る体験を強化している。",
+      "why": "非エンジニアの読者が、“普段の繰り返し作業を会話で自動化する”という概念をすぐ実践でき、具体的なテンプレや使い方を示すと価値が高いから。",
+      "usecase": "SNS投稿の同時配信、メールの自動振り分け→チャットに通知、音声メモを指定フォルダへ自動保存して要約を生成するなど、日常のルーチン作業を言葉で設定して省力化できる。",
+      "angle": "会話でつくる自動化：IFTTT.aiで仕事を減らす具体手順",
+      "products": [
+        "IFTTT / IFTTT Pro",
+        "Zapier（比較用）"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "IFTTT.ai",
+      "url": "https://www.producthunt.com/products/ifttt",
+      "summary": "The easiest way to automate anything Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 4.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 8,
+    "novelty": 7,
+    "monetizable": 7,
+    "buzz": 8.0,
+    "topic": "Scape",
+    "total": 77,
+    "detail": {
+      "id": 2,
+      "summary": "Scapeは受信箱をAIで整理・優先化するインテリジェントなメールクライアントで、重要メールの抽出や要約、返信テンプレの提案などを行う。プロダクトはプロダクトハントで注目されている。",
+      "why": "メール処理に時間を取られる個人向けに、日本語環境での運用イメージや注意点を先取りして示せるため。",
+      "usecase": "大量の営業問い合わせやカスタマー連絡を優先度別に振り分け、重要な依頼だけ要約でチェックして短い定型文で返信することで、日々のメール対応時間を短縮できる。",
+      "angle": "メールを放置しない仕組み：Scapeで優先処理する方法",
+      "products": [
+        "Scape（サービス本体）",
+        "Gmail」「Outlook"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Scape",
+      "url": "https://www.producthunt.com/products/scape-4",
+      "summary": "An intelligent email inbox that works for you Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  }
+]
