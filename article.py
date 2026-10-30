@@ -107,6 +107,8 @@ def message(art: dict, wp: dict | None) -> str:
              f"類似度 一致率{art['similarity']['ratio']:.1%}・最長{art['similarity']['longest']}字 / "
              f"画像 {len(art.get('images', {}).get('media', []))}枚 / "
              + ("公式サイトの画面あり / " if art.get("page_shot") else "")
+             + (f"公式の操作画面 {art['official_images']}枚 / " if art.get("official_images") else "")
+             + ("公式動画あり / " if art.get("official_video") else "")
              + (f"スクショ {art['shots']}枚 / " if art.get("shots") else "")
              + f"アフィリンク {len(art.get('affiliates', []))}件"
              + (f"（{'、'.join(art['affiliates'])}）" if art.get("affiliates") else "")]
@@ -171,6 +173,19 @@ def add_page_shot(art: dict, pics: dict) -> None:
     art["page_shot"] = url
 
 
+def add_official_images(art: dict, pics: dict, lc: dict) -> None:
+    """公式発表ページの操作画面の画像を合う手順の下に、公式の YouTube 動画を手順の手前に入れる（出典付き）。"""
+    try:
+        art["body"], ids, video = shots.place_official(art["body"], art["title"], art["official_url"], lc,
+                                                       wordpress.upload_media)
+    except Exception as e:  # noqa: BLE001  画像の失敗では記事を止めない
+        art["warnings"].append(f"公式ページの画像を入れられなかった: {str(e)[:150]}")
+        return
+    pics["media"] += ids
+    art["official_images"] = len(ids)
+    art["official_video"] = video
+
+
 def add_shots(art: dict, pics: dict, lc: dict) -> None:
     """運営者が LINE で送ったスクショを手順の節に入れる。使った画像は消す（このツールの画面でないものは残す）。"""
     shots.prune()
@@ -202,6 +217,8 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
     pics = add_images(art, img_opt) if use_wp and img_opt.get("enabled") else {"featured": None, "media": []}
     if use_wp and img_opt.get("page_shot"):
         add_page_shot(art, pics)
+    if use_wp and img_opt.get("official_images") and art.get("official_url"):
+        add_official_images(art, pics, llm_cfg(cfg))
     if use_wp:
         add_shots(art, pics, llm_cfg(cfg))
     ledger = affiliate.load()

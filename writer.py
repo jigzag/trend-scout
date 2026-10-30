@@ -235,7 +235,7 @@ def extract_facts(topic: str, sources: list[dict], cfg: dict, links: list[dict] 
 
 # ---------- 公式サイト・ダウンロードページへのリンク ----------
 LINK_CLASS = "official-link"
-STEP_HEADING = re.compile(r"(?s)<h3[^>]*>(?:(?!</h3>).)*(?:ダウンロード|インストール|登録|アカウント|入手|はじめ|始め)(?:(?!</h3>).)*</h3>")
+STEP_HEADING = re.compile(r"(?s)<h3[^>]*>(?:(?!</h3>).)*(?:ダウンロード|インストール|登録|アカウント|入手|はじめ|始め|ログイン|サインイン|開く|開き)(?:(?!</h3>).)*</h3>")
 
 
 def link_p(label: str, url: str) -> str:

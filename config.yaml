@@ -102,6 +102,7 @@ image:
   quality: low         # low / medium / high（low で1枚数円〜十数円）
   size: 1536x1024      # 横長（アイキャッチ向き）
   body_image: true     # 想定シナリオの見出しの下にも1枚入れる
+  official_images: true  # 公式発表ページの操作画面の画像を、合う手順の下に出典付きで入れる（AIが画像を見るので1記事数円）
   page_shot: true      # 公式サイト（ダウンロードページ）の画面を自動で撮って手順に入れる（Actions で Playwright を入れたときだけ）
 
 # AI設定（provider: anthropic か openai。APIキーは環境変数で渡す）

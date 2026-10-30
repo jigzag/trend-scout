@@ -21,8 +21,9 @@ CAND = [{"topic": "ChatGPT-virtual-tryon", "total": 82, "detail": {"summary": "�
 
 
 class Resp:
-    def __init__(self, js=None, text="", status=200):
+    def __init__(self, js=None, text="", status=200, content=b""):
         self._js, self.text, self.status_code = js, text or json.dumps(js), status
+        self.content = content
         self.apparent_encoding, self.encoding = "utf-8", "utf-8"
     def json(self): return self._js
     def raise_for_status(self):
@@ -45,7 +46,7 @@ def fake_post(url, **kw):
         fake_post.images += 1
         return Resp({"data": [{"b64_json": base64.b64encode(b"JPEGDATA").decode()}]})
     if url.endswith("/wp-json/wp/v2/media"):
-        assert kw["data"] == b"JPEGDATA" and kw["headers"]["Content-Type"] == "image/jpeg"
+        assert (kw["data"], kw["headers"]["Content-Type"]) in ((b"JPEGDATA", "image/jpeg"), (BIG_PNG, "image/png"))
         fake_post.media += 1
         mid = 100 + fake_post.media
         return Resp({"id": mid, "source_url": f"https://nocode-ai.net/wp-content/uploads/{mid}.jpg"})
@@ -81,6 +82,11 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
                            "steps": [], "cautions": [], "unknowns": ["日本での提供時期"],
                            "official_link": 3 if ok else 0, "download_link": 4 if ok else 99, **fake_llm.facts_extra},
                           ensure_ascii=False)
+    if "公式発表ページに載っていた画像" in prompt:
+        assert [m for m, _ in kw["images"]] == ["image/png", "image/jpeg"]   # og:image と本文の画像（ロゴ・アイコンは除く）
+        fake_llm.official += 1
+        return json.dumps({"shots": [{"image": 1, "match": True, "heading": 2, "caption": "写真を選ぶ画面"},
+                                     {"image": 2, "match": False, "heading": 1, "caption": "関連記事"}]}, ensure_ascii=False)
     if "スクリーンショットです" in prompt:
         assert len(kw["images"]) == 2 and kw["images"][0] == ("image/jpeg", b"JPEGDATA")
         assert "1. ステップ1：試着ボタンから始める" in prompt
@@ -117,6 +123,11 @@ fake_llm.with_memo = False
 fake_llm.facts_extra = {}
 fake_llm.clarified = 0
 fake_llm.placed = 0
+fake_llm.official = 0
+BIG_PNG = b"\x89PNG\r\n\x1a\n" + b"0" * 40000   # 公式ページの操作画面（アイコンより大きい）
+OFFICIAL_PAGE = ('<html><head><meta property="og:image" content="https://tryon.example/hero.png"></head><body>'
+                 '<img src="/logo.svg"><img src="/icon.png" width="32" height="32"><img src="/related.jpg">'
+                 '<iframe src="https://www.youtube.com/embed/abcdefghijk"></iframe></body></html>')
 PAGE = ('<html><body><nav><a href="https://www.itmedia.co.jp/menu">メニュー</a></nav><article>'
         '<a href="https://twitter.com/share?u=x">ポスト</a><a href="/a/2">同じサイト</a>'
         '<a href="https://tryon.example/">公式サイト</a><a href="https://tryon.example/app#dl">アプリ</a></article></body></html>')
@@ -165,6 +176,14 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     def no_net(url, **kw):
         if url == CAND[0]["item"]["url"]:
             return Resp(text=PAGE)   # 元記事のリンク（公式サイトの候補）
+        if url == "https://tryon.example/":
+            return Resp(text=OFFICIAL_PAGE)
+        if url == "https://tryon.example/hero.png":
+            return Resp(content=BIG_PNG)
+        if url == "https://tryon.example/related.jpg":
+            return Resp(content=b"\xff\xd8" + b"0" * 40000)
+        if url == "https://tryon.example/icon.png":
+            raise AssertionError("小さいと分かっている画像は取りに行かない")
         if url.endswith("/wp-json/wp/v2/categories"):
             return Resp([{"id": 3, "name": "画像生成・デザイン"}])   # 「動画生成」はまだない → 作る
         raise AssertionError(f"ネットに出ようとした: {url}")
@@ -198,7 +217,13 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert saved["wordpress"]["id"] == 42 and saved["memo"] == "無料版は3回まで"
     assert files[0].with_suffix(".html").exists()
     assert not any("参考記事が1件" in w for w in saved["warnings"])
-    assert fake_post.images == 2 and saved["images"] == {"featured": 101, "media": [101, 102, 103, 104]}
+    assert fake_post.images == 2 and saved["images"] == {"featured": 101, "media": [101, 102, 103, 104, 105]}
+    # 公式ページの画像：合うものだけ、その見出し（ステップ2）の下に出典付きで。動画は最初のステップの手前
+    c = art["content"]
+    assert fake_llm.official == 1 and c.count("official-shot") == 1 and "写真を選ぶ画面（出典：" in c
+    assert c.index("<h3>ステップ2") < c.index("uploads/104.jpg") < c.index("<h3>ステップ2") + 400
+    assert "youtube-nocookie.com/embed/abcdefghijk" in c and c.index("official-video") < c.index("<h3>ステップ1")
+    assert "公式の操作画面 1枚" in sent["text"] and "公式動画あり" in sent["text"]
     # 公式サイトの画面：ダウンロード（登録）ページを撮り、手順の中のリンクの直後に入れる
     assert shot_urls == ["https://tryon.example/app"] and "公式サイトの画面あり" in sent["text"]
     assert art["content"].index("登録ページ：") < art["content"].index("uploads/103.jpg") < art["content"].index("uploads/104.jpg")
@@ -206,13 +231,13 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     # スクショ：合う見出しの段落の後ろに入り、使った画像と古い画像は消え、合わない画像は残る
     c = art["content"]
     assert fake_llm.placed == 1 and c.count("operator-shot") == 1 and "試着ボタンの画面（運営者のパソコンで撮影）" in c
-    assert c.index("商品カードの試着ボタンを押します。") < c.index("uploads/104.jpg") < c.index("ステップ2")
+    assert c.index("商品カードの試着ボタンを押します。") < c.index("uploads/105.jpg") < c.index("ステップ2")
     assert [p.name for p in (tmp / "shots").iterdir()] == [f"{now}-2.jpg"]
     assert "スクショ 1枚" in sent["text"] and any("スクショ1枚は" in w for w in art["warnings"])
     # リンク：公式サイトは「ざっくり言うと」の下、登録ページは最初の手順の段落の後ろ
     assert art["official_url"] == "https://tryon.example/" and art["download_url"] == "https://tryon.example/app"
     assert c.index("easy-box") < c.index('公式サイト：<a href="https://tryon.example/"') < c.index("<h2")
-    assert c.index("商品カードの試着ボタンを押します。") < c.index("登録ページ：") < c.index("uploads/104.jpg")
+    assert c.index("商品カードの試着ボタンを押します。") < c.index("登録ページ：") < c.index("uploads/105.jpg")
     assert "uploads/102.jpg" in art["content"] and "AI生成" in art["content"]
     assert art["content"].index("uploads/102.jpg") > art["content"].index("想定シナリオ")
     assert art["content"].count("a8mat=TEST") == 2 and "example.com/gemini" not in art["content"]
