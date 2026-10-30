@@ -1,0 +1,85 @@
+{
+  "title": "Geminiチャットで文書・PDFをその場で編集",
+  "slug": "gemini-edit-files-chat",
+  "excerpt": "Geminiのチャット内でPDFやGoogleドキュメント、スプレッドシート、スライド、Markdownなどを生成・プレビュー・編集できます。PDFはモバイルでも編集可能で、本文の修正や表のグラフ化を会話で指示できます。",
+  "persona": "個人で資料を作る会社員のAさん, SNS発信をする個人事業主のBさん, 会議の議事録をまとめる会社員のCさん",
+  "category": "資料・スライド作成",
+  "tool_type": "feature",
+  "official_url": "https://blog.google/innovation-and-ai/products/gemini-app/edit-files-directly/",
+  "download_url": "",
+  "chars": 2982,
+  "image_prompts": {
+    "featured": "An illustration of a person editing various documents (PDF, slides, spreadsheet) inside a chat interface, showing previews and highlighted text.",
+    "scenario": "An illustration of the first persona (office worker) at a desk editing a slide on a laptop while chatting with an AI assistant; no real app screens or logos."
+  },
+  "similarity": {
+    "ratio": 0.0,
+    "longest": 0,
+    "ok": true
+  },
+  "warnings": [
+    "分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "Gemini",
+      "PDF",
+      "Googleドキュメント",
+      "Googleスプレッドシート",
+      "Markdown（書式を付ける記法）",
+      "TXT（テキストファイル）",
+      "プレビュー",
+      "フルスクリーン",
+      "ハイライト",
+      "アップロード",
+      "サインイン",
+      "Web版",
+      "モバイル版",
+      "ブラウザ",
+      "スタディガイド"
+    ],
+    "sentences": [
+      "この記事を読めば、Geminiのチャット内でPDFや文書をその場で作り、確認し、直せる新機能の全体像と使い方が分かります。",
+      "ブラウザかスマホでどのファイルが編集できるかを整理しているので、自分の作業でどう役立つかがすぐに分かます。",
+      "利用にはGeminiアカウントが必要で、全てのGeminiユーザー向けに公開されています。",
+      "チャットの会話から直接、PDFやGoogleドキュメント、Googleスプレッドシート、スライド、Markdown（書式を付ける記法）、TXT（テキストファイル）、コード（プログラムの中身）を生成してプレビューできます。",
+      "文書をフルスクリーン（画面いっぱいに表示する状態）で開き、テキストをハイライトすると書き換えや表現の提案をその場で指示できます。",
+      "写真をアップロードすると、手書きノートをPDFのスタディガイドに変換して会話内でプレビューと修正ができます。",
+      "これまでは生成したファイルをダウンロードして別のアプリで開いていましたが、今回の機能でアプリを離れずにファイルを修正できます。",
+      "作業の手順が短くなり、手間を減らせます。",
+      "Googleドキュメント、スプレッドシート、スライド、Markdown、TXT、コードの編集は現時点でWeb版のみ対応です。ブラウザでの利用が前提になります。",
+      "機能はGeminiがサポートする言語と地域のユーザー向けに提供されています。すべての言語や地域で利用できるわけではありません。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "You can generate and edit Google Docs files directly in Gemini chats now",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1022519/google-gemini-file-editing-documents-pdfs"
+    },
+    {
+      "title": "Google Gemini can now create and edit PDFs, documents, and more right inside your chat - Digital Trends",
+      "url": "https://www.digitaltrends.com/computing/google-gemini-can-now-create-and-edit-pdfs-documents-and-more-right-inside-your-chat"
+    }
+  ],
+  "candidate": {
+    "title": "You can generate and edit Google Docs files directly in Gemini chats now",
+    "url": "https://www.theverge.com/ai-artificial-intelligence/1022519/google-gemini-file-editing-documents-pdfs"
+  },
+  "page_shot": "https://blog.google/innovation-and-ai/products/gemini-app/edit-files-directly/",
+  "affiliates": [],
+  "images": {
+    "featured": 63,
+    "media": [
+      63,
+      64,
+      65
+    ]
+  },
+  "wordpress": {
+    "id": 66,
+    "link": "https://nocode-ai.net/?p=66",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=66&action=edit"
+  },
+  "created_at": "2026-10-30T10:51:46+09:00"
+}
