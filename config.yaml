@@ -81,6 +81,7 @@ article:
   exclude_domains: [b.hatena.ne.jp, news.google.com, x.com, twitter.com, youtube.com, facebook.com,
                     instagram.com, tiktok.com, togetter.com, posfie.com]
   exclude_title_words: [新着エントリー, 人気エントリー, ニュースまとめ, まとめサイト, ランキング]
+  auto_publish: true   # 公開まで自動（2026-10-31 KJ）。ボツ推奨・似すぎ・短すぎなど内容の警告があれば下書きで止める
   min_chars: 3000      # 本文の目安（下限）
   max_chars_body: 4000 # 本文の目安（上限）
   # 類似度チェック（参考記事と12文字以上の一致が続く長さ・割合）

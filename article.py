@@ -101,8 +101,16 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     }
 
 
-def message(art: dict, wp: dict | None) -> str:
-    lines = ["【下書きができました】", art["title"] + (f"（{art['category']}）" if art.get("category") else ""), "",
+# 自動公開を止めない警告（画像などの付け足しの失敗だけ。内容の問題は下書きで止める）
+SOFT_WARNINGS = ("画像（", "公式サイトの画面を", "カテゴリを設定", "分かりにくい言葉")
+
+
+def blocking(warnings: list[str]) -> list[str]:
+    return [w for w in warnings if not w.startswith(SOFT_WARNINGS)]
+
+
+def message(art: dict, wp: dict | None, published: bool = False) -> str:
+    lines = ["【記事を公開しました】" if published else "【下書きができました】", art["title"] + (f"（{art['category']}）" if art.get("category") else ""), "",
              f"本文 {art['chars']}字 / 参考記事 {len(art['sources'])}件 / "
              f"類似度 一致率{art['similarity']['ratio']:.1%}・最長{art['similarity']['longest']}字 / "
              f"画像 {len(art.get('images', {}).get('media', []))}枚 / "
@@ -113,8 +121,12 @@ def message(art: dict, wp: dict | None) -> str:
     if art["warnings"]:
         lines += ["", "確認してほしい点:"] + [f"・{w}" for w in art["warnings"]]
     lines.append("")
-    if wp:
+    if wp and published:
+        lines += [wp["link"], "", f"取り下げるときは、管理画面で下書きに戻してください（投稿ID {wp['id']}）"]
+    elif wp:
         base = wp["edit_url"].split("/wp-admin/")[0]
+        if art.get("held"):
+            lines += ["上の点があったので、公開せず下書きにしました。", ""]
         lines += ["プレビュー（ログイン済みのブラウザで開く）:", f"{base}/?p={wp['id']}&preview=true", "",
                   "ログインがまだなら先にこちら:", f"{base}/wp-admin/", "",
                   "編集画面:", wp["edit_url"], "",
@@ -209,7 +221,7 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
     stem = f"{cand_day}-{n}-{datetime.now(JST):%H%M%S}"  # 同じ候補で作り直しても上書きしない
     (out_dir / f"{stem}.html").write_text(art["content"], encoding="utf-8")
 
-    wp = None
+    wp, published = None, False
     if use_wp:
         cats = []
         if art.get("category"):
@@ -217,19 +229,24 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
                 cats = [wordpress.category_id(art["category"])]
             except Exception as e:  # noqa: BLE001  カテゴリの失敗では投稿を止めない
                 art["warnings"].append(f"カテゴリを設定できなかった: {str(e)[:120]}")
-        wp = wordpress.post_draft(art["title"], art["content"], art["slug"], art["excerpt"], pics["featured"], cats)
-        print(f"[article] WordPress 下書き: {wp['edit_url']}")
+        auto = cfg.get("article", {}).get("auto_publish", False)
+        published = auto and not blocking(art["warnings"])
+        art["held"] = auto and not published
+        wp = wordpress.post_draft(art["title"], art["content"], art["slug"], art["excerpt"], pics["featured"], cats,
+                                  status="publish" if published else "draft")
+        print(f"[article] WordPress {'公開' if published else '下書き'}: {wp['link'] or wp['edit_url']}")
     meta = {k: v for k, v in art.items() if k != "content"}
     meta["wordpress"] = wp
+    meta["published"] = published
     meta["created_at"] = datetime.now(JST).isoformat(timespec="seconds")
     (out_dir / f"{stem}.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    text = message(art, wp)
+    text = message(art, wp, published)
     if dry_run:
         print("\n" + text)
     else:
         send_line(text)
-    return {**art, "wordpress": wp}
+    return {**art, "wordpress": wp, "published": published}
 
 
 def main() -> None:

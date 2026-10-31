@@ -182,6 +182,10 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert "参考にした情報" in art["content"] and "https://other.example/c" in art["content"]
     assert "itmedia.co.jp/b/2" not in art["content"]          # 同じドメインは1件だけ
     assert "下書きができました" in sent["text"] and "?p=42&preview=true" in sent["text"] and "「公開」" in sent["text"]
+    assert not art["published"] and "公開せず下書きにしました" in sent["text"]   # 本文が短い → 自動公開しない
+    assert article.blocking(["画像（本文）を作れなかった: x", "本文が短い（10字）"]) == ["本文が短い（10字）"]
+    pub = article.message({**art, "warnings": []}, {"id": 42, "link": "https://nocode-ai.net/x/", "edit_url": ""}, True)
+    assert pub.startswith("【記事を公開しました】") and "https://nocode-ai.net/x/" in pub
     files = list((tmp / "data" / "articles").glob("2026-10-04-1-*.json"))
     assert len(files) == 1
     saved = json.loads(files[0].read_text(encoding="utf-8"))
