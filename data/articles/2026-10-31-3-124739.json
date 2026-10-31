@@ -1,0 +1,84 @@
+{
+  "title": "Gemini Notebookで教科書を“ソース”化して学習支援",
+  "slug": "gemini-notebook-textbooks",
+  "excerpt": "Gemini Notebookに数百冊の教科書が追加され、教科書を“ソース”としてAIに読み込ませられます。引用付きで回答を得たり、学習ガイドや練習問題、フラッシュカードを自動生成できます。日本からの利用も確認されています。",
+  "persona": "オンライン講座を作る個人事業主のAさん, 社内研修資料を作る会社員のBさん, 教材を配信するフリーランスのCさん",
+  "category": "文章作成・チャットAI",
+  "tool_type": "feature",
+  "official_url": "",
+  "download_url": "",
+  "chars": 2629,
+  "image_prompts": {
+    "featured": "An illustration of a person at a desk with an open digital notebook, textbooks stacked nearby, and glowing AI-style lines connecting them.",
+    "scenario": "An illustration of the first persona working on a laptop, surrounded by textbook pages and notes, generating study materials with the help of an AI notebook."
+  },
+  "similarity": {
+    "ratio": 0.037,
+    "longest": 25,
+    "ok": true
+  },
+  "warnings": [
+    "分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "Gemini Notebook",
+      "Add sources",
+      "Textbooks",
+      "OpenStax",
+      "Open Textbook Library",
+      "S Chand Publishing",
+      "Expert Intelligence（Google Playの書籍連携機能）",
+      "Google Play",
+      "ノートブック",
+      "ソース",
+      "フラッシュカード",
+      "出典"
+    ],
+    "sentences": [
+      "この記事で分かることは、Gemini Notebookが教科書を「ソース」として読み込めるようになった点と、教科書を使って学習ガイドや練習問題、フラッシュカードを自動で作る方法です。",
+      "Gemini Notebookは教科書をAI（人工知能）の参照元（ソース）として登録できる、本棚のような機能です。",
+      "教科書を登録すると、書かれている内容をもとに解説や練習問題、復習用カードを自動で作れます。",
+      "今回追加された教科書は無料で使えるもので、日本からの表示もITmediaで確認されています。個人の教材作りに向いています。",
+      "AIは登録した教科書を参照して回答しますので、根拠のある説明が得られます。",
+      "AIの回答には出典が付いて、該当箇所へ直接アクセスできるようになります。だから引用を明示した解説やスライドの下書きが作りやすくなります。",
+      "教科書の内容をもとに、学習ガイド、練習問題、フラッシュカードなどを自動生成できます。つまり教材の下書きを短時間で用意できます。",
+      "今回の拡充は、Googleが8月に発表したGoogle Playで購入した書籍をGemini Notebookに追加できる機能「Expert Intelligence（Google Playの書籍連携機能）」の拡張版に当たります。",
+      "まず、Gemini Notebookで「Add sources」→「Textbooks」を選び、使いたい教科書を追加してみるとよいでしょう。",
+      "期待できること：教科書の根拠を示した下書きを素早く用意できるため、講座の教材作成を効率化できそうです。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "「Gemini Notebook」、数百冊の教科書を無料で利用可能に",
+      "url": "https://www.watch.impress.co.jp/docs/news/2152548.html"
+    },
+    {
+      "title": "Gemini Notebook、無料で数百冊の教科書にアクセス可能に　米国・インドの出版社提供　日本でも利用可 - ITmedia AI＋",
+      "url": "https://www.itmedia.co.jp/aiplus/article/2610/30/2000002760"
+    },
+    {
+      "title": "「Gemini Notebook」に電子書籍を取り込む機能が追加、Google Play ブックスで購入して利用（窓の杜） - Yahoo!ニュース",
+      "url": "https://news.yahoo.co.jp/articles/6f54fee96403dd029080aeefc5f2fb674662917a"
+    }
+  ],
+  "candidate": {
+    "title": "「Gemini Notebook」、数百冊の教科書を無料で利用可能に",
+    "url": "https://www.watch.impress.co.jp/docs/news/2152548.html"
+  },
+  "affiliates": [],
+  "images": {
+    "featured": 67,
+    "media": [
+      67,
+      68
+    ]
+  },
+  "wordpress": {
+    "id": 69,
+    "link": "https://nocode-ai.net/?p=69",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=69&action=edit"
+  },
+  "created_at": "2026-10-31T12:47:40+09:00"
+}
