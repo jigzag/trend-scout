@@ -1,0 +1,95 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 8,
+    "monetizable": 7,
+    "buzz": 7.0,
+    "topic": "Gemini 文書/スライド編集",
+    "total": 83,
+    "detail": {
+      "id": 0,
+      "summary": "GoogleのGeminiがチャット画面内でPDFやスライドを生成・プレビュー・直接編集できる機能が公開されたという報告。個人プランやGoogle Workspaceでの動作検証記事。",
+      "why": "チャットで資料作成と編集を完結できる流れは、非エンジニアの個人制作者が手間なくAIを業務に組み込めるため、早めに実践的な使い方を示す価値が高い。",
+      "usecase": "会議資料の素案をGeminiで作ってそのままスライドの調整や注釈追加までチャット上で済ませ、ダウンロードして共有する。社外向け提案書の体裁修正や誤字チェックをすばやく行いたいときに便利。",
+      "angle": "Geminiで資料作成〜編集が一気通貫に変わる使い方解説",
+      "products": [
+        "Google Gemini",
+        "Google Workspace (Google ドキュメント/スプレッドシート/スライド)"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "Geminiで生成したPDFやスライドを「チャット上で直接編集」可能に　個人プランとGoogle Workspaceで試してみた",
+      "url": "https://www.itmedia.co.jp/aiplus/article/2610/30/2000002757/",
+      "summary": "Geminiとのチャット内で直接、PDFやスライドなどを生成、プレビュー、編集できるようになった。ITmedia AI＋編集部の環境で同機能を試した結果をお届けする。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 7.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 8,
+    "monetizable": 7,
+    "buzz": 2.7,
+    "topic": "Gemini ドキュメント編集",
+    "total": 77,
+    "detail": {
+      "id": 1,
+      "summary": "Geminiのチャット内でGoogleドキュメントやスプレッドシートを生成して直接編集できる機能の別報道。Google公式ブログの告知も参照。",
+      "why": "ドキュメントとスプレッドシートをチャットベースで作成・編集できれば、文章作成や集計をAI主導で簡略化できる点が日本の個人利用者に響く。",
+      "usecase": "SNS投稿の下書きをGeminiで作りつつ、スプレッドシートで投稿カレンダーを同一チャットで更新。フリーランスが請求リストや納期管理を手軽に整備できる。",
+      "angle": "チャットで文書と表を同時管理する新ワークフロー例",
+      "products": [
+        "Google Gemini",
+        "Google ドキュメント",
+        "Google スプレッドシート"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "Geminiのチャット内で文書ファイルや表計算データを作成して直接編集可能に",
+      "url": "https://gigazine.net/news/20261030-gemini-document-spreadsheet-edit/",
+      "summary": "Google製AI「Gemini」のチャット内でGoogleドキュメントやGoogleスプレッドシートのファイル作成および編集が可能となりました。 Edit and preview documents directly in Gemini https://blog.google/innovation-and-ai/products/gemini-app/edit-files-directly/ G",
+      "signal": 6,
+      "signal_label": "6users",
+      "extra": {
+        "buzz": 2.7
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 8,
+    "novelty": 8,
+    "monetizable": 6,
+    "buzz": 7.0,
+    "topic": "Gemini Notebook 教科書",
+    "total": 76,
+    "detail": {
+      "id": 2,
+      "summary": "Gemini Notebookで数百冊の教科書が無料利用可能になったという報道。教育コンテンツをAIノートブックで参照できる動き。",
+      "why": "教育・学び関連の素材が無料で扱えることで、知識インプットや資料作成時の参考資料として個人ユーザーがすぐ使える点が注目に値する。",
+      "usecase": "社外勉強会の資料作成でGemini Notebookの教科書を参照して要点をまとめ、スライドやハンドアウトの素案を短時間で作る。業務上の新分野学習に利用できる。",
+      "angle": "Gemini Notebookで無料教科書を学習・資料化する方法",
+      "products": [
+        "Google Gemini Notebook"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "「Gemini Notebook」、数百冊の教科書を無料で利用可能に",
+      "url": "https://www.watch.impress.co.jp/docs/news/2152548.html",
+      "summary": "",
+      "signal": 182,
+      "signal_label": "182users",
+      "extra": {
+        "buzz": 7.0
+      }
+    }
+  }
+]
