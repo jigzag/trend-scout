@@ -91,6 +91,14 @@ article:
   llm:
     openai_reasoning_effort: medium
 
+# ===== 今週の新着AIツールまとめ（全自動・毎週日曜の朝。python roundup.py） =====
+roundup:
+  days: 7              # 直近何日分の候補から選ぶか
+  max_items: 6         # 紹介する最大数（評価の高い順。個人向けでないものは外す）
+  min_items: 3         # これより少なければ、その週は作らない
+  auto_publish: true   # 公開まで自動（2026-10-31 KJ）。似すぎ・体験表現などの問題があれば下書きにして LINE で知らせる
+  category: 今週のAIツールまとめ
+
 # WordPress のカテゴリ（記事ごとにAIがこの中から1つ選ぶ。なければ自動で作る）
 categories: [動画生成, 画像生成・デザイン, 音声・ナレーション, 文字起こし・議事録, 資料・スライド作成,
              文章作成・チャットAI, 業務効率化・自動化, SNS・マーケティング, その他のAIツール]
@@ -101,9 +109,9 @@ image:
   model: gpt-image-2   # OpenAI の画像モデル（使えない場合はエラー内容が LINE の警告に出る）
   quality: low         # low / medium / high（low で1枚数円〜十数円）
   size: 1536x1024      # 横長（アイキャッチ向き）
-  body_image: true     # 想定シナリオの見出しの下にも1枚入れる
-  official_images: true  # 公式発表ページの操作画面の画像を、合う手順の下に出典付きで入れる（AIが画像を見るので1記事数円）
-  page_shot: true      # 公式サイト（ダウンロードページ）の画面を自動で撮って手順に入れる（Actions で Playwright を入れたときだけ）
+  body_image: true     # 「何ができるか」の見出しの下にも1枚入れる
+  official_video: true # 公式サイトに YouTube の紹介動画があれば埋め込む（無料）
+  page_shot: true      # 公式サイト（ダウンロードページ）の画面を自動で撮ってリンクの下に入れる（Actions で Playwright を入れたときだけ）
 
 # AI設定（provider: anthropic か openai。APIキーは環境変数で渡す）
 llm:

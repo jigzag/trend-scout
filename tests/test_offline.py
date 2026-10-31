@@ -188,9 +188,9 @@ def _check_strict(schema, path="root"):
         _check_strict(schema["items"], path + "[]")
 
 def test_structured_outputs():
-    import writer
+    import roundup, writer
     for s in (scorer.SCORE_SCHEMA, scorer.DETAIL_SCHEMA, scorer.SALE_SCHEMA,
-              writer.FACTS_SCHEMA, writer.OUTLINE_SCHEMA, writer.REWRITE_SCHEMA):
+              writer.FACTS_SCHEMA, writer.OUTLINE_SCHEMA, writer.REWRITE_SCHEMA, roundup.ITEM_SCHEMA, roundup.WRITE_SCHEMA):
         assert s["type"] == "object"  # strict はルートがオブジェクト
         _check_strict(s)
     os.environ["OPENAI_API_KEY"] = "sk-test"

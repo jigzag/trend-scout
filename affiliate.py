@@ -142,15 +142,13 @@ def category_html(cat_links: list[dict]) -> str:
 
 
 def insert(body: str, found: list[dict], cat_links: list[dict] = ()) -> str:
-    """想定シナリオの章の終わり（次の h2 の前）と、本文の最後にリンクの囲みを入れる。
+    """「まとめ」（最後の h2）の手前と、本文の最後にリンクの囲みを入れる。
     カテゴリで出すリンクは本文の最後に1回だけ（ツールの囲みより後）。"""
     if found:
         b = box(found)
-        i = body.find("想定シナリオ")
-        if i != -1:
-            j = body.find("<h2", body.find("</h2>", i))
-            if j != -1:
-                body = body[:j] + b + "\n" + body[j:]
+        j = body.rfind("<h2")
+        if j > 0:
+            body = body[:j] + b + "\n" + body[j:]
         body = body + "\n" + b
     if cat_links:
         body = body + "\n" + category_html(cat_links)

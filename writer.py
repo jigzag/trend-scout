@@ -1,7 +1,7 @@
 """記事の執筆（Ver.1）。
   事実抽出 → 構成 → 執筆 → 校閲 → 類似度チェック（似すぎた段落だけ書き直し）
-方針（SPEC §7）：参考記事は事実の材料にとどめる。想定シナリオは架空と明記する。
-運営者が試していないことを「試した」と書かない。
+方針（SPEC §7・§14）：参考記事は事実の材料にとどめる。運営者が試していないことを「試した」と書かない。
+2026-10-31〜 記事は「新ツール解説」（何ができる・料金・違い・向いている人）。試さないと書けない手順や画面は書かない。
 """
 from __future__ import annotations
 
@@ -39,13 +39,10 @@ RULES = """# 守ること
 - 英語の参考記事を訳さない。原文の順番どおりに訳したような文章にせず、事実を日本の読者向けに自分の言葉で説明する
 - 料金はドルなど元の通貨のまま書く（円に換算しない）。製品名・機能名は原文の表記のまま書く
 - 運営者はこのツールを試していない。「試してみた」「使ってみた」「実際に使うと」など、体験したかのような表現は禁止
-- パソコン・スマホの一般的な操作（メモリや空き容量・OSの確かめ方、zipファイルの展開、Windowsの「WindowsによってPCが保護されました」が
-  出たら「詳細情報」→「実行」、Macで「開発元を確認できない」と出たら「システム設定」→「プライバシーとセキュリティ」から開く許可を出す、など）は、
-  事実メモになくても書いてよい。警告などは「〜と表示されることがあります。そのときは〜」の形で書く。
-  ツール固有のボタン名・画面・数字・仕様は、事実メモにあるものだけ
-- 【想定シナリオ】の節では、架空の人物（例：SNSで発信している会社員のAさん）の使い方の例を書く。
-  見出しに【想定シナリオ】を付け、冒頭で架空の例だと断り、「〜できそうです」「〜という使い方が考えられます」の形で書く。
-  架空の人物の感想・結果・数字（「30分短縮できた」など）は書かない
+- この記事は「新しいツールの解説」。使い方の手順（ステップ1・2…）やボタンの押し方は書かない。始め方は
+  「公式サイトから登録すれば使えます」「アプリをダウンロードして使います」のように1〜2文でまとめる
+- 架空の人物（「Aさんの場合」など）は作らない。使う場面は「たとえば、SNSに載せる短い動画を作るときに」のように、
+  読者が自分に当てはめられる形で書く
 - 日付は「9月30日」「2026年10月2日」の形で書く（「2026-09-30」は使わない）
 - 「事実メモ」「参考記事」「構成」など、この指示の中の言葉を本文に出さない。出典に触れるときは「公式発表では」「報道によると」と書く"""
 
@@ -74,8 +71,8 @@ FACTS_PROMPT = """あなたは調査担当の編集者です。次の話題に�
 - tool_type: ツールの種類。"app"=パソコンやスマホにダウンロードして入れるアプリ／"web"=ブラウザで使うWebサービス／
   "feature"=ChatGPT・Canva など既存のアプリやサービスに加わった新機能
 - requirements: 動作環境・必要なもの（対応OS・必要なメモリ・空き容量・必要なアカウントや有料プランなど。数値はそのまま）
-- steps: 使い始める手順として書かれていること。ダウンロード先・押すボタンの名前・選ぶ項目・かかる時間・表示される画面など、
-  書かれている具体的なことはすべて入れる（書かれていなければ空配列）
+- compare: 似たツールや、これまでのやり方との違いとして書かれていること（「〇〇より安い」「これまでは△△が必要だった」など。
+  書かれていなければ空配列。参考記事にない比較を推測で作らない）
 - cautions: 制限・注意点・未確定の点
 - relevant_sources: この話題について実際に書かれていた参考番号の一覧（話題と関係ない記事の番号は入れない）
 - reader_fit: 個人が一人でアカウントを作れば使い始められるなら true。特定の業務システム（HubSpot・Salesforce・会計ソフト等）が前提、
@@ -90,7 +87,7 @@ FACTS_PROMPT = """あなたは調査担当の編集者です。次の話題に�
 文章をそのまま写さず、短く言い換えること。推測は入れないこと。
 **この話題に直接関係する事実だけ**を入れること。会社や製品全般の紹介、別の製品・別の機能の話、書籍やイベントの宣伝など、
 この話題を説明するのに不要なものは、参考記事に書かれていても入れない。
-{{"summary": "", "facts": [], "tool_type": "web", "requirements": [], "steps": [], "cautions": [], "relevant_sources": [], "reader_fit": true, "fit_reason": "", "official_link": 0, "download_link": 0, "needs_coding": false, "coding_reason": ""}}
+{{"summary": "", "facts": [], "tool_type": "web", "requirements": [], "compare": [], "cautions": [], "relevant_sources": [], "reader_fit": true, "fit_reason": "", "official_link": 0, "download_link": 0, "needs_coding": false, "coding_reason": ""}}
 """
 
 # ---------- 2. 構成 ----------
@@ -108,20 +105,18 @@ OUTLINE_PROMPT = """あなたはブログ編集長です。次のブログに載
 {rules}
 
 # 作るもの（JSONオブジェクトだけ）
-- title: 記事タイトル（32文字前後。読者が得られることが分かるもの。「試してみた」系は禁止）
+- title: 記事タイトル（32文字前後。ツール名と「何ができるか」が分かるもの。「試してみた」「使い方ガイド」「始め方」系は禁止）
 - slug: URL用の英小文字とハイフン（例 chatgpt-virtual-try-on）
 - excerpt: 検索結果に出る説明文（80〜120文字）
-- persona: 想定シナリオの架空の人物を{persona_count}人、読点区切りで。このツールを本当に使いそうな人を選ぶ
-  （例「ネットショップを営む個人事業主のAさん、子どもの行事の写真を整理したい会社員のBさん」）。職種や目的が重ならないようにする
 - category: 記事のカテゴリ。次の中から1つ: {categories}
 - sections: 見出し(h2)の配列。[{{"h2": "", "points": ["この節で書くこと"]}}]
   {structure}
   を基本に、事実メモに合わせて調整する。
   事実メモに材料がない節は作らない（料金が分からなければ料金の節は作らない）。「明らかにされていない点」だけを並べる節は作らない
 - image_featured: アイキャッチ画像の内容（英語1〜2文）。記事のテーマを象徴する場面や物のイラスト
-- image_scenario: 想定シナリオの場面の画像の内容（英語1〜2文）。persona の1人目が仕事をしている場面のイラスト
+- image_body: 本文の画像の内容（英語1〜2文）。このツールが役に立つ場面（作業している人や、できあがる物）のイラスト
   どちらも、文字・ロゴ・実在のアプリ画面・実在の人物は入れない
-{{"title": "", "slug": "", "excerpt": "", "persona": "", "category": "", "sections": [], "image_featured": "", "image_scenario": ""}}
+{{"title": "", "slug": "", "excerpt": "", "category": "", "sections": [], "image_featured": "", "image_body": ""}}
 """
 
 # ---------- 3. 執筆 ----------
@@ -149,15 +144,13 @@ WRITE_PROMPT = """あなたはブログライターです。構成と事実メ�
   {easy_div}<p><strong>ざっくり言うと</strong></p><ul><li>…</li><li>…</li><li>…</li></ul></div>
   中身は3〜4項目の箇条書き。AIにくわしくない中学生でも分かる言葉だけで書く（専門用語・英語・カタカナの製品機能名は使わない）。
   「何をしてくれる道具か（身近なものにたとえて『〜みたいなもの』）」「何がうれしいか」「いくらで、だれ向けか」が分かるようにする
-- 手順の節（導入手順・登録から最初の1回まで・機能の使い方）は、h3 で1ステップずつ見出しを立て（例「ステップ1：自分のパソコンが対応しているか確かめる」）、
-  「どこで・何を押すと・何が起きるか」まで書く。読者がこの記事だけを見ながら進められることを目指す
-- 【想定シナリオ】では、構成の persona の人それぞれに h3 の見出し（例「ネットショップを営むAさんの場合」）を付け、
-  「困っていること → このツールをどの場面でどう使うか（手順に沿って）→ 期待できること」を2〜3段落の文章で書く。
-  節の冒頭に「以下は架空の人物を想定した使い方の例です」と書く。人物ごとに使う機能や場面を変え、同じ話を繰り返さない
+- 「何ができるか」の節は、機能ごとに h3 を立ててよい。機能ごとに「どんな場面で・何がうれしいか」を書く
+- 料金・日本から使えるか・日本語対応は、読者がいちばん知りたいところ。事実メモにあれば表（table）にまとめてもよい
+- 「向いている人・向いていない人」は、事実メモ（料金・対応環境・制限）から言える範囲で、はっきり書く
 - 本文が {min_chars} 文字に届かないときは、事実メモの範囲で「どんな人に向いているか」「似たツールとの違い」「よくある疑問」を足す。
   よくある疑問は、事実メモで**答えられる質問だけ**にする（答えが「公式で確認」になる質問は入れない）。
   文字数が足りなくても、分からないことの列挙や同じ内容の繰り返しで埋めない
-- 運営者メモがあるときだけ、<div class="{note_class}"><h2>運営者のひとこと</h2>…</div> を【想定シナリオ】の後に入れ、メモの内容を運営者の言葉として書く（メモにないことは足さない）
+- 運営者メモがあるときだけ、<div class="{note_class}"><h2>運営者のひとこと</h2>…</div> を「まとめ」の前に入れ、メモの内容を運営者の言葉として書く（メモにないことは足さない）
 - 参考記事の一覧や出典リンクは書かない（あとで自動で付ける）
 """
 
@@ -173,10 +166,10 @@ REVIEW_PROMPT = """あなたは校閲者です。記事を事実メモと照ら�
 {rules}
 
 # チェックすること
-1. 事実メモにない数字・料金・日付・仕様が書かれていたら、その文ごと削除する（「公式サイトで確認」に置き換えない）。
-   ただし、パソコン・スマホの一般的な操作の説明（メモリの確かめ方、警告が出たときの進め方など）は残す
+1. 事実メモにない数字・料金・日付・仕様が書かれていたら、その文ごと削除する（「公式サイトで確認」に置き換えない）
 2. 体験したかのような表現（運営者のひとこと の囲みの外）を、一般的な説明に直す
-3. 【想定シナリオ】が架空の例だと分かる書き方になっているか。架空の人物の結果や数字があれば消す
+3. 使い方の手順（ステップ1・2…、ボタンの押し方）や、架空の人物（「Aさんの場合」など）の話があれば、
+   「何ができるか・どんな場面で役立つか」の説明に直すか、消す
 3b. 「ざっくり言うと」の囲み（class="{easy_class}" の div）は消さない。中に専門用語や英語があれば、やさしい言葉に直す。
    本文の専門用語も、初めて出たところにかっこ書きの説明がなければ足す
 4. 誤字・不自然な日本語・同じ内容の繰り返し
@@ -203,13 +196,13 @@ HTMLタグの種類はそのまま保ち、書き直した段落だけを、入�
 
 FACTS_SCHEMA = obj_schema({"summary": STR, "facts": arr(obj_schema({"fact": STR, "src": INT})),
                            "tool_type": {"type": "string", "enum": ["app", "web", "feature"]}, "requirements": arr(STR),
-                           "steps": arr(STR), "cautions": arr(STR),
+                           "compare": arr(STR), "cautions": arr(STR),
                            "relevant_sources": arr(INT), "reader_fit": BOOL, "fit_reason": STR,
                            "official_link": INT, "download_link": INT,
                            "needs_coding": BOOL, "coding_reason": STR})
-OUTLINE_SCHEMA = obj_schema({"title": STR, "slug": STR, "excerpt": STR, "persona": STR, "category": STR,
+OUTLINE_SCHEMA = obj_schema({"title": STR, "slug": STR, "excerpt": STR, "category": STR,
                              "sections": arr(obj_schema({"h2": STR, "points": arr(STR)})),
-                             "image_featured": STR, "image_scenario": STR})
+                             "image_featured": STR, "image_body": STR})
 REWRITE_SCHEMA = obj_schema({"blocks": arr(STR)})
 
 
@@ -235,7 +228,6 @@ def extract_facts(topic: str, sources: list[dict], cfg: dict, links: list[dict] 
 
 # ---------- 公式サイト・ダウンロードページへのリンク ----------
 LINK_CLASS = "official-link"
-STEP_HEADING = re.compile(r"(?s)<h3[^>]*>(?:(?!</h3>).)*(?:ダウンロード|インストール|登録|アカウント|入手|はじめ|始め|ログイン|サインイン|開く|開き)(?:(?!</h3>).)*</h3>")
 
 
 def link_p(label: str, url: str) -> str:
@@ -246,48 +238,36 @@ def link_p(label: str, url: str) -> str:
 
 
 def add_links(body: str, official: str, download: str, tool_type: str = "") -> str:
-    """公式サイトを「ざっくり言うと」の下に、ダウンロード（登録）ページを手順の該当ステップに入れる。
+    """公式サイトとダウンロード（登録）ページのリンクを「ざっくり言うと」の下に入れる。
     URLは事実抽出で候補から番号で選ばれたものだけ（AIに本文へ書かせると、存在しないURLになりうるため）。"""
-    if official:
-        p = link_p("公式サイト", official)
-        i = body.find(EASY_CLASS)
-        end = body.find("</div>", i) if i != -1 else -1
-        if end != -1:
-            body = body[:end + 6] + "\n" + p + body[end + 6:]
-        else:
-            j = body.find("<h2")
-            body = body[:j] + p + "\n" + body[j:] if j != -1 else p + body
-    url = download or official
-    m = STEP_HEADING.search(body) if url else None
-    if m:
-        label = ("ダウンロードページ" if tool_type == "app" else "登録ページ") if download else "公式サイト"
-        nxt = body.find("<h", m.end())
-        close = body.find("</p>", m.end())
-        at = close + 4 if close != -1 and (nxt == -1 or close < nxt) else m.end()
-        body = body[:at] + "\n" + link_p(label, url) + body[at:]
-    return body
+    ps = [link_p("公式サイト", official)] if official else []
+    if download and download != official:
+        ps.append(link_p("ダウンロードページ" if tool_type == "app" else "登録ページ", download))
+    if not ps:
+        return body
+    block = "\n".join(ps)
+    i = body.find(EASY_CLASS)
+    end = body.find("</div>", i) if i != -1 else -1
+    if end != -1:
+        return body[:end + 6] + "\n" + block + body[end + 6:]
+    j = body.find("<h2")
+    return body[:j] + block + "\n" + body[j:] if j != -1 else block + body
 
 
-# ツールの種類ごとの記事の流れ（読者がいちばん知りたいことを厚くする）
-STRUCTURE = {
-    "app": ("こんなことで困っていませんか → このツールで何が変わるか → 入れる前に確認すること（対応OS・メモリ・空き容量と、"
-            "自分のパソコンでの確かめ方）→ 導入手順（記事の中心。ダウンロードからインストール、初期設定、警告が出たときの進め方まで）→ "
-            "最初の使い方（最初に何をすると、どう返ってくるか）→ 料金 → 【想定シナリオ】使い方の想定（短め）→ 気をつけること・向いている人 → まとめ", "1〜2"),
-    "web": ("こんなことで困っていませんか → このツールで何が変わるか → 登録から最初の1回まで（記事の中心。アカウント作成・最初の操作・"
-            "できあがるもの）→ 料金・日本から使えるか・日本語対応 → 【想定シナリオ】使い方の想定 → 気をつけること・向いている人 → まとめ", "2"),
-    "feature": ("こんなことで困っていませんか → 新しい機能で何が変わるか → 機能の場所と使い方（記事の中心。どの画面のどこから使うか、"
-                "使えるプラン）→ 【想定シナリオ】使い方の想定 → 気をつけること・向いている人 → まとめ", "2〜3"),
-}
+# 記事の流れ（2026-10-31〜 新ツール解説。試さないと書けない手順・画面は入れない）
+STRUCTURE = ("何が出たか（どんな道具か、だれが出したか、いつから使えるか）→ 何ができて、何がうれしいか（記事の中心。"
+             "機能ごとに、読者のどんな場面で役立つか）→ 料金・日本から使えるか・日本語対応・対応環境 → "
+             "似たツールやこれまでのやり方との違い（事実メモに材料があるときだけ）→ 気をつけること → "
+             "向いている人・向いていない人 → まとめ")
 
 
 def make_outline(genre: str, facts: dict, memo: str, cfg: dict, categories: list[str] | None = None) -> dict:
     cats = categories or ["その他"]
-    structure, persona_count = STRUCTURE.get(facts.get("tool_type"), STRUCTURE["web"])
     schema = json.loads(json.dumps(OUTLINE_SCHEMA))
     schema["properties"]["category"] = {"type": "string", "enum": cats}  # 決めたカテゴリ以外は選ばせない
     raw = call_llm(OUTLINE_PROMPT.format(genre=genre.strip(), facts=json.dumps(facts, ensure_ascii=False),
                                          memo=memo or "（なし）", rules=RULES, categories="、".join(cats),
-                                         structure=structure, persona_count=persona_count),
+                                         structure=STRUCTURE),
                    cfg, 4000, schema, "outline")
     out = extract_json(raw)
     if out.get("category") not in cats:  # Anthropic など形式を保証しない場合
@@ -462,16 +442,16 @@ def fix_similarity(article: str, sources: list[dict], opt: dict, cfg: dict) -> t
 # ---------- 機械チェック ----------
 def check_rules(article: str, memo: str, min_chars: int = 3000, tool_type: str = "") -> list[str]:
     warnings = []
-    if tool_type == "app" and len(re.findall(r"<h3[^>]*>[^<]*ステップ", article)) < 3:
-        warnings.append("パソコンに入れるアプリなのに、導入手順がステップごとに書かれていない")
+    if re.search(r"<h3[^>]*>[^<]*ステップ", article):
+        warnings.append("使い方の手順（ステップ）が書かれている（試していないので書かない方針）")
+    if re.search(r"[A-ZＡ-Ｚ]さんの場合|想定シナリオ", article):
+        warnings.append("架空の人物の例が書かれている")
     outside = re.sub(rf'(?s)<div class="{NOTE_CLASS}">.*?</div>', "", article)
     words = sorted(set(EXPERIENCE_WORDS.findall(outside)))
     if words:
         warnings.append("体験したかのような表現: " + "、".join(words))
     if EASY_CLASS not in article:
         warnings.append("「ざっくり言うと」の囲みがない")
-    if "想定シナリオ" not in article:
-        warnings.append("【想定シナリオ】の節がない")
     hedges = len(HEDGE_WORDS.findall(plain(article)))
     if hedges > 1:
         warnings.append(f"「公式で確認」「明らかにされていない」系の表現が{hedges}回（1回までにしたい）")

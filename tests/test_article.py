@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import affiliate, article, research, shots, writer, wordpress  # noqa: E402
+import affiliate, article, research, roundup, shots, writer, wordpress  # noqa: E402
 from datetime import datetime  # noqa: E402
 
 SRC_MAIN = ("OpenAIは10月2日、ChatGPTにバーチャル試着機能を追加したと発表した。利用者が自分の写真をアップロードすると、"
@@ -46,7 +46,7 @@ def fake_post(url, **kw):
         fake_post.images += 1
         return Resp({"data": [{"b64_json": base64.b64encode(b"JPEGDATA").decode()}]})
     if url.endswith("/wp-json/wp/v2/media"):
-        assert (kw["data"], kw["headers"]["Content-Type"]) in ((b"JPEGDATA", "image/jpeg"), (BIG_PNG, "image/png"))
+        assert (kw["data"], kw["headers"]["Content-Type"]) == (b"JPEGDATA", "image/jpeg")
         fake_post.media += 1
         mid = 100 + fake_post.media
         return Resp({"id": mid, "source_url": f"https://nocode-ai.net/wp-content/uploads/{mid}.jpg"})
@@ -65,10 +65,10 @@ fake_post.images = fake_post.media = 0
 
 BODY = ("<p>ChatGPTに試着機能が加わりました。この記事では、できることと注意点をまとめます。</p>"
         + writer.EASY_DIV + "<p><strong>ざっくり言うと</strong></p><ul><li>服を着た自分の姿を、写真で確かめられる道具です</li></ul></div>"
+        "<h2>ChatGPTに試着機能が登場</h2><p>OpenAIが新しい機能を出しました。</p>"
         "<h2>何ができるのか</h2><p>" + COPIED + "</p>"
-        + "<h2>使い始め方</h2><p>商品カードから試着ボタンを押して写真を選びます。</p>" * 30
-        + "<h3>ステップ1：試着ボタンから始める</h3><p>商品カードの試着ボタンを押します。</p><h3>ステップ2：写真を選ぶ</h3><p>写真を選びます。</p>"
-        + "<h2>【想定シナリオ】研修担当のAさんの場合</h2><p>以下は架空の例です。Aさんなら、制服の着用イメージ作りに使えそうです。</p>"
+        + "<p>ネットで服を買う前に、似合うかどうかを確かめられます。</p>" * 30
+        + "<h2>料金と使える地域</h2><p>まず米国のPlusユーザーから使えます。</p>"
         + "<h2>まとめ</h2><p>日本での提供時期は公式サイトで確認してください。</p>")
 
 
@@ -79,29 +79,15 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
         assert "twitter.com" not in links and "itmedia.co.jp/menu" not in links   # SNS・同じサイト内は候補にしない
         ok = "3. https://tryon.example/（公式サイト）" in links and "4. https://tryon.example/app" in links
         return json.dumps({"summary": "試着機能", "facts": [{"fact": "米国Plusから提供", "src": 1}],
-                           "steps": [], "cautions": [], "unknowns": ["日本での提供時期"],
+                           "compare": [], "cautions": [], "unknowns": ["日本での提供時期"],
                            "official_link": 3 if ok else 0, "download_link": 4 if ok else 99, **fake_llm.facts_extra},
                           ensure_ascii=False)
-    if "公式発表ページに載っていた画像" in prompt:
-        assert [m for m, _ in kw["images"]] == ["image/png", "image/jpeg"]   # og:image と本文の画像（ロゴ・アイコンは除く）
-        fake_llm.official += 1
-        return json.dumps({"shots": [{"image": 1, "match": True, "heading": 2, "caption": "写真を選ぶ画面"},
-                                     {"image": 2, "match": False, "heading": 1, "caption": "関連記事"}]}, ensure_ascii=False)
-    if "スクリーンショットです" in prompt:
-        assert len(kw["images"]) == 2 and kw["images"][0] == ("image/jpeg", b"JPEGDATA")
-        assert "1. ステップ1：試着ボタンから始める" in prompt
-        fake_llm.placed += 1
-        return json.dumps({"shots": [{"image": 1, "match": True, "heading": 1, "caption": "試着ボタンの画面"},
-                                     {"image": 2, "match": False, "heading": 0, "caption": "別のアプリ"}]}, ensure_ascii=False)
     if "記事の構成を作って" in prompt:
         schema = a[0] if a else kw.get("schema")
         assert not schema or "動画生成" in schema["properties"]["category"]["enum"]   # 決めたカテゴリだけ選ばせる
-        app = fake_llm.facts_extra.get("tool_type") == "app"
-        assert ("導入手順（記事の中心" in prompt) == app and ("1〜2人" in prompt) == app   # 種類で記事の流れを変える
-        assert "研修担当" not in prompt
+        assert writer.STRUCTURE in prompt and "導入手順" not in prompt and "persona" not in prompt   # 新ツール解説の流れ
         return json.dumps({"title": "ChatGPTの試着機能でできること", "slug": "chatgpt-virtual-try-on",
-                           "excerpt": "説明", "persona": "研修担当のAさん、個人事業主のBさん", "category": "動画生成",
-                           "sections": []}, ensure_ascii=False)
+                           "excerpt": "説明", "category": "動画生成", "sections": []}, ensure_ascii=False)
     if "記事本文を書いて" in prompt:
         assert ("無料版は3回まで" in prompt) == fake_llm.with_memo
         return "```html\n" + BODY + "\n```"
@@ -122,11 +108,7 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
 fake_llm.with_memo = False
 fake_llm.facts_extra = {}
 fake_llm.clarified = 0
-fake_llm.placed = 0
-fake_llm.official = 0
-BIG_PNG = b"\x89PNG\r\n\x1a\n" + b"0" * 40000   # 公式ページの操作画面（アイコンより大きい）
-OFFICIAL_PAGE = ('<html><head><meta property="og:image" content="https://tryon.example/hero.png"></head><body>'
-                 '<img src="/logo.svg"><img src="/icon.png" width="32" height="32"><img src="/related.jpg">'
+OFFICIAL_PAGE = ('<html><body><img src="/hero.png">'
                  '<iframe src="https://www.youtube.com/embed/abcdefghijk"></iframe></body></html>')
 PAGE = ('<html><body><nav><a href="https://www.itmedia.co.jp/menu">メニュー</a></nav><article>'
         '<a href="https://twitter.com/share?u=x">ポスト</a><a href="/a/2">同じサイト</a>'
@@ -148,12 +130,12 @@ def test_similarity_detects_copy():
 
 
 def test_check_rules():
-    w = writer.check_rules("<p>実際に使ってみると便利でした。</p>", "")
-    assert any("体験" in x for x in w) and any("想定シナリオ" in x for x in w)
-    assert any("ざっくり" in x for x in writer.check_rules("<h2>【想定シナリオ】</h2>" + "<p>あ</p>" * 3000, ""))
-    ok = writer.check_rules(writer.EASY_DIV + f'</div><h2>【想定シナリオ】</h2><div class="{writer.NOTE_CLASS}"><p>使ってみた感想</p></div>' + "<p>あ</p>" * 3000, "メモ")
+    w = writer.check_rules("<p>実際に使ってみると便利でした。</p><h3>ステップ1：登録</h3><h2>Aさんの場合</h2>", "")
+    assert any("体験" in x for x in w) and any("ステップ" in x for x in w) and any("架空の人物" in x for x in w)
+    assert any("ざっくり" in x for x in writer.check_rules("<p>あ</p>" * 3000, ""))
+    ok = writer.check_rules(writer.EASY_DIV + f'</div><h2>何ができるか</h2><div class="{writer.NOTE_CLASS}"><p>使ってみた感想</p></div>' + "<p>あ</p>" * 3000, "メモ")
     assert ok == []
-    hedgy = "<h2>【想定シナリオ】</h2>" + "<p>上限は明らかにされていません。</p><p>詳しくは公式サイトでご確認ください。</p>" + "<p>あ</p>" * 3000
+    hedgy = "<h2>料金</h2>" + "<p>上限は明らかにされていません。</p><p>詳しくは公式サイトでご確認ください。</p>" + "<p>あ</p>" * 3000
     assert any("2回" in x for x in writer.check_rules(hedgy, ""))
     calls = []
     def llm(prompt, cfg, *a, **kw):
@@ -162,7 +144,7 @@ def test_check_rules():
         fixed = writer.trim_hedges(hedgy, {})
         assert "公式サイト" not in fixed and len(calls) == 1
         assert writer.trim_hedges(fixed, {}) == fixed and len(calls) == 1   # 1回以下なら呼ばない
-    leak = writer.check_rules("<h2>【想定シナリオ】</h2><p>事実メモによると無料です。</p>", "")
+    leak = writer.check_rules("<h2>料金</h2><p>事実メモによると無料です。</p>", "")
     assert any("指示の言葉" in x for x in leak)
 
 
@@ -178,12 +160,6 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
             return Resp(text=PAGE)   # 元記事のリンク（公式サイトの候補）
         if url == "https://tryon.example/":
             return Resp(text=OFFICIAL_PAGE)
-        if url == "https://tryon.example/hero.png":
-            return Resp(content=BIG_PNG)
-        if url == "https://tryon.example/related.jpg":
-            return Resp(content=b"\xff\xd8" + b"0" * 40000)
-        if url == "https://tryon.example/icon.png":
-            raise AssertionError("小さいと分かっている画像は取りに行かない")
         if url.endswith("/wp-json/wp/v2/categories"):
             return Resp([{"id": 3, "name": "画像生成・デザイン"}])   # 「動画生成」はまだない → 作る
         raise AssertionError(f"ネットに出ようとした: {url}")
@@ -191,13 +167,8 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
          mock.patch.object(research.requests, "get", no_net), \
          mock.patch.object(writer, "call_llm", fake_llm), \
          mock.patch.object(article, "send_line", lambda t: sent.setdefault("text", t)), \
-         mock.patch.object(shots, "call_llm", fake_llm), mock.patch.object(shots, "PENDING", tmp / "shots"), \
          mock.patch.object(shots, "capture", lambda url: shot_urls.append(url) or b"JPEGDATA"), \
          mock.patch.object(article, "BASE", tmp),          mock.patch.object(affiliate, "PATH", tmp / "aff.yaml"):
-        (tmp / "shots").mkdir()
-        now = f"{datetime.now(article.JST):%Y%m%d-%H%M%S}"
-        for name in (f"{now}-1.jpg", f"{now}-2.jpg", "20200101-000000-3.jpg"):
-            (tmp / "shots" / name).write_bytes(b"JPEGDATA")
         affiliate.command("add", "ChatGPT/チャットGPT", "https://px.a8.net/svt/ejp?a8mat=TEST")
         affiliate.command("add", "Gemini", "https://example.com/gemini")   # 記事に出てこない → 入らない
         affiliate.command("add", "ココナラ", "https://px.a8.net/svt/ejp?a8mat=COCO")
@@ -217,32 +188,24 @@ def test_full_article(tmp=Path(tempfile.gettempdir()) / "ts_article"):
     assert saved["wordpress"]["id"] == 42 and saved["memo"] == "無料版は3回まで"
     assert files[0].with_suffix(".html").exists()
     assert not any("参考記事が1件" in w for w in saved["warnings"])
-    assert fake_post.images == 2 and saved["images"] == {"featured": 101, "media": [101, 102, 103, 104, 105]}
-    # 公式ページの画像：合うものだけ、その見出し（ステップ2）の下に出典付きで。動画は最初のステップの手前
+    assert fake_post.images == 2 and saved["images"] == {"featured": 101, "media": [101, 102, 103]}
     c = art["content"]
-    assert fake_llm.official == 1 and c.count("official-shot") == 1 and "写真を選ぶ画面（出典：" in c
-    assert c.index("<h3>ステップ2") < c.index("uploads/104.jpg") < c.index("<h3>ステップ2") + 400
-    assert "youtube-nocookie.com/embed/abcdefghijk" in c and c.index("official-video") < c.index("<h3>ステップ1")
-    assert "公式の操作画面 1枚" in sent["text"] and "公式動画あり" in sent["text"]
-    # 公式サイトの画面：ダウンロード（登録）ページを撮り、手順の中のリンクの直後に入れる
-    assert shot_urls == ["https://tryon.example/app"] and "公式サイトの画面あり" in sent["text"]
-    assert art["content"].index("登録ページ：") < art["content"].index("uploads/103.jpg") < art["content"].index("uploads/104.jpg")
-    assert "出典：公式サイト（tryon.example）" in art["content"]
-    # スクショ：合う見出しの段落の後ろに入り、使った画像と古い画像は消え、合わない画像は残る
-    c = art["content"]
-    assert fake_llm.placed == 1 and c.count("operator-shot") == 1 and "試着ボタンの画面（運営者のパソコンで撮影）" in c
-    assert c.index("商品カードの試着ボタンを押します。") < c.index("uploads/105.jpg") < c.index("ステップ2")
-    assert [p.name for p in (tmp / "shots").iterdir()] == [f"{now}-2.jpg"]
-    assert "スクショ 1枚" in sent["text"] and any("スクショ1枚は" in w for w in art["warnings"])
-    # リンク：公式サイトは「ざっくり言うと」の下、登録ページは最初の手順の段落の後ろ
+    heads = [i for i in range(len(c)) if c.startswith("<h2", i)]
+    # リンク：公式サイトと登録ページは「ざっくり言うと」の下、最初の見出しの前
     assert art["official_url"] == "https://tryon.example/" and art["download_url"] == "https://tryon.example/app"
-    assert c.index("easy-box") < c.index('公式サイト：<a href="https://tryon.example/"') < c.index("<h2")
-    assert c.index("商品カードの試着ボタンを押します。") < c.index("登録ページ：") < c.index("uploads/105.jpg")
-    assert "uploads/102.jpg" in art["content"] and "AI生成" in art["content"]
-    assert art["content"].index("uploads/102.jpg") > art["content"].index("想定シナリオ")
+    assert c.index("easy-box") < c.index('公式サイト：<a href="https://tryon.example/"') < c.index("登録ページ：") < heads[0]
+    # 公式サイトの画面：登録ページを撮り、リンクの直後に入れる
+    assert shot_urls == ["https://tryon.example/app"] and "公式サイトの画面あり" in sent["text"]
+    assert c.index("登録ページ：") < c.index("uploads/103.jpg") < heads[0]
+    assert "出典：公式サイト（tryon.example）" in c
+    # 公式動画は「何ができるか」の節の手前、本文の画像はその見出しの直後
+    assert "youtube-nocookie.com/embed/abcdefghijk" in c and heads[0] < c.index("official-video") < c.index("<h2>何ができるのか")
+    assert "公式動画あり" in sent["text"]
+    assert c.index("<h2>何ができるのか") < c.index("uploads/102.jpg") < c.index("料金と使える地域")
+    assert "AI生成" in c and "operator-shot" not in c and "official-shot" not in c
+    assert art["content"].index("affiliate-box") < art["content"].index("<h2>まとめ")
     assert art["content"].count("a8mat=TEST") == 2 and "example.com/gemini" not in art["content"]
     assert 'rel="sponsored noopener"' in art["content"] and art["affiliates"] == ["ChatGPT", "ココナラ"]
-    assert art["content"].index("affiliate-box") > art["content"].index("想定シナリオ")
     assert art["content"].count("a8mat=COCO") == 1 and "プロに頼む方法" in art["content"]   # カテゴリ「動画生成」の記事
     assert art["content"].index("a8mat=COCO") > art["content"].rindex("a8mat=TEST")        # 最後に出す
     assert "アフィリンク 2件（ChatGPT、ココナラ）" in sent["text"]
@@ -288,10 +251,91 @@ def test_irrelevant_source_and_coding(tmp=Path(tempfile.gettempdir()) / "ts_arti
         fake_llm.facts_extra = {}
     assert [s["url"] for s in art["sources"]] == ["https://www.itmedia.co.jp/a/1"]
     assert "個人がすぐ使えるツールではない可能性（ボツ推奨）: HubSpotが前提" in art["warnings"]
-    assert any("導入手順がステップごと" in w for w in art["warnings"]) and art["tool_type"] == "app"
+    assert art["tool_type"] == "app" and not any("ステップ" in w for w in art["warnings"])
     assert "other.example" not in art["content"]
     assert art["warnings"][0].startswith("コードを書く前提") and "JSON" in art["warnings"][0]
     assert any("参考記事が1件" in w for w in art["warnings"])
+
+
+def test_roundup(tmp=Path(tempfile.gettempdir()) / "ts_roundup"):
+    """1週間分の候補から評価の高い順に選び、個人向けでないものを外して、まとめを書いて公開する。"""
+    shutil.rmtree(tmp, ignore_errors=True)
+    folder = tmp / "data" / "candidates"
+    folder.mkdir(parents=True)
+    def cand(i, total, topic=None):
+        return {"topic": topic or f"tool{i}", "total": total, "detail": {"summary": f"ツール{i}"},
+                "item": {"source": "x", "title": f"ツール{i}が登場", "url": f"https://news.example/{i}",
+                         "summary": "", "signal": None, "signal_label": "", "extra": {}}}
+    days = {"2026-10-24": [cand(9, 99)],                                 # 8日前：範囲外
+            "2026-10-27": [cand(1, 90), cand(2, 50), cand(3, 85)],
+            "2026-10-30": [cand(4, 80), cand(5, 70, "tool1"), cand(6, 60)],   # 5 は 1 と同じ話題
+            "2026-10-31": [cand(1, 90), cand(7, 40)]}                       # 同じURLの再掲
+    for d, cs in days.items():
+        (folder / f"{d}.json").write_text(json.dumps(cs, ensure_ascii=False), encoding="utf-8")
+    today = datetime(2026, 10, 31).date()
+    assert [c["topic"] for c in roundup.pick(folder, today, 7, 10)] == ["tool1", "tool3", "tool4", "tool6", "tool2", "tool7"]
+
+    os.environ.update({"TAVILY_API_KEY": "tvly-x", "WP_URL": "https://nocode-ai.net", "WP_USER": "nonpro",
+                       "WP_APP_PASSWORD": "xxxx xxxx", "OPENAI_API_KEY": "sk-test"})
+    posted, sent = {}, {}
+    def post(url, **kw):
+        if url == research.TAVILY_EXTRACT:
+            return Resp({"results": [{"url": kw["json"]["urls"][0], "raw_content": SRC_MAIN}]})
+        if url.endswith("/wp-json/wp/v2/posts"):
+            posted.update(kw["json"])
+            return Resp({"id": 77, "link": "https://nocode-ai.net/weekly/"})
+        if url.endswith("/wp-json/wp/v2/categories"):
+            assert kw["json"] == {"name": "今週のAIツールまとめ"}
+            return Resp({"id": 9})
+        return fake_post(url, **kw)
+    def get(url, **kw):
+        if url.endswith("/wp-json/wp/v2/categories"):
+            return Resp([])
+        n = url.rsplit("/", 1)[1]
+        return Resp(text=f'<html><body><article><a href="https://tool{n}.example/">公式</a></article></body></html>')
+    def llm(prompt, cfg, max_tokens=4000, *a, **kw):
+        if "記事から「事実」だけを抜き出して" in prompt:
+            n = int(prompt.split("# 話題\nツール", 1)[1][0])
+            assert f"2. https://tool{n}.example/" in prompt
+            return json.dumps({"name": f"Tool{n}", "facts": [f"Tool{n}は無料で使える"], "reader_fit": n != 3,
+                               "is_tool": True, "official_link": 2}, ensure_ascii=False)
+        if "今週の新着AIツールまとめ" in prompt:
+            names = [x["name"] for x in json.loads(prompt.split("# 今週のツール（事実メモ。番号順に紹介する）\n", 1)[1].split("\n\n# 守ること")[0])]
+            assert names == ["Tool1", "Tool4", "Tool6"]   # 3 は個人向けでないので外れ、上限3件
+            return json.dumps({"title": "今週の新着AIツール3選", "slug": "weekly-ai-tools", "excerpt": "説明",
+                               "intro": "<p>今週は3つ。</p>", "easy": ["Tool1：何かを作る道具"],
+                               "items": [{"n": i, "heading": f"{nm}：できること", "body": f"<p>{nm}の説明です。</p>",
+                                          "who": "初めての人", "price": "無料"} for i, nm in enumerate(names, 1)],
+                               "closing": "<p>気になるものから見てください。</p>", "image_featured": "desk"}, ensure_ascii=False)
+        if "AIにくわしくない読者です" in prompt:
+            return json.dumps({"words": [], "sentences": []})
+        raise AssertionError(prompt[:80])
+    cfg_path = tmp / "config.yaml"
+    import yaml
+    cfg = yaml.safe_load((Path(article.__file__).parent / "config.yaml").read_text(encoding="utf-8"))
+    cfg["roundup"]["max_items"] = 3
+    cfg_path.write_text(yaml.safe_dump(cfg, allow_unicode=True), encoding="utf-8")
+    with mock.patch.object(research.requests, "post", post), mock.patch.object(research.requests, "get", get), \
+         mock.patch.object(roundup, "call_llm", llm), mock.patch.object(writer, "call_llm", llm), \
+         mock.patch.object(roundup, "send_line", lambda t: sent.setdefault("text", t)), \
+         mock.patch.object(roundup, "BASE", tmp), mock.patch.object(affiliate, "PATH", tmp / "aff.yaml"):
+        art = roundup.run(config_path=cfg_path, today=today)
+    assert art["published"] and posted["status"] == "publish" and posted["categories"] == [9]
+    assert posted["slug"] == "weekly-ai-tools-20261031"
+    c = art["content"]
+    # 各ツールの節の終わりに、そのツールの公式サイト
+    for n, nxt in ((1, "2. Tool4"), (4, "3. Tool6"), (6, "<h2>まとめ")):
+        assert c.index(f"Tool{n}の説明です") < c.index(f"https://tool{n}.example/") < c.index(nxt)
+    assert "easy-box" in c and "<strong>料金：</strong>無料" in c and "参考にした情報" in c
+    assert "公開しました" in sent["text"] and "・Tool6" in sent["text"] and "https://nocode-ai.net/weekly/" in sent["text"]
+    assert (tmp / "data" / "roundups" / "2026-10-31.json").exists()
+    # 体験表現があれば公開しない
+    assert roundup.check("<p>使ってみると便利</p>") and not roundup.check("<p>便利です</p>")
+    # 紹介できるものが少なければ作らない
+    for f in folder.glob("*.json"):
+        f.unlink()
+    with mock.patch.object(roundup, "send_line", lambda t: sent.update(text=t)), mock.patch.object(roundup, "BASE", tmp):
+        assert roundup.run(config_path=cfg_path, today=today) is None and "作りませんでした" in sent["text"]
 
 
 def test_wp_command(tmp=Path(tempfile.gettempdir()) / "ts_wpcmd"):

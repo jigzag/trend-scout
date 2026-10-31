@@ -74,9 +74,9 @@ def category_id(name: str) -> int:
 
 
 def post_draft(title: str, content: str, slug: str = "", excerpt: str = "",
-               featured_media: int | None = None, categories: list[int] | None = None) -> dict:
-    """下書きとして投稿し {id, link, edit_url} を返す。公開はしない。"""
-    body = {"title": title, "content": content, "status": "draft"}
+               featured_media: int | None = None, categories: list[int] | None = None, status: str = "draft") -> dict:
+    """投稿して {id, link, edit_url} を返す。ふだんは下書き（status="publish" は週1回のまとめの自動公開だけ）。"""
+    body = {"title": title, "content": content, "status": status}
     if slug:
         body["slug"] = slug
     if excerpt:

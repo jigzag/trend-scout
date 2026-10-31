@@ -35,11 +35,11 @@ def figure(url: str, alt: str) -> str:
             f"<figcaption>{CAPTION}</figcaption></figure>")
 
 
-def insert_after_scenario(body: str, fig: str) -> str:
-    """【想定シナリオ】の見出しの直後に画像を入れる（見出しがなければ最初の h2 の前）。"""
-    i = body.find("想定シナリオ")
-    if i != -1:
-        end = body.find("</h2>", i)
+def insert_body_image(body: str, fig: str) -> str:
+    """2つ目の見出し（「何ができるか」の節）の直後に画像を入れる（なければ最初の h2 の前）。"""
+    heads = [i for i in range(len(body)) if body.startswith("<h2", i)]
+    if len(heads) >= 2:
+        end = body.find("</h2>", heads[1])
         if end != -1:
             end += len("</h2>")
             return body[:end] + "\n" + fig + body[end:]

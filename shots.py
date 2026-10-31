@@ -241,9 +241,9 @@ def video_figure(video_id: str, page: str) -> str:
 
 
 def insert_video(body: str, fig: str) -> str:
-    """最初の「ステップ」の見出しの手前（手順を読む前に流れを見られるように）。なければ入れない。"""
-    m = re.search(r"<h3[^>]*>[^<]*ステップ", body)
-    return body[:m.start()] + fig + "\n" + body[m.start():] if m else body
+    """2つ目の h2（「何ができるか」の節）の手前。見出しが足りなければ入れない。"""
+    heads = [m.start() for m in re.finditer(r"<h2[\s>]", body)]
+    return body[:heads[1]] + fig + "\n" + body[heads[1]:] if len(heads) >= 2 else body
 
 
 def place_official(body: str, title: str, page: str, cfg: dict, upload) -> tuple[str, list[int], bool]:

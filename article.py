@@ -90,11 +90,11 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
         warnings.append(f"参考記事との類似が高い（一致率{sim['ratio']:.1%}、最長{sim['longest']}字）")
     return {
         "title": outline.get("title") or item["title"], "slug": outline.get("slug", ""),
-        "excerpt": outline.get("excerpt", ""), "persona": outline.get("persona", ""),
+        "excerpt": outline.get("excerpt", ""),
         "category": outline.get("category", ""), "tool_type": facts.get("tool_type", ""),
         "official_url": facts.get("official_url", ""), "download_url": facts.get("download_url", ""),
         "body": body, "_sources": sources, "chars": len(writer.plain(body)),
-        "image_prompts": {"featured": outline.get("image_featured", ""), "scenario": outline.get("image_scenario", "")},
+        "image_prompts": {"featured": outline.get("image_featured", ""), "body": outline.get("image_body", "")},
         "similarity": sim, "warnings": warnings, "memo": memo, "clarity": clarity,
         "sources": [{"title": s["title"], "url": s["url"]} for s in sources],
         "candidate": {"title": item["title"], "url": item["url"]},
@@ -107,9 +107,7 @@ def message(art: dict, wp: dict | None) -> str:
              f"類似度 一致率{art['similarity']['ratio']:.1%}・最長{art['similarity']['longest']}字 / "
              f"画像 {len(art.get('images', {}).get('media', []))}枚 / "
              + ("公式サイトの画面あり / " if art.get("page_shot") else "")
-             + (f"公式の操作画面 {art['official_images']}枚 / " if art.get("official_images") else "")
              + ("公式動画あり / " if art.get("official_video") else "")
-             + (f"スクショ {art['shots']}枚 / " if art.get("shots") else "")
              + f"アフィリンク {len(art.get('affiliates', []))}件"
              + (f"（{'、'.join(art['affiliates'])}）" if art.get("affiliates") else "")]
     if art["warnings"]:
@@ -133,7 +131,7 @@ def add_images(art: dict, opt: dict) -> dict:
     prompts = art["image_prompts"]
     jobs = [("featured", prompts.get("featured") or art["title"])]
     if opt.get("body_image", True):
-        jobs.append(("scenario", prompts.get("scenario") or art.get("persona") or art["title"]))
+        jobs.append(("body", prompts.get("body") or art["title"]))
     for kind, prompt in jobs:
         try:
             data = images.generate(prompt, opt)
@@ -145,8 +143,7 @@ def add_images(art: dict, opt: dict) -> dict:
         if kind == "featured":
             out["featured"] = m["id"]
         else:
-            first = (art.get("persona") or "").split("、")[0]
-            art["body"] = images.insert_after_scenario(art["body"], images.figure(m["url"], first))
+            art["body"] = images.insert_body_image(art["body"], images.figure(m["url"], art["title"]))
     return out
 
 
@@ -173,37 +170,17 @@ def add_page_shot(art: dict, pics: dict) -> None:
     art["page_shot"] = url
 
 
-def add_official_images(art: dict, pics: dict, lc: dict) -> None:
-    """公式発表ページの操作画面の画像を合う手順の下に、公式の YouTube 動画を手順の手前に入れる（出典付き）。"""
+def add_video(art: dict) -> None:
+    """公式ページに YouTube の紹介動画があれば、「何ができるか」の節の手前に埋め込む（出典付き）。"""
     try:
-        art["body"], ids, video = shots.place_official(art["body"], art["title"], art["official_url"], lc,
-                                                       wordpress.upload_media)
-    except Exception as e:  # noqa: BLE001  画像の失敗では記事を止めない
-        art["warnings"].append(f"公式ページの画像を入れられなかった: {str(e)[:150]}")
+        vid = shots.page_video(shots.fetch_page(art["official_url"]))
+    except Exception as e:  # noqa: BLE001  動画の失敗では記事を止めない
+        print(f"[article] 公式ページを取れなかった: {e}")
         return
-    pics["media"] += ids
-    art["official_images"] = len(ids)
-    art["official_video"] = video
-
-
-def add_shots(art: dict, pics: dict, lc: dict) -> None:
-    """運営者が LINE で送ったスクショを手順の節に入れる。使った画像は消す（このツールの画面でないものは残す）。"""
-    shots.prune()
-    files = shots.pending()
-    if not files:
-        return
-    try:
-        art["body"], used, ids = shots.place(art["body"], art["title"], files, lc, wordpress.upload_media)
-    except Exception as e:  # noqa: BLE001  スクショの失敗では記事を止めない
-        art["warnings"].append(f"スクショを入れられなかった: {str(e)[:150]}")
-        return
-    for p in used:
-        p.unlink()
-    pics["media"] += ids
-    art["shots"] = len(used)
-    if len(files) > len(used):
-        art["warnings"].append(f"スクショ{len(files) - len(used)}枚は、この記事に合わないので入れなかった"
-                               "（次の記事で使う。不要なら「スクショ取消」）")
+    if vid:
+        before = art["body"]
+        art["body"] = shots.insert_video(before, shots.video_figure(vid, art["official_url"]))
+        art["official_video"] = art["body"] != before
 
 
 def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
@@ -217,10 +194,8 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
     pics = add_images(art, img_opt) if use_wp and img_opt.get("enabled") else {"featured": None, "media": []}
     if use_wp and img_opt.get("page_shot"):
         add_page_shot(art, pics)
-    if use_wp and img_opt.get("official_images") and art.get("official_url"):
-        add_official_images(art, pics, llm_cfg(cfg))
-    if use_wp:
-        add_shots(art, pics, llm_cfg(cfg))
+    if img_opt.get("official_video") and art.get("official_url"):
+        add_video(art)
     ledger = affiliate.load()
     found = affiliate.match(ledger, art["title"], writer.plain(art["body"]))
     cat_links = affiliate.by_category(ledger, art.get("category", ""), found)
