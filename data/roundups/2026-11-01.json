@@ -1,0 +1,84 @@
+{
+  "title": "今週の新着AIツール6選：音声・動画・資料をもっと手軽に",
+  "slug": "weekly-ai-tools-20261101",
+  "excerpt": "今週はポッドキャストの聞き方を変えるボットや、未発表曲を外に出さない縦型動画作成ツール、Geminiのチャット内でファイル編集できる新機能など、制作と事務を楽にする新着が揃いました。誰でもすぐ使えるものを中心に紹介します。",
+  "tools": [
+    "Yourcast 2.0",
+    "Clips by Plastic",
+    "You can generate and edit Google Docs files directly in Gemini chats now",
+    "N8N Chat UI",
+    "Geminiで生成したPDFやスライドを「チャット上で直接編集」可能に",
+    "Kiwi"
+  ],
+  "warnings": [],
+  "similarity": {
+    "ratio": 0.021,
+    "longest": 26,
+    "ok": true
+  },
+  "clarity": {
+    "words": [
+      "AI",
+      "Telegram",
+      "ボット",
+      "Mac",
+      "オフライン",
+      "エクスポート",
+      "Ads Manager",
+      "Clipsタグ",
+      "Gemini",
+      "PDF",
+      "Googleドキュメント",
+      "スプレッドシート",
+      "Markdown",
+      "ノーコード",
+      "ウィジェット"
+    ],
+    "sentences": [
+      "Yourcast 2.0：Telegram上でポッドキャストを検索・購読し、AI要約や音声の特定箇所へジャンプできるボットです",
+      "壊れた配信先を毎日確認して新しい配信先を探す機能や、最大2GBのファイル扱い、途中でのダウンロード再開もあり、ソースコードはGPL v3のオープンソースで英語など複数言語に対応しています。",
+      "Clips by Plasticは楽曲と自分の映像や写真を読み込むと、縦型のリリック（歌詞）動画広告を自動で作るMac用アプリです",
+      "楽曲のテンポや各パート（verse、pre-chorus、chorus、bridge）を検出し、各パートごとに短尺クリップを作成してビートに合わせてカットします。",
+      "Ads Manager向けにファイル名を整えた一括エクスポートや54種類のエフェクト、レイアウト選択があり、オフラインで動作するため未発表曲を外部に送らない設計です。",
+      "無料試用はエクスポートに小さなClipsタグが入ります。",
+      "Geminiのチャット内でPDF、Googleドキュメント、スプレッドシート、スライド、Markdown、TXT、コードなどのファイルを直接生成・プレビュー・編集できる機能が、本日から全てのGeminiユーザー向けに提供されます。",
+      "N8N Chat UIはn8nに組み込めるブランドカスタマイズ可能なAIチャットウィジェットをノーコードで作るビルダーです。",
+      "ウェブ上でサインアップ不要でビルダーを試せる一方、サービス画面は「Payment Required」と表示されています。",
+      "Kiwiはユーザーが尋ねる前にテキストで連絡して提案を行い、同意すればチケットや昼食、タクシーなどの手配を代行するプロアクティブなアシスタントです。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Yourcast 2.0",
+      "url": "https://www.producthunt.com/products/yourcast"
+    },
+    {
+      "title": "Clips by Plastic",
+      "url": "https://www.producthunt.com/products/clips-by-plastic"
+    },
+    {
+      "title": "You can generate and edit Google Docs files directly in Gemini chats now",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1022519/google-gemini-file-editing-documents-pdfs"
+    },
+    {
+      "title": "N8N Chat UI",
+      "url": "https://www.producthunt.com/products/n8n-chat-ui-2"
+    },
+    {
+      "title": "Geminiで生成したPDFやスライドを「チャット上で直接編集」可能に　個人プランとGoogle Workspaceで試してみた",
+      "url": "https://www.itmedia.co.jp/aiplus/article/2610/30/2000002757/"
+    },
+    {
+      "title": "Kiwi",
+      "url": "https://www.producthunt.com/products/kiwi-7"
+    }
+  ],
+  "affiliates": [],
+  "wordpress": {
+    "id": 71,
+    "link": "https://nocode-ai.net/weekly-ai-tools-20261101/",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=71&action=edit"
+  },
+  "published": true,
+  "created_at": "2026-11-01T11:02:12+09:00"
+}
