@@ -1,0 +1,96 @@
+[
+  {
+    "relevance": 8,
+    "usecase": 7,
+    "novelty": 8,
+    "monetizable": 6,
+    "buzz": 10.0,
+    "topic": "Agnos",
+    "total": 78,
+    "detail": {
+      "id": 0,
+      "summary": "AgnosはドキュメントからAIに不要・有害な情報を自動で削ぎ落とし、クリーンな入力を作るツール。AIに与える文書を“何が削除されたか”も確認できるという趣旨のプロダクト。",
+      "why": "個人が社内外の資料や公開コンテンツをそのままAIに投げると機密やノイズが混ざりやすく、削除や整形を自動化するニーズが高い。",
+      "usecase": "社外向けに配る資料から個人情報や社内注釈を除去して要約させる。議事録やインタビューをAIで要約する前に不要語や敏感情報を自動で除外する運用に使える。",
+      "angle": "AIに渡す資料を“安全で読みやすく整形”する最短ワークフロー",
+      "products": [
+        "Adobe Acrobat Pro（編集・赤線・OCR）",
+        "Notion AI（文章整形・要約）"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Agnos",
+      "url": "https://www.producthunt.com/products/agnos",
+      "summary": "Clean documents for AI, and see what was removed Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "usecase": 8,
+    "novelty": 8,
+    "monetizable": 5,
+    "buzz": 7.0,
+    "topic": "Gemini Notebook textbooks",
+    "total": 78,
+    "detail": {
+      "id": 1,
+      "summary": "GoogleがGemini Notebookで米国とインドの出版社提供の数百冊の教科書を無料で利用可能にしたという発表。Notebook内で教科書コンテンツにアクセスし学習や参照に使える。",
+      "why": "非エンジニアの個人ユーザーでも学習・資料作成にすぐ使える大規模テキストソースが手元に増える点は、文章作りや動画台本作成の素材収集に直結する。",
+      "usecase": "業務の勉強や副業の知識補強に、Notebook上の教科書を参照しながら記事・スライド・動画台本を素早く作る。社内資料の背景調査や引用元探しにも便利。",
+      "angle": "Gemini Notebookで使える無料教科書を素材に仕事の知識収集を高速化",
+      "products": [
+        "Google Gemini（Notebook）",
+        "Google Workspace（Docs, Slides）"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "Gemini Notebook、無料で数百冊の教科書にアクセス可能に　米国・インドの出版社提供　日本でも利用可",
+      "url": "https://www.itmedia.co.jp/aiplus/article/2610/30/2000002760/",
+      "summary": "Googleは、米国とインドのプロバイダーが提供する数百冊の教科書に「Gemini Notebook」内で無料でアクセスできるようになったと発表した。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 7.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 9,
+    "novelty": 8,
+    "monetizable": 6,
+    "buzz": 3.0,
+    "topic": "SparkBots AI",
+    "total": 73,
+    "detail": {
+      "id": 2,
+      "summary": "SparkBots AIはウェブページやPDFを瞬時に解析し、要点抽出や詳細情報の抽出を行うツール。ページ単位で重要箇所を抜き出せる点が特徴。",
+      "why": "非エンジニアが大量の資料やWeb情報から素早く要点だけ取り出して、発信や資料作りに活かせる実用性が高い。",
+      "usecase": "長いレポートや調査PDFから要点と引用候補を抽出してスライドに転用する。SNS投稿やメルマガ用に主要ポイントだけ抜き出して短時間で原稿を作る。",
+      "angle": "長いPDFや記事から要点だけを即抽出して発信素材に変える方法",
+      "products": [
+        "Adobe Acrobat Pro（PDF編集・OCR）",
+        "Notion（ドキュメント整理・要約）",
+        "Zapier（ワークフロー自動化）"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "SparkBots AI (Powered by Jev)",
+      "url": "https://www.producthunt.com/products/sparkbots-ai-analyze-pages-and-pdfs",
+      "summary": "Instantly extract key details and analyze any webpage or PDF Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 3.0
+      }
+    }
+  }
+]
