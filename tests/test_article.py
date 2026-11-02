@@ -301,11 +301,12 @@ def test_roundup(tmp=Path(tempfile.gettempdir()) / "ts_roundup"):
         if "記事から「事実」だけを抜き出して" in prompt:
             n = int(prompt.split("# 話題\nツール", 1)[1][0])
             assert f"2. https://tool{n}.example/" in prompt
-            return json.dumps({"name": f"Tool{n}", "facts": [f"Tool{n}は無料で使える"], "reader_fit": n != 3,
+            return json.dumps({"name": f"Tool{n}" if n != 2 else "You can now generate files directly in Tool2 chats",
+                               "product": "Same" if n in (1, 6) else f"Tool{n}", "facts": [f"Tool{n}は無料で使える"], "reader_fit": n != 3,
                                "is_tool": True, "official_link": 2}, ensure_ascii=False)
         if "今週の新着AIツールまとめ" in prompt:
             names = [x["name"] for x in json.loads(prompt.split("# 今週のツール（事実メモ。番号順に紹介する）\n", 1)[1].split("\n\n# 守ること")[0])]
-            assert names == ["Tool1", "Tool4", "Tool6"]   # 3 は個人向けでないので外れ、上限3件
+            assert names == ["Tool1", "Tool4", "Tool2"]   # 3 は個人向けでない・6 は 1 と同じ製品なので外れ、上限3件（2 は長い名前→製品名）
             return json.dumps({"title": "今週の新着AIツール3選", "slug": "weekly-ai-tools", "excerpt": "説明",
                                "intro": "<p>今週は3つ。</p>", "easy": ["Tool1：何かを作る道具"],
                                "items": [{"n": i, "heading": f"{nm}：できること", "body": f"<p>{nm}の説明です。</p>",
@@ -328,10 +329,10 @@ def test_roundup(tmp=Path(tempfile.gettempdir()) / "ts_roundup"):
     assert posted["slug"] == "weekly-ai-tools-20261031"
     c = art["content"]
     # 各ツールの節の終わりに、そのツールの公式サイト
-    for n, nxt in ((1, "2. Tool4"), (4, "3. Tool6"), (6, "<h2>まとめ")):
+    for n, nxt in ((1, "2. Tool4"), (4, "3. Tool2"), (2, "<h2>まとめ")):
         assert c.index(f"Tool{n}の説明です") < c.index(f"https://tool{n}.example/") < c.index(nxt)
     assert "easy-box" in c and "<strong>料金：</strong>無料" in c and "参考にした情報" in c
-    assert "公開しました" in sent["text"] and "・Tool6" in sent["text"] and "https://nocode-ai.net/weekly/" in sent["text"]
+    assert "公開しました" in sent["text"] and "・Tool2" in sent["text"] and "https://nocode-ai.net/weekly/" in sent["text"]
     assert (tmp / "data" / "roundups" / "2026-10-31.json").exists()
     # 体験表現があれば公開しない
     assert roundup.check("<p>使ってみると便利</p>") and not roundup.check("<p>便利です</p>")

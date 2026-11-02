@@ -42,16 +42,18 @@ ITEM_PROMPT = """あなたは調査担当の編集者です。次のAIツール�
 {links}
 
 # 出力（JSONオブジェクトだけ）
-- name: ツール名・機能名（原文の表記のまま。例「Gamma」「ChatGPT の試着機能」）
+- name: 記事の見出しに使う短い名前（20字以内）。ツール名か「製品名＋機能名」（例「Gamma」「ChatGPT の試着機能」「Gemini のドキュメント作成」）。
+  元記事のタイトルや文章（「You can generate …」「〜が可能に」など）をそのまま入れない。製品名は原文の表記のまま
+- product: 製品・サービスの名前だけ（例「Gamma」「ChatGPT」「Gemini」）。同じ週に同じ製品を2回紹介しないために使う
 - facts: 事実の一覧（日本語で言い換えた1文ずつ、最大8個）。何ができるか・料金（金額はそのまま）・対応環境・日本語対応・日本から使えるか・提供開始日を優先
 - reader_fit: プログラミングをしない個人が、アカウントを作れば一人で使い始められるなら true。
   コードを書く前提・特定の業務システムが前提・法人契約が前提・まだ使えない（研究や発表だけ）なら false
 - is_tool: 特定のツールや機能の話なら true。業界ニュース・まとめ記事・イベントの話なら false
 - official_link: リンク候補のうち、このツールの公式サイト（トップページ・製品ページ）の番号。ニュースやブログは選ばない。なければ 0
 文章をそのまま写さず、短く言い換えること。推測は入れないこと。
-{{"name": "", "facts": [], "reader_fit": true, "is_tool": true, "official_link": 0}}
+{{"name": "", "product": "", "facts": [], "reader_fit": true, "is_tool": true, "official_link": 0}}
 """
-ITEM_SCHEMA = obj_schema({"name": STR, "facts": arr(STR), "reader_fit": BOOL, "is_tool": BOOL, "official_link": INT})
+ITEM_SCHEMA = obj_schema({"name": STR, "product": STR, "facts": arr(STR), "reader_fit": BOOL, "is_tool": BOOL, "official_link": INT})
 
 WRITE_PROMPT = """あなたはブログライターです。「今週の新着AIツールまとめ」の記事を書いてください。
 
@@ -125,7 +127,11 @@ def item_facts(cand: dict, opt: dict, lc: dict) -> dict | None:
         return None
     k = f.get("official_link", 0)
     official = links[k - 1]["url"] if isinstance(k, int) and 2 <= k <= len(links) else ""  # 1=ニュース記事そのもの
-    return {"name": f.get("name") or item["title"], "facts": f["facts"], "official_url": official,
+    name = (f.get("name") or "").strip()
+    product = (f.get("product") or "").strip()
+    if not name or len(name) > 30:   # 文章が入ってしまったら製品名にする
+        name = product or item["title"][:30]
+    return {"name": name, "product": product or name, "facts": f["facts"], "official_url": official,
             "source": {"title": item["title"], "url": item["url"], "text": text}}
 
 
@@ -191,8 +197,8 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml", today: 
     cfg = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     ro, opt, lc = cfg.get("roundup") or {}, cfg.get("article") or {}, llm_cfg(cfg)
     today = today or datetime.now(JST).date()
-    picked = pick(BASE / "data" / "candidates", today, ro.get("days", 7), ro.get("max_items", 6) + 3)
-    tools = []
+    picked = pick(BASE / "data" / "candidates", today, ro.get("days", 7), ro.get("max_items", 6) + 5)
+    tools, products = [], set()
     for c in picked:
         if len(tools) >= ro.get("max_items", 6):
             break
@@ -201,7 +207,10 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml", today: 
         except Exception as e:  # noqa: BLE001  1件の失敗で全体を止めない
             print(f"[roundup] 事実を取れなかった {c['item']['url']}: {e}")
             continue
-        if f:
+        if f and topic_key(f["product"]) in products:   # 同じ製品は評価の高いほう1件だけ（11-01 Gemini が2件出た）
+            print(f"[roundup] 同じ製品なので外した: {f['name']}")
+        elif f:
+            products.add(topic_key(f["product"]))
             tools.append(f)
     print(f"[roundup] 候補 {len(picked)}件 → 紹介 {len(tools)}件")
     if len(tools) < ro.get("min_items", 3):
