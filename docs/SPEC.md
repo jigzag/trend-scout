@@ -26,7 +26,7 @@
 
 | 項目 | 内容 |
 |---|---|
-| 実行 | GitHub Actions（`jigzag/trend-scout`、Private）、毎朝 7:00 JST（cron `0 22 * * *` UTC） |
+| 実行 | GitHub Actions（`jigzag/trend-scout`、Private）、月・木 7:00 JST（cron `0 22 * * 0,3` UTC。2026-11-03 毎日から変更） |
 | 手動実行 | Actions → daily-trend-scout → Run workflow（mode: `run` / `test-line`） |
 | 記事生成 | Actions → write-article → Run workflow（候補番号・メモ・日付）。`repository_dispatch`（type `write-article`）でも起動できる |
 | 言語 | Python 3.12、依存は `requests` と `PyYAML` のみ |

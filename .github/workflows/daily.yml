@@ -2,7 +2,7 @@ name: daily-trend-scout
 
 on:
   schedule:
-    - cron: "0 22 * * *"   # UTC 22:00 = 日本時間 毎朝7:00（GitHub側の混雑で数分〜十数分遅れることあり）
+    - cron: "0 22 * * 0,3"   # UTC 日・水 22:00 = 日本時間 月・木の朝7:00（2026-11-03 費用を抑えるため毎日→週2回。GitHub側の混雑で数分〜十数分遅れることあり）
   workflow_dispatch:        # Actions画面から手動実行も可
     inputs:
       mode:
