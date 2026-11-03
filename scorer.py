@@ -83,7 +83,7 @@ def call_llm(prompt: str, cfg: dict, max_tokens: int = 4000, schema: dict | None
                 {"type": "image_url", "image_url": {"url": f"data:{m};base64,{d}"}} for m, d in b64]
                 if b64 else prompt}],
         }
-        if cfg["openai_model"].startswith(("gpt-5", "o")):
+        if cfg["openai_model"].startswith(("gpt-5", "gpt-6", "o")):
             body["reasoning_effort"] = cfg.get("openai_reasoning_effort", "low")
         if schema:
             body["response_format"] = {"type": "json_schema",

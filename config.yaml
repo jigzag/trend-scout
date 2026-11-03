@@ -91,6 +91,7 @@ article:
   rewrite_rounds: 2
   # 記事用のAI設定（llm の値を上書き。空なら llm と同じ）
   llm:
+    openai_model: gpt-6.1-terra   # 2026-11-03 KJ 選択（gpt-5-mini では文章の質が足りなかった。1記事 約50〜60円・週のまとめも同じ設定）
     openai_reasoning_effort: medium
 
 # ===== 今週の新着AIツールまとめ（全自動・毎週日曜の朝。python roundup.py） =====
