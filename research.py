@@ -120,7 +120,9 @@ def search(query: str, opt: dict) -> list[dict]:
         print("[research] TAVILY_API_KEY が空のため、関連記事の検索は省略（元記事だけで書く）")
         return []
     body = {"query": query, "search_depth": "basic", "max_results": opt.get("max_results", 8),
-            "include_raw_content": "text", "time_range": opt.get("time_range", "month")}
+            "include_raw_content": "text"}
+    if opt.get("time_range", "month"):
+        body["time_range"] = opt.get("time_range", "month")
     if opt.get("country"):
         body["country"] = opt["country"]
     js = _tavily(TAVILY_SEARCH, body)
@@ -143,7 +145,8 @@ def find_pricing(query: str, opt: dict, used: set[str]) -> dict | None:
     """料金が書かれたページ（公式の料金ページが多い）を1件探す。ニュースに料金がないことが多いため
     （11-03 Riverside の記事で料金が書けなかった）。見つからなければ None。"""
     try:
-        found = search(f"{query} pricing plans", opt)
+        # 料金ページは何か月も更新されないことが多いので、期間で絞らない（11-03 「1か月以内」に絞って見つからなかった）
+        found = search(f"{query} pricing plans", {**opt, "time_range": None})
     except Exception as e:  # noqa: BLE001
         print(f"[research] 料金ページの検索失敗 {e}")
         return None
