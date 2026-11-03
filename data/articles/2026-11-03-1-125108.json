@@ -1,0 +1,81 @@
+{
+  "title": "Riverside Agentsとは？動画の準備からSNS投稿までAIが支援",
+  "slug": "riverside-agents-video-production",
+  "excerpt": "Riverside Agentsは、動画の企画から編集、SNS投稿までを支援する4つのAI機能です。録画前の質問作りや短い動画の切り出しなど、個人の動画制作に役立つ場面と利用時の注意点を紹介します。",
+  "category": "動画生成",
+  "tool_type": "feature",
+  "official_url": "",
+  "download_url": "",
+  "chars": 3219,
+  "image_prompts": {
+    "featured": "An illustration of a video camera surrounded by symbols of planning, editing, and sharing, connected in a simple workflow. No text, logos, real app screens, or real people.",
+    "body": "An illustration of a person reviewing a short video clip and a thumbnail on a smartphone beside a recording setup. No text, logos, real app screens, or real people."
+  },
+  "similarity": {
+    "ratio": 0.011,
+    "longest": 15,
+    "ok": true
+  },
+  "warnings": [
+    "分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "AI",
+      "Riverside",
+      "チャットツール",
+      "SNS",
+      "プラン",
+      "ウェブ",
+      "モバイル"
+    ],
+    "sentences": [
+      "別のチャットツールに移って作業するのではなく、Riversideの中で使えるのも特徴です。",
+      "また、画面の配置も準備できるため、話す内容と見せ方の両方に目を向けられます。",
+      "字幕や音声の調整も、動画を見てもらうための準備です。",
+      "映像を切る作業だけでなく、視聴する人に内容を伝えるための部分も支援します。",
+      "長い動画はすでにあるものの、短い動画まで作る時間が取れない。",
+      "そんなときに、録画した内容を別の形で届けるための選択肢になります。",
+      "録画した内容を発信につなげたい人にとって、作業の区切りごとに助けを得られる仕組みです。",
+      "使える機能はプランによって異なります。",
+      "こうした機能は、エージェント経由で使った場合も利用枠を消費します。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Riverside Agents",
+      "url": "https://www.producthunt.com/products/riverside-fm"
+    },
+    {
+      "title": "Riverside Launches Riverside Agents, the First AI Production Team Built for Video",
+      "url": "https://podnews.net/press-release/riverside-agents"
+    },
+    {
+      "title": "Riverside launches Riverside Agents, four AI agents for...",
+      "url": "https://daily.dev/posts/riverside-launches-riverside-agents-four-ai-agents-for-podcast-production-yn1xdl1ws"
+    }
+  ],
+  "candidate": {
+    "title": "Riverside Agents",
+    "url": "https://www.producthunt.com/products/riverside-fm"
+  },
+  "affiliates": [
+    "ココナラ"
+  ],
+  "images": {
+    "featured": 76,
+    "media": [
+      76,
+      77
+    ]
+  },
+  "held": false,
+  "wordpress": {
+    "id": 78,
+    "link": "https://nocode-ai.net/riverside-agents-video-production/",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=78&action=edit"
+  },
+  "published": true,
+  "created_at": "2026-11-03T12:51:10+09:00"
+}
