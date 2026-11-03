@@ -197,8 +197,10 @@ def add_video(art: dict) -> None:
 
 
 def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
-        config_path: Path = BASE / "config.yaml") -> dict:
+        config_path: Path = BASE / "config.yaml", model: str = "") -> dict:
     cfg = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    if model:  # 試し書き用：記事のモデルだけ差し替える（11-03 安いモデルとの読み比べ）
+        cfg.setdefault("article", {}).setdefault("llm", {})["openai_model"] = model
     cand_day, cand = load_candidate(n, day)
     print(f"[article] {cand_day} 候補{n}: {cand['item']['title']}")
     art = build(cfg, cand, memo.strip())
@@ -239,6 +241,7 @@ def run(n: int, memo: str = "", day: str | None = None, dry_run: bool = False,
     meta = {k: v for k, v in art.items() if k != "content"}
     meta["wordpress"] = wp
     meta["published"] = published
+    meta["model"] = llm_cfg(cfg).get("openai_model")
     meta["created_at"] = datetime.now(JST).isoformat(timespec="seconds")
     (out_dir / f"{stem}.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -255,10 +258,11 @@ def main() -> None:
     ap.add_argument("--n", type=int, default=1, help="候補番号（1〜3）")
     ap.add_argument("--memo", default="", help="運営者メモ（任意）")
     ap.add_argument("--date", default=None, help="候補の日付 YYYY-MM-DD（省略時はいちばん新しい日）")
-    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--dry-run", action="store_true", help="WordPress にもLINEにも出さず、data/articles/ に保存だけする")
+    ap.add_argument("--model", default="", help="記事を書くモデルを差し替える（試し書き用）")
     args = ap.parse_args()
     try:
-        run(args.n, args.memo, args.date or None, args.dry_run)
+        run(args.n, args.memo, args.date or None, args.dry_run, model=args.model)
     except Exception:
         err = traceback.format_exc()
         print(err, file=sys.stderr)

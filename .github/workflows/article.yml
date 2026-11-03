@@ -16,6 +16,14 @@ on:
         description: "候補の日付 YYYY-MM-DD（空ならいちばん新しい日）"
         required: false
         default: ""
+      model:
+        description: "試し書き：記事を書くモデル（例 gpt-6-luna。空なら config.yaml のまま）"
+        required: false
+        default: ""
+      test:
+        description: "試し書き（WordPress に出さず、LINEも送らない。記事は data/articles/ に保存）"
+        type: boolean
+        default: false
   repository_dispatch:      # LINEの返信から起動する用（Cloudflare Workers 経由。client_payload: n, memo）
     types: [write-article]
 
@@ -53,7 +61,9 @@ jobs:
           ARG_N: ${{ inputs.n || github.event.client_payload.n || '1' }}
           ARG_MEMO: ${{ inputs.memo || github.event.client_payload.memo || '' }}
           ARG_DATE: ${{ inputs.date || github.event.client_payload.date || '' }}
-        run: python article.py --n "$ARG_N" --memo "$ARG_MEMO" --date "$ARG_DATE"
+          ARG_MODEL: ${{ inputs.model || '' }}
+          ARG_TEST: ${{ inputs.test && '--dry-run' || '' }}
+        run: python article.py --n "$ARG_N" --memo "$ARG_MEMO" --date "$ARG_DATE" --model "$ARG_MODEL" $ARG_TEST
       - name: Save article
         if: always()
         run: |
