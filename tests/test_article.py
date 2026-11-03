@@ -137,6 +137,11 @@ def test_tidy():
     assert out.count("（短い動画）") == 2 and out.count("（ポイント）") == 1   # 囲みの中と本文の初出だけ
     assert "クリップとAIクレジット。" in out
     assert len(research.PRICE.findall("Pro $24/mo, Business 月額3,000円")) >= 2 and not research.PRICE.findall("無料で使える")
+    def boom(*a, **kw): raise RuntimeError("offline")
+    with mock.patch.object(research.requests, "get", boom):
+        c = research.link_candidates("https://news.example/1", [{"url": "https://news.example/1", "title": "n"},
+                                                                 {"url": "https://tool.example/pricing", "title": "p", "pricing": True}])
+    assert [x["url"] for x in c] == ["https://news.example/1", "https://tool.example/pricing", "https://tool.example/"]
 
 
 def test_check_rules():

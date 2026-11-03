@@ -72,6 +72,10 @@ def link_candidates(main_url: str, sources: list[dict]) -> list[dict]:
     """公式サイト・ダウンロードページの候補。参考記事そのもの＋元記事の中のリンク。
     AI には番号で選ばせるので、ここにないURLが記事に出ることはない。"""
     cands = [{"url": s["url"], "text": s.get("title", "")} for s in sources]
+    for s in sources:   # 料金のページは公式サイトのことが多いので、そのサイトのトップも候補に入れる
+        if s.get("pricing"):
+            p = urlsplit(s["url"])
+            cands.append({"url": f"{p.scheme}://{p.netloc}/", "text": "料金ページのサイトのトップ"})
     try:
         cands += page_links(main_url)
     except Exception as e:  # noqa: BLE001  リンクが取れなくても記事は書ける
@@ -177,11 +181,11 @@ def gather(candidate: dict, opt: dict) -> list[dict]:
             continue
         sources.append(r)
         used.add(_domain(r["url"]))
-    if opt.get("pricing_search", True) and not any(len(PRICE.findall(s["text"])) >= 2 for s in sources):
+    if opt.get("pricing_search", True):   # 11-03 ニュースの「$〇億の資金調達」などで料金ありと誤判定したので、毎回探す
         r = find_pricing(candidate.get("topic") or item["title"], opt, used)
         if r:
             print(f"[research] 料金のページを追加: {r['url']}")
-            sources.append(r)
+            sources.append({**r, "pricing": True})
     for s in sources:
         s["text"] = s["text"][:max_chars]
     return sources
