@@ -76,6 +76,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     body = writer.trim_hedges(body, lc)
     body, clarity = writer.clarify(body, lc)
     body, sim = writer.fix_similarity(body, all_sources, opt, lc)
+    body = writer.tidy(body)
     body = writer.add_links(body, facts.get("official_url", ""), facts.get("download_url", ""), facts.get("tool_type", ""))
     warnings = writer.check_rules(body, memo, opt.get("min_chars", 3000), facts.get("tool_type", ""))
     if not reader_fit:

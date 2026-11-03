@@ -227,6 +227,7 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml", today: 
     body, clarity = writer.clarify(body, lc)
     sources = [t["source"] for t in tools]
     body, sim = writer.fix_similarity(body, sources, opt, lc)
+    body = writer.tidy(body)
     body = add_links(body, [t["official_url"] for t in tools])
     problems = check(body)
     if not sim["ok"]:

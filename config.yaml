@@ -72,7 +72,8 @@ sale_watch:
 
 # ===== 記事生成（Ver.1: python article.py --n 候補番号） =====
 article:
-  max_sources: 3       # 参考記事の最大数（候補の元記事 + 別サイトの関連記事）
+  max_sources: 3       # 参考記事の最大数（候補の元記事 + 別サイトの関連記事）。料金が載っていなければ、料金のページを1件足す
+  pricing_search: true # 参考記事に料金がないとき、「ツール名 pricing plans」で料金のページを探す（Tavily 1回分）
   max_chars: 6000      # 参考記事1件あたり、AIに渡す最大文字数
   max_results: 8       # Tavily 検索で取る件数（この中から別サイトのものを選ぶ）
   time_range: month    # 関連記事を探す期間（day / week / month / year）

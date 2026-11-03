@@ -132,6 +132,23 @@ def usable(r: dict, opt: dict) -> bool:
     return not any(w in (r.get("title") or "") for w in opt.get("exclude_title_words", []))
 
 
+PRICE = re.compile(r"[$＄€£]\s?\d|¥\s?\d|\d[\d,]*\s?円|/\s?mo\b|per month|月額|年額")
+
+
+def find_pricing(query: str, opt: dict, used: set[str]) -> dict | None:
+    """料金が書かれたページ（公式の料金ページが多い）を1件探す。ニュースに料金がないことが多いため
+    （11-03 Riverside の記事で料金が書けなかった）。見つからなければ None。"""
+    try:
+        found = search(f"{query} pricing plans", opt)
+    except Exception as e:  # noqa: BLE001
+        print(f"[research] 料金ページの検索失敗 {e}")
+        return None
+    for r in found:
+        if _domain(r["url"]) not in used and usable(r, opt) and len(PRICE.findall(r["text"])) >= 2:
+            return r
+    return None
+
+
 def gather(candidate: dict, opt: dict) -> list[dict]:
     """候補の元記事 + 別ドメインの関連記事で、最大 max_sources 件の参考記事を返す。
     返り値: [{title, url, text}]（text は max_chars で切る）"""
@@ -160,6 +177,11 @@ def gather(candidate: dict, opt: dict) -> list[dict]:
             continue
         sources.append(r)
         used.add(_domain(r["url"]))
+    if opt.get("pricing_search", True) and not any(len(PRICE.findall(s["text"])) >= 2 for s in sources):
+        r = find_pricing(candidate.get("topic") or item["title"], opt, used)
+        if r:
+            print(f"[research] 料金のページを追加: {r['url']}")
+            sources.append(r)
     for s in sources:
         s["text"] = s["text"][:max_chars]
     return sources

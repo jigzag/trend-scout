@@ -129,6 +129,16 @@ def test_similarity_detects_copy():
     assert writer.similarity("<p>自分で考えた全く新しい説明文がここに入ります。</p>", srcs)["longest"] < 40
 
 
+def test_tidy():
+    b = (writer.EASY_DIV + "<p>クリップ（短い動画）</p></div><h2>よくある疑問（事実メモで答えられる範囲）</h2>"
+         "<p>クリップ（短い動画）を作る。AIクレジット（ポイント）を使う。クリップ（短い動画）とAIクレジット（ポイント）。</p>")
+    out = writer.tidy(b)
+    assert "事実メモ" not in out and "<h2>よくある疑問</h2>" in out
+    assert out.count("（短い動画）") == 2 and out.count("（ポイント）") == 1   # 囲みの中と本文の初出だけ
+    assert "クリップとAIクレジット。" in out
+    assert len(research.PRICE.findall("Pro $24/mo, Business 月額3,000円")) >= 2 and not research.PRICE.findall("無料で使える")
+
+
 def test_check_rules():
     w = writer.check_rules("<p>実際に使ってみると便利でした。</p><h3>ステップ1：登録</h3><h2>Aさんの場合</h2>", "")
     assert any("体験" in x for x in w) and any("ステップ" in x for x in w) and any("架空の人物" in x for x in w)
