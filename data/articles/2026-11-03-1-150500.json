@@ -1,0 +1,77 @@
+{
+  "title": "Riverside Agentsとは？動画編集から投稿準備までAIが支援",
+  "slug": "riverside-agents-video-workflow",
+  "excerpt": "Riverside Agentsは、録画の準備から動画編集、短いクリップ作成、SNS投稿の下書きや予約までを分担するAIエージェント群です。4つの役割や利用環境、公開前の承認が必要な点を紹介します。",
+  "category": "動画生成",
+  "tool_type": "feature",
+  "official_url": "",
+  "download_url": "",
+  "chars": 1578,
+  "image_prompts": {
+    "featured": "An editorial illustration of a video production desk with a camera, timeline cards, short video frames, and social post cards connected by subtle flowing lines. No text, logos, real app interfaces, or real people.",
+    "body": "A creator reviewing a finished interview video on a laptop while several short vertical clips and caption cards are neatly arranged nearby. No text, logos, real app interfaces, or real people."
+  },
+  "similarity": {
+    "ratio": 0.016,
+    "longest": 15,
+    "ok": true
+  },
+  "warnings": [
+    "本文が短い（1578字）",
+    "分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "録画セッション",
+      "エピソード",
+      "ソーシャルメディア",
+      "ブランド",
+      "自動化",
+      "コンテンツ",
+      "モバイル",
+      "連携",
+      "動画エンハンス",
+      "AIクレジット"
+    ],
+    "sentences": [
+      "Producerは、録画セッションの準備を担当します。",
+      "Producerは、録画前の段取りを整えたいときに、準備作業を支援します。",
+      "細かな編集を進めてもらえるため、完成した動画の確認に時間を使いやすくなります。",
+      "動画に添える文章や公開予定も準備できるので、編集後の投稿作業を進めやすくなります。",
+      "Riverside Agentsは作業を進め、次の工程へ引き継ぐ仕組みです。",
+      "別のチャットツールではなくRiverside内で動き、会話形式の動画向けの編集機能と連携します。",
+      "動画の準備から編集、投稿の計画まで、同じ制作の流れで進めたいときに使えます。",
+      "また、動画エンハンスなどAIクレジットを使う機能は、エージェントが適用した場合もクレジットを消費します。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Riverside Agents",
+      "url": "https://www.producthunt.com/products/riverside-fm"
+    },
+    {
+      "title": "Riverside Agents — Capabilities, Use Cases, and FAQ | Superpower Daily",
+      "url": "https://superpowerdaily.com/tools/riverside-agents"
+    },
+    {
+      "title": "Riverside Launches Riverside Agents, the First AI Production Team Built for Video",
+      "url": "https://podnews.net/press-release/riverside-agents"
+    }
+  ],
+  "candidate": {
+    "title": "Riverside Agents",
+    "url": "https://www.producthunt.com/products/riverside-fm"
+  },
+  "affiliates": [
+    "ココナラ"
+  ],
+  "images": {
+    "featured": null,
+    "media": []
+  },
+  "wordpress": null,
+  "published": false,
+  "model": "gpt-6-luna",
+  "created_at": "2026-11-03T15:05:00+09:00"
+}
