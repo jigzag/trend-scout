@@ -1,0 +1,91 @@
+{
+  "title": "Riverside Agentsで録画〜編集〜投稿を自動化",
+  "slug": "riverside-agents-automate-video",
+  "excerpt": "RiversideのRiverside Agentsは、録画の準備から編集、短尺クリップ作成、投稿文やサムネイル作成までを4つのAIが自動で下書きし、承認後に公開できます。Webとモバイルで使え、クラウドで自律的に作業が進みます。",
+  "category": "動画生成",
+  "tool_type": "feature",
+  "official_url": "",
+  "download_url": "",
+  "chars": 2697,
+  "image_prompts": {
+    "featured": "An illustration of a person reviewing video clips on a tablet while small robotic assistants organize editing tasks around them.",
+    "body": "An illustration showing a creator at a desk with various video thumbnails, captions and a calendar, implying automated editing and scheduled posting."
+  },
+  "similarity": {
+    "ratio": 0.015,
+    "longest": 29,
+    "ok": true
+  },
+  "warnings": [
+    "指示の言葉が本文に出ている: 事実メモ",
+    "分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "AIエージェント",
+      "エージェント",
+      "Web",
+      "モバイル",
+      "B-roll",
+      "モーショングラフィックス",
+      "サムネイル",
+      "キャプション",
+      "プラン階層",
+      "AIクレジット",
+      "クリップ",
+      "下書き",
+      "クラウド",
+      "配信先",
+      "短尺素材"
+    ],
+    "sentences": [
+      "エージェントはRiversideの編集ツールと直接連携して動きます。",
+      "Webとモバイルの両方で利用でき、録画が終わると自律的に作業を始めて下書きを用意します。",
+      "これら4つが連携して動くことで、録画した素材が下書きされた状態で次々と出来上がります。",
+      "作業を待つ受け身ではなく、先回りして提案を受け取れる点が大きな利点です。",
+      "一部の機能はプラン階層に依存",
+      "一部の作業ではAIクレジットを消費します。",
+      "利用時はクレジットの扱いに注意が必要です。",
+      "従来の汎用的なAIは、使う側が指示を出して逐次作業を進めることが多いです。",
+      "これに対しRiverside Agentsは録画終了後に自律的に編集やクリップの下書きを作る、先回り型の設計です。",
+      "エージェントは動画向けに調整された専用の仕組みで動くため、一般的な汎用モデルより動画制作に特化した提案が期待できます。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Riverside Agents",
+      "url": "https://www.producthunt.com/products/riverside-fm"
+    },
+    {
+      "title": "Riverside Launches Riverside Agents, the First AI Production Team Built for Video",
+      "url": "https://podnews.net/press-release/riverside-agents"
+    },
+    {
+      "title": "Riverside launches Riverside Agents, four AI agents for...",
+      "url": "https://daily.dev/posts/riverside-launches-riverside-agents-four-ai-agents-for-podcast-production-yn1xdl1ws"
+    }
+  ],
+  "candidate": {
+    "title": "Riverside Agents",
+    "url": "https://www.producthunt.com/products/riverside-fm"
+  },
+  "affiliates": [
+    "ココナラ"
+  ],
+  "images": {
+    "featured": 72,
+    "media": [
+      72,
+      73
+    ]
+  },
+  "held": true,
+  "wordpress": {
+    "id": 74,
+    "link": "https://nocode-ai.net/?p=74",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=74&action=edit"
+  },
+  "published": false,
+  "created_at": "2026-11-03T12:29:28+09:00"
+}
