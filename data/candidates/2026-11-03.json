@@ -1,0 +1,98 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 8,
+    "monetizable": 8,
+    "buzz": 4.5,
+    "topic": "Riverside Agents",
+    "total": 80,
+    "detail": {
+      "id": 0,
+      "summary": "Riverside Agentsは動画制作のための複数のAIエージェントを組み合わせ、企画・編集・クリップ切り出し・投稿までを自動化するサービス。Riverside.fmのエコシステムで動くことが示唆されている。",
+      "why": "海外で出たばかりの「動画制作をほぼ自動化するAIワークフロー」を日本語で早く紹介できるため。",
+      "usecase": "会社員の社内向け説明動画や個人クリエイターのショート動画作成で、撮影後の編集工数やSNS投稿準備を大幅に削減できる。複数エージェントが自動でハイライト抽出や字幕生成、最適な短尺クリップ化を行えば一人運用が現実的になる。",
+      "angle": "AIが一括で編集・切り出す動画ワークフローの実務ガイド",
+      "products": [
+        "Riverside.fm",
+        "Descript",
+        "CapCut"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Riverside Agents",
+      "url": "https://www.producthunt.com/products/riverside-fm",
+      "summary": "A team of AI agents for video: produce, edit, clip, post Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 4.5
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 8,
+    "novelty": 7,
+    "monetizable": 6,
+    "buzz": 10.0,
+    "topic": "Xmind 2027",
+    "total": 79,
+    "detail": {
+      "id": 1,
+      "summary": "Xmind 2027はマインドマップを単なる図から“AIの思考パートナー”に進化させ、アイデア展開・要約・タスク化などを対話的に支援する新バージョン。",
+      "why": "マインドマップを日常業務の思考ツールとして使う非エンジニア層に、AIでどこまで効率化できるかを具体的に示せるため。",
+      "usecase": "企画会議のブレストをXmindで取りまとめ、AIに要点整理と次のアクション（資料のアウトライン、スライド見出し、SNS投稿文）を自動生成させることで、会議後の作業を即時に進められる。",
+      "angle": "会議→アウトライン→SNSまで導くAIマップ活用法",
+      "products": [
+        "XMind 2027",
+        "MindNode",
+        "Miro"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Xmind 2027",
+      "url": "https://www.producthunt.com/products/xmind",
+      "summary": "Your mind map is now an AI thinking partner Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 7,
+    "novelty": 8,
+    "monetizable": 4,
+    "buzz": 9.0,
+    "topic": "CuriousLM",
+    "total": 75,
+    "detail": {
+      "id": 2,
+      "summary": "CuriousLMはアカウント不要でデバイス上（ローカル）で動く“プライベートAI”の新サービス。ネットに送らずに質問や要約ができる点がウリ。",
+      "why": "個人で機密性を維持しつつ手元でAIを使いたい読者に即試せる選択肢として早期に情報提供できるため。",
+      "usecase": "社外秘の企画メモや顧客リストの要約、社内文書の整理などをクラウドに上げずに済ませたい会社員や個人事業主が、手元のPCで安全にAI支援を得られる。",
+      "angle": "アカウント不要で動く“手元AI”の実用チェックポイント",
+      "products": [
+        "CuriousLM",
+        "MacGPT",
+        "Rewind"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "CuriousLM",
+      "url": "https://www.producthunt.com/products/curiouslm",
+      "summary": "Private AI that runs on your device. No account. Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  }
+]
