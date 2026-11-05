@@ -1,0 +1,99 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 7,
+    "monetizable": 8,
+    "buzz": 9.5,
+    "topic": "OpusClip",
+    "total": 86,
+    "detail": {
+      "id": 0,
+      "summary": "OpusClip 4.0は、長尺の映像素材をAIで短尺のSNS向けクリップに自動編集してくれるツールの最新版。自動カット、字幕生成、縦横比変換などが強化されている。",
+      "why": "非エンジニアの個人制作者が手作業で時間を取られる動画編集工程を大幅に短縮できるため、早めに使い方と落とし所を示す価値がある。",
+      "usecase": "会議録画や講座の長尺動画を複数の短いSNS用クリップに分割して、字幕付きで即配信できる。YouTubeのロング動画からTikTok／Reels用ハイライトを大量生産したい副業クリエイターにも有用。",
+      "angle": "長尺素材からSNS用クリップを大量生産する最短ルート（OpusClip活用術）",
+      "products": [
+        "OpusClip",
+        "Descript",
+        "CapCut",
+        "Veed.io"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "OpusClip 4.0",
+      "url": "https://www.producthunt.com/products/opusclip",
+      "summary": "Turn raw footage into ready-to-publish videos with AI Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.5
+      }
+    }
+  },
+  {
+    "relevance": 7,
+    "usecase": 6,
+    "novelty": 8,
+    "monetizable": 6,
+    "buzz": 9.0,
+    "topic": "Prelulu",
+    "total": 72,
+    "detail": {
+      "id": 1,
+      "summary": "Preluluはチャットとビデオを組み合わせて“役割演技”型のストーリーテリングや会話シミュレーションができるサービス。ユーザーが主役になって対話形式で物語やロールプレイ動画を作れる。",
+      "why": "文章や動画で“人物の立場から語る”コンテンツを手早く作れる点が、日本の個人発信者向けに新しい表現手段を提供するため紹介価値が高い。",
+      "usecase": "カスタマー事例や商品紹介を“ユーザー視点”で演じる短いプロモ動画を作ったり、面接練習やプレゼン練習のロールプレイ動画を簡単に作成して自己改善に使える。",
+      "angle": "“あなたが主役”で作る説得力ある短編動画の作り方（Prelulu活用）",
+      "products": [
+        "Prelulu",
+        "Synthesia",
+        "Reallusion iClone"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Prelulu",
+      "url": "https://www.producthunt.com/products/prelulu",
+      "summary": "Be the main character: chat & video roleplay any story Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  },
+  {
+    "relevance": 7,
+    "usecase": 8,
+    "novelty": 6,
+    "monetizable": 6,
+    "buzz": 8.0,
+    "topic": "Textract Japanese",
+    "total": 71,
+    "detail": {
+      "id": 2,
+      "summary": "AWSのTextractが日本語OCRに対応し東京リージョンで利用可能になったという解説記事。様々な画像・書類での読み取り精度や使い勝手を試したレポートが含まれる。",
+      "why": "日本語OCRが公式に使えるようになったことで、非エンジニアでも導入検討しやすく業務効率化に直結するため、実務向けの具体例と設定手順を示す価値がある。",
+      "usecase": "紙の請求書や契約書、会議資料をスキャンしてテキスト化し、検索やテンプレ入力に回すことで経理や事務作業の工数削減につながる。名刺読み取りや議事録の素材化にも使える。",
+      "angle": "日本語OCR時代到来：Amazon Textractで紙業務をデジタル化する実践法",
+      "products": [
+        "Amazon Textract",
+        "Google Cloud Vision OCR",
+        "Azure Cognitive Services OCR"
+      ]
+    },
+    "item": {
+      "source": "Qiita",
+      "title": "[AWS]日本語OCRがついにきちゃー！ ~Textractにいろいろ読ませてみた~",
+      "url": "https://qiita.com/kikuziro/items/9aff0fefe89cfa13192e?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
+      "summary": "📣 はじめに 2026年11月2日にAWSのAmazon Textract（OCRしてくれるやつ）が日本語に対応して東京リージョンでも使えるようになりました。以下記事がとてもわかりやすいので是非ご参照ください。 この記事ではいろんな画像をTextractに読ま...",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  }
+]
