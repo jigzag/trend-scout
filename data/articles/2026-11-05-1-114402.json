@@ -1,0 +1,94 @@
+{
+  "title": "OpusClip 4.0とは？長い動画から字幕付きの短尺動画を自動作成",
+  "slug": "opusclip-4-short-video-clips",
+  "excerpt": "OpusClip 4.0は、長い動画から見どころを選び、字幕付きの短尺動画を作れるツールです。SNS向けの画面調整や投稿機能、無料プランの制限と有料プランの料金を紹介します。",
+  "category": "動画生成",
+  "tool_type": "web",
+  "official_url": "",
+  "download_url": "https://play.google.com/store/apps/details?id=pro.opus.clip&hl=en_US",
+  "chars": 1788,
+  "image_prompts": {
+    "featured": "An illustration of a long video strip transforming into several short vertical video cards. No text, logos, real app screens, or real people.",
+    "body": "An illustration of a person preparing short social media videos from a longer recording, with abstract subtitle lines and vertical video frames. No text, logos, real app screens, or real people."
+  },
+  "similarity": {
+    "ratio": 0.011,
+    "longest": 20,
+    "ok": true
+  },
+  "warnings": [
+    "分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "Virality Score",
+      "指標",
+      "冒頭の引き",
+      "被写体",
+      "比率",
+      "端末",
+      "クレジット",
+      "1080p",
+      "解像度",
+      "SNSアカウント",
+      "TrustRadius",
+      "透かし",
+      "書き出せなくなります"
+    ],
+    "sentences": [
+      "それぞれの動画には、Virality Score（広まりやすさの指標）が付きます。",
+      "冒頭の引きや話の流れ、流行を基にした点数で、投稿する動画を選ぶ目安になります。",
+      "対応する比率は、縦型の9:16、正方形の1:1、4:5、横型の16:9です。",
+      "無料プランはクレジットカードなしで始められ、毎月60クレジットが付きます。",
+      "クレジットはサービスを利用するための持ち分です。",
+      "無料でも最大1080pの解像度で動画を作れます。",
+      "一方、TrustRadiusではStarterが月$9、Proが月$19と記載されており、公式ブログの料金とは異なります。",
+      "公式ブログによると、無料プランで作った動画には透かしが付き、編集はできません。",
+      "また、作った動画は3日後に書き出せなくなります。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "OpusClip - AI Video Clipping - Apps on Google Play",
+      "url": "https://play.google.com/store/apps/details?id=pro.opus.clip&hl=en_US"
+    },
+    {
+      "title": "9 Best AI Video Tools for Content Creators in 2026 - OpusClip Blog",
+      "url": "https://www.opus.pro/blog/best-ai-video-tools-for-content-creators"
+    },
+    {
+      "title": "OpusClip | Clever AI Tools",
+      "url": "https://cleverkitools.com/en/ai-tools/opusclip"
+    },
+    {
+      "title": "OpusClip Pricing 2026",
+      "url": "https://www.trustradius.com/products/opusclip/pricing"
+    }
+  ],
+  "candidate": {
+    "title": "OpusClip 4.0",
+    "url": "https://www.producthunt.com/products/opusclip"
+  },
+  "page_shot": "https://play.google.com/store/apps/details?id=pro.opus.clip&hl=en_US",
+  "affiliates": [
+    "ココナラ"
+  ],
+  "images": {
+    "featured": 80,
+    "media": [
+      80,
+      81,
+      82
+    ]
+  },
+  "held": false,
+  "wordpress": {
+    "id": 83,
+    "link": "https://nocode-ai.net/opusclip-4-short-video-clips/",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=83&action=edit"
+  },
+  "published": true,
+  "model": "gpt-6.1-terra",
+  "created_at": "2026-11-05T11:44:04+09:00"
+}
