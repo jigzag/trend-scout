@@ -291,6 +291,10 @@ def test_roundup(tmp=Path(tempfile.gettempdir()) / "ts_roundup"):
             "2026-10-31": [cand(1, 90), cand(7, 40)]}                       # 同じURLの再掲
     for d, cs in days.items():
         (folder / f"{d}.json").write_text(json.dumps(cs, ensure_ascii=False), encoding="utf-8")
+    arts = tmp / "data" / "articles"   # Tool4 はこのサイトで紹介記事を公開済み
+    arts.mkdir(parents=True)
+    (arts / "a.json").write_text(json.dumps({"published": True, "candidate": {"url": "https://news.example/4"},
+                                             "wordpress": {"link": "https://nocode-ai.net/tool4/"}}), encoding="utf-8")
     today = datetime(2026, 10, 31).date()
     assert [c["topic"] for c in roundup.pick(folder, today, 7, 10)] == ["tool1", "tool3", "tool4", "tool6", "tool2", "tool7"]
 
@@ -325,7 +329,7 @@ def test_roundup(tmp=Path(tempfile.gettempdir()) / "ts_roundup"):
             return json.dumps({"title": "今週の新着AIツール3選", "slug": "weekly-ai-tools", "excerpt": "説明",
                                "intro": "<p>今週は3つ。</p>", "easy": ["Tool1：何かを作る道具"],
                                "items": [{"n": i, "heading": f"{nm}：できること", "body": f"<p>{nm}の説明です。</p>",
-                                          "who": "初めての人", "price": "無料"} for i, nm in enumerate(names, 1)],
+                                          "who": "こんな人に向いています：初めての人", "price": "無料"} for i, nm in enumerate(names, 1)],
                                "closing": "<p>気になるものから見てください。</p>", "image_featured": "desk"}, ensure_ascii=False)
         if "AIにくわしくない読者です" in prompt:
             return json.dumps({"words": [], "sentences": []})
@@ -346,6 +350,8 @@ def test_roundup(tmp=Path(tempfile.gettempdir()) / "ts_roundup"):
     # 各ツールの節の終わりに、そのツールの公式サイト
     for n, nxt in ((1, "2. Tool4"), (4, "3. Tool2"), (2, "<h2>まとめ")):
         assert c.index(f"Tool{n}の説明です") < c.index(f"https://tool{n}.example/") < c.index(nxt)
+    assert c.index("Tool4の説明です") < c.index("https://nocode-ai.net/tool4/") < c.index("3. Tool2")
+    assert c.count("くわしい紹介記事") == 1 and "向いている人：</strong>初めての人" in c and "こんな人に" not in c
     assert "easy-box" in c and "<strong>料金：</strong>無料" in c and "参考にした情報" in c
     assert "公開しました" in sent["text"] and "・Tool2" in sent["text"] and "https://nocode-ai.net/weekly/" in sent["text"]
     assert (tmp / "data" / "roundups" / "2026-10-31.json").exists()

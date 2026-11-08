@@ -18,6 +18,8 @@ import traceback
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
+from urllib.parse import urlparse
+
 import yaml
 
 import affiliate
@@ -69,7 +71,7 @@ WRITE_PROMPT = """あなたはブログライターです。「今週の新着AI
 - 1つのツールにつき本文 250〜400 字。「何ができるか → どんな場面で何がうれしいか → 料金・日本語・使える環境」の順に、2〜3段落の文章で書く
 - body は HTML の p タグだけ（strong は使ってよい）。見出し・リンク・箇条書きは書かない（あとで自動で付ける）
 - heading はツール名と、ひとことで何ができるか（例「Gamma：文章を貼るだけでスライドができる」。30字くらいまで）
-- who は「こんな人に向いています」を1文で。price は料金を短く（事実メモに料金がなければ空文字）
+- who は向いている人を「〜したい人。」の形で1文（「こんな人に向いています」「向いている人：」は書かない。あとで自動で付ける）。price は料金を短く（事実メモに料金がなければ空文字）
 - intro は記事の書き出し（p タグで2〜3文。今週どんな傾向のツールが出たか）。見出しは付けない
 - easy は「ざっくり言うと」の箇条書き。ツールごとに1行（「ツール名：中学生でも分かる言葉で、何をしてくれるか」）
 - closing は「まとめ」の本文（p タグで2〜3文。どんな人がどれから見るとよいか）
@@ -118,21 +120,33 @@ def item_facts(cand: dict, opt: dict, lc: dict) -> dict | None:
         links += research.page_links(item["url"])
     except Exception as e:  # noqa: BLE001
         print(f"[roundup] リンクを取れなかった: {e}")
+    text = text[:opt.get("max_chars", 6000)]
+    price = None
+    if opt.get("pricing_search", True):   # 11-08 Product Hunt だけでは料金も公式サイトも分からなかった
+        price = research.find_pricing(cand.get("topic") or item["title"], opt, {research._domain(item["url"])})
+    if price:
+        u = urlparse(price["url"])
+        links.append({"url": f"{u.scheme}://{u.netloc}/", "text": "料金ページのサイトのトップ"})
+        text += "\n\n# 料金ページ\n" + price["text"][:3000]
     listed = "\n".join(f"{i}. {c['url']}（{c['text']}）" for i, c in enumerate(links, 1))
     topic = f"{item['title']}（{cand.get('detail', {}).get('summary', '')}）"
-    text = text[:opt.get("max_chars", 6000)]
     f = extract_json(call_llm(ITEM_PROMPT.format(topic=topic, text=text, links=listed), lc, 6000, ITEM_SCHEMA, "item"))
     if not f.get("reader_fit", True) or not f.get("is_tool", True) or not f.get("facts"):
         print(f"[roundup] 外した（個人向けでない・ツールの話でない）: {item['title']}")
         return None
     k = f.get("official_link", 0)
     official = links[k - 1]["url"] if isinstance(k, int) and 2 <= k <= len(links) else ""  # 1=ニュース記事そのもの
+    if not official and price:
+        official = links[-1]["url"]
     name = (f.get("name") or "").strip()
     product = (f.get("product") or "").strip()
     if not name or len(name) > 30:   # 文章が入ってしまったら製品名にする
         name = product or item["title"][:30]
     return {"name": name, "product": product or name, "facts": f["facts"], "official_url": official,
             "source": {"title": item["title"], "url": item["url"], "text": text}}
+
+
+WHO_HEAD = re.compile(r"^\s*(こんな人に向いています|向いている人)\s*[：:]\s*")   # 11-08「向いている人：こんな人に向いています：」と重なった
 
 
 def build_html(out: dict, n_items: int) -> str:
@@ -142,22 +156,40 @@ def build_html(out: dict, n_items: int) -> str:
     items = sorted(out.get("items") or [], key=lambda x: x.get("n", 0))[:n_items]
     for i, it in enumerate(items, 1):
         meta = "".join(f"<li><strong>{k}：</strong>{html.escape(v)}</li>"
-                       for k, v in (("向いている人", it.get("who", "")), ("料金", it.get("price", ""))) if v)
+                       for k, v in (("向いている人", WHO_HEAD.sub("", it.get("who", ""))), ("料金", it.get("price", ""))) if v)
         parts.append(f"<h2>{i}. {html.escape(it.get('heading', ''))}</h2>\n{it.get('body', '')}"
                      + (f"\n<ul>{meta}</ul>" if meta else ""))
     parts.append(f"<h2>まとめ</h2>\n{out.get('closing', '')}")
     return "\n".join(p for p in parts if p)
 
 
-def add_links(body: str, urls: list[str]) -> str:
-    """i 番目のツールの節の終わり（次の h2 の手前）に公式サイトのリンクを入れる。
+def own_articles(folder: Path) -> dict[str, str]:
+    """このサイトで公開済みの紹介記事 {候補の元記事URL: 記事のURL}。まとめから「くわしい記事」へつなぐ。"""
+    found = {}
+    for p in sorted(folder.glob("*.json")):
+        try:
+            m = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+        link = (m.get("wordpress") or {}).get("link")
+        url = (m.get("candidate") or {}).get("url")
+        if m.get("published") and link and url:
+            found[url] = link
+    return found
+
+
+def add_links(body: str, urls: list[str], own: list[str] | None = None) -> str:
+    """i 番目のツールの節の終わり（次の h2 の手前）に公式サイトのリンクと、このサイトの紹介記事を入れる。
     書き直しで見出しの数が変わっていたら、まとめの手前に一覧で入れる。"""
+    own = own or [""] * len(urls)
     heads = [m.start() for m in re.finditer(r"<h2[\s>]", body)]
     if len(heads) == len(urls) + 1:
         for i in reversed(range(len(urls))):
-            if urls[i]:
+            ps = (writer.link_p("公式サイト", urls[i]) if urls[i] else "") \
+                + (writer.link_p("くわしい紹介記事", own[i]) if own[i] else "")
+            if ps:
                 at = heads[i + 1]
-                body = body[:at] + writer.link_p("公式サイト", urls[i]) + "\n" + body[at:]
+                body = body[:at] + ps + "\n" + body[at:]
         return body
     ps = "".join(writer.link_p(f"{i}の公式サイト", u) for i, u in enumerate(urls, 1) if u)
     j = body.rfind("<h2")
@@ -199,6 +231,7 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml", today: 
     today = today or datetime.now(JST).date()
     picked = pick(BASE / "data" / "candidates", today, ro.get("days", 7), ro.get("max_items", 6) + 5)
     tools, products = [], set()
+    own = own_articles(BASE / "data" / "articles")
     for c in picked:
         if len(tools) >= ro.get("max_items", 6):
             break
@@ -211,6 +244,7 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml", today: 
             print(f"[roundup] 同じ製品なので外した: {f['name']}")
         elif f:
             products.add(topic_key(f["product"]))
+            f["own"] = own.get(c["item"]["url"], "")
             tools.append(f)
     print(f"[roundup] 候補 {len(picked)}件 → 紹介 {len(tools)}件")
     if len(tools) < ro.get("min_items", 3):
@@ -228,7 +262,7 @@ def run(dry_run: bool = False, config_path: Path = BASE / "config.yaml", today: 
     sources = [t["source"] for t in tools]
     body, sim = writer.fix_similarity(body, sources, opt, lc)
     body = writer.tidy(body)
-    body = add_links(body, [t["official_url"] for t in tools])
+    body = add_links(body, [t["official_url"] for t in tools], [t.get("own", "") for t in tools])
     problems = check(body)
     if not sim["ok"]:
         problems.append(f"元記事との類似が高い（一致率{sim['ratio']:.1%}、最長{sim['longest']}字）")
