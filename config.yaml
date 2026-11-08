@@ -4,8 +4,10 @@
 genre: |
   【読者】コードを書かない個人（会社員・個人事業主・副業の人）。動画・資料・SNS発信・文章作りなどの
   制作や事務作業を、AIで楽にしたい。プログラミングの知識も、会社の業務システムも前提にしない。
-  【方針】海外で出たばかりのAIツール・新機能を、日本語の情報がまだ少ないうちに紹介し、
-  「日本の読者ならどう使えるか」を具体的に示す（2026-10-26〜）。
+  【方針】いま話題になっているAI（Google・OpenAI・Anthropic・Meta・Microsoft・Apple・Adobe・Canva などの大手の発表や、
+  SNS・メディアで盛り上がっている新しいAI）を、「ピンとこない」人向けに噛み砕いて紹介する。
+  何がすごいのか・前と何が変わったのか・日本でいつ使えるのか・この先どうなりそうかを、運営者の言葉で語る
+  （2026-11-08 KJ がお手本に選んだ note「AI FREAK」の Genie 4 の記事の形。それまでの「無名の海外ツールの紹介」から変更）。
   【扱う】ブラウザやアプリで使える、海外の新しいAIツール・SaaS・既存ツールの新機能。
   例: AI動画生成(Runway, Kling, Hailuo/MiniMax, Sora, Veo)、AI音声・ナレーション(ElevenLabs等)、
   スライド・資料作成(Gamma等)、ChatGPT/Claude/Geminiの新機能、ノーコード自動化(Zapier, Make)、
@@ -26,11 +28,11 @@ genre: |
 
 # 採点の重み（合計1.0）
 weights:
-  relevance: 0.30    # ジャンルとの関連度
-  usecase: 0.25      # 非エンジニアの仕事での使い道を、具体的に想像しやすいか
-  novelty: 0.20      # 日本語の情報がまだ少ないか（海外で出たばかり＝高い）
-  monetizable: 0.10  # 紹介できる有料ツール・商品・アフィリエイト案件がありそうか
-  buzz: 0.15         # 話題度（各ソース内の順位から自動計算。AIは使わない）
+  relevance: 0.25    # ジャンルとの関連度
+  usecase: 0.15      # 非エンジニアの仕事での使い道を、具体的に想像しやすいか
+  novelty: 0.35      # 注目度：大手の発表・世間で盛り上がっている話題か（2026-11-08〜。前は「日本語の情報が少ないか」）
+  monetizable: 0.05  # 紹介できる有料ツール・商品・アフィリエイト案件がありそうか
+  buzz: 0.20         # 話題度（各ソース内の順位から自動計算。AIは使わない）
 
 min_relevance: 5   # 関連度がこれ未満は候補から除外（0-10）
 top_n: 3           # 毎朝通知する件数
@@ -43,9 +45,13 @@ sources:
   qiita:       { enabled: true, limit: 20 }   # Qiita 人気記事
   hackernews:  { enabled: false, limit: 30 }  # Hacker News フロントページ（2026-10-25 停止: 3週間で採用1件、英語の開発者向けが中心）
   # 海外の新しいAIツール・ニュース（2026-10-26〜 海外中心の方針で主力）
-  producthunt: { enabled: true, limit: 20, label: "ProductHunt", url: "https://www.producthunt.com/feed?category=artificial-intelligence" }
+  producthunt: { enabled: true, limit: 10, label: "ProductHunt", url: "https://www.producthunt.com/feed?category=artificial-intelligence" }
   techcrunch:  { enabled: true, limit: 20, label: "TechCrunch", url: "https://techcrunch.com/category/artificial-intelligence/feed/" }
   theverge:    { enabled: true, limit: 10, label: "The Verge", url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml" }
+  # 大手の公式発表（2026-11-08〜 話題の大物を優先する方針で追加）
+  google_ai:   { enabled: true, limit: 10, label: "Google", url: "https://blog.google/technology/ai/rss/" }
+  deepmind:    { enabled: true, limit: 10, label: "Google DeepMind", url: "https://deepmind.google/blog/rss.xml" }
+  openai:      { enabled: true, limit: 10, label: "OpenAI", url: "https://openai.com/news/rss.xml" }
   # 非エンジニア向けのAIニュース（任意のRSS/Atomを url で追加できる）
   itmedia_ai:  { enabled: true, limit: 20, label: "ITmedia AI+", url: "https://rss.itmedia.co.jp/rss/2.0/aiplus.xml" }
 
@@ -72,7 +78,7 @@ sale_watch:
 
 # ===== 記事生成（Ver.1: python article.py --n 候補番号） =====
 article:
-  max_sources: 3       # 参考記事の最大数（候補の元記事 + 別サイトの関連記事）。料金が載っていなければ、料金のページを1件足す
+  max_sources: 4       # 参考記事の最大数（候補の元記事 + 別サイトの関連記事）。これとは別に料金のページを1件足す。11-08 前のバージョンからの流れや反応も書くので3→4
   pricing_search: true # 参考記事に料金がないとき、「ツール名 pricing plans」で料金のページを探す（Tavily 1回分）
   max_chars: 6000      # 参考記事1件あたり、AIに渡す最大文字数
   max_results: 8       # Tavily 検索で取る件数（この中から別サイトのものを選ぶ）
@@ -83,8 +89,8 @@ article:
                     instagram.com, tiktok.com, togetter.com, posfie.com]
   exclude_title_words: [新着エントリー, 人気エントリー, ニュースまとめ, まとめサイト, ランキング]
   auto_publish: true   # 公開まで自動（2026-10-31 KJ）。ボツ推奨・似すぎ・短すぎなど内容の警告があれば下書きで止める
-  min_chars: 2000      # 本文の目安（下限）。11-03 3000字だと発表文だけの話題で水増しになった
-  max_chars_body: 3000 # 本文の目安（上限）
+  min_chars: 2500      # 本文の目安（下限）。11-08 お手本の形（流れ・たとえ・反応・意見）にしたので 2000→2500
+  max_chars_body: 4000 # 本文の目安（上限）
   # 類似度チェック（参考記事と12文字以上の一致が続く長さ・割合）
   max_run: 40          # 連続一致がこの文字数以上の段落は書き直す
   max_ratio: 0.08      # 記事全体の一致率の上限

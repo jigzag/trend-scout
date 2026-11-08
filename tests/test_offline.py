@@ -69,6 +69,8 @@ def fake_get(url, **kw):
     if "techcrunch" in url: return Resp(PH.replace("VoiceForge - AI voice cloning API", "Startup raises $10M").replace("producthunt.com/products/voiceforge", "techcrunch.com/x"))
     if "theverge" in url: return Resp(PH.replace("VoiceForge - AI voice cloning API", "Opinion on AI").replace("producthunt.com/products/voiceforge", "theverge.com/x"))
     if "itmedia" in url: return Resp(PH.replace("VoiceForge - AI voice cloning API", "ChatGPTに新機能").replace("producthunt.com/products/voiceforge", "itmedia.co.jp/aiplus/x.html"))
+    if "blog.google" in url or "deepmind.google" in url or "openai.com" in url:   # 大手の公式ブログ
+        return Resp(PH.replace("VoiceForge - AI voice cloning API", "New research model").replace("producthunt.com/products/voiceforge", url.split("/")[2] + "/x"))
     raise AssertionError(url)
 
 def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
@@ -133,7 +135,7 @@ def test_full_run(tmp_path=Path(tempfile.gettempdir()) / "ts_run"):
     assert not ("TTS beats" in text and "VoiceForge" in text)  # 同じ話題は1件だけ
     assert "utm_source" not in text
     assert "取得失敗" not in text
-    assert "用途8 新規7" in text and "使い方の例: 手順" in text
+    assert "用途8 注目7" in text and "使い方の例: 手順" in text
     assert "【セール・キャンペーン】" in text and "プライム感謝祭" in text and "30%OFF" in text
     assert "食品" not in text
     assert len(text) < 5000

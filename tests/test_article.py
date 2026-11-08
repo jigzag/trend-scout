@@ -151,8 +151,10 @@ def test_check_rules():
     w = writer.check_rules("<p>実際に使ってみると便利でした。</p><h3>ステップ1：登録</h3><h2>Aさんの場合</h2>", "")
     assert any("体験" in x for x in w) and any("ステップ" in x for x in w) and any("架空の人物" in x for x in w)
     assert any("ざっくり" in x for x in writer.check_rules("<p>あ</p>" * 3000, ""))
-    ok = writer.check_rules(writer.EASY_DIV + f'</div><h2>何ができるか</h2><div class="{writer.NOTE_CLASS}"><p>使ってみた感想</p></div>' + "<p>あ</p>" * 3000, "メモ")
-    assert ok == []
+    ok = writer.check_rules(writer.EASY_DIV + f'</div><h2>何ができるか</h2><div class="{writer.NOTE_CLASS}"><p>使ってみた感想</p></div>'
+                             '<h2>ここからは自分の意見</h2><p>触ってみたい人は登録しておくとよさそうです。</p>' + "<p>あ</p>" * 3000, "メモ")
+    assert ok == []   # 「触ってみたい」は体験ではない
+    assert any("意見の節がない" in x for x in writer.check_rules(writer.EASY_DIV + "</div><h2>まとめ</h2>" + "<p>あ</p>" * 3000, ""))
     hedgy = "<h2>料金</h2>" + "<p>上限は明らかにされていません。</p><p>詳しくは公式サイトでご確認ください。</p>" + "<p>あ</p>" * 3000
     assert any("2回" in x for x in writer.check_rules(hedgy, ""))
     calls = []

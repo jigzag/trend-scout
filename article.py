@@ -103,7 +103,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
 
 
 # 自動公開を止めない警告（画像などの付け足しの失敗だけ。内容の問題は下書きで止める）
-SOFT_WARNINGS = ("画像（", "公式サイトの画面を", "カテゴリを設定", "分かりにくい言葉")
+SOFT_WARNINGS = ("画像（", "公式サイトの画面を", "カテゴリを設定", "分かりにくい言葉", "意見の節がない")
 
 
 def blocking(warnings: list[str]) -> list[str]:

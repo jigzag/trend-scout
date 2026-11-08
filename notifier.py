@@ -29,7 +29,7 @@ def build_message(today: date, top: list[dict], stats: dict, sales: list[dict] |
             src += " / " + "・".join(it.extra["also_on"])
         lines += [
             f"■{n}. {it.title}",
-            f"[{src}] スコア{r['total']}（関連{r['relevance']} 用途{r.get('usecase', '-')} 新規{r.get('novelty', '-')} "
+            f"[{src}] スコア{r['total']}（関連{r['relevance']} 用途{r.get('usecase', '-')} 注目{r.get('novelty', '-')} "
             f"収益{r['monetizable']} 話題{r.get('buzz', '-')}）",
         ]
         if d.get("summary"):
