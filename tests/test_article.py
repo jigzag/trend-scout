@@ -1,7 +1,7 @@
 """記事生成（Ver.1/2）のオフラインテスト。Tavily・LLM・WordPress・LINE はモック。
 実行: python tests/test_article.py
 """
-import base64, json, os, shutil, sys, tempfile
+import base64, json, os, re, shutil, sys, tempfile
 from pathlib import Path
 from unittest import mock
 
@@ -77,10 +77,13 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
         assert "参考1:" in prompt and "参考2:" in prompt and "参考3:" not in prompt  # 同ドメイン・短文は除外
         links = prompt.split("# リンク候補", 1)[1].split("# 出力")[0]
         assert "twitter.com" not in links and "itmedia.co.jp/menu" not in links   # SNS・同じサイト内は候補にしない
-        ok = "3. https://tryon.example/（公式サイト）" in links and "4. https://tryon.example/app" in links
+        assert "https://other.example/（参考記事「試着機能の解説」のサイトのトップ）" in links   # 参考記事のサイトのトップも候補
+        num = {u: int(n) for n, u in re.findall(r"^(\d+)\. (\S+?)（", links, re.M)}
+        ok = "https://tryon.example/" in num and "https://tryon.example/app" in num
         return json.dumps({"summary": "試着機能", "facts": [{"fact": "米国Plusから提供", "src": 1}],
                            "compare": [], "cautions": [], "unknowns": ["日本での提供時期"],
-                           "official_link": 3 if ok else 0, "download_link": 4 if ok else 99, **fake_llm.facts_extra},
+                           "official_link": num["https://tryon.example/"] if ok else 0,
+                           "download_link": num["https://tryon.example/app"] if ok else 99, **fake_llm.facts_extra},
                           ensure_ascii=False)
     if "記事の構成を作って" in prompt:
         schema = a[0] if a else kw.get("schema")
@@ -141,7 +144,7 @@ def test_tidy():
     with mock.patch.object(research.requests, "get", boom):
         c = research.link_candidates("https://news.example/1", [{"url": "https://news.example/1", "title": "n"},
                                                                  {"url": "https://tool.example/pricing", "title": "p", "pricing": True}])
-    assert [x["url"] for x in c] == ["https://news.example/1", "https://tool.example/pricing", "https://tool.example/"]
+    assert [x["url"] for x in c] == ["https://news.example/1", "https://tool.example/pricing", "https://news.example/", "https://tool.example/"]
 
 
 def test_check_rules():

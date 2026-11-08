@@ -72,10 +72,10 @@ def link_candidates(main_url: str, sources: list[dict]) -> list[dict]:
     """公式サイト・ダウンロードページの候補。参考記事そのもの＋元記事の中のリンク。
     AI には番号で選ばせるので、ここにないURLが記事に出ることはない。"""
     cands = [{"url": s["url"], "text": s.get("title", "")} for s in sources]
-    for s in sources:   # 料金のページは公式サイトのことが多いので、そのサイトのトップも候補に入れる
-        if s.get("pricing"):
-            p = urlsplit(s["url"])
-            cands.append({"url": f"{p.scheme}://{p.netloc}/", "text": "料金ページのサイトのトップ"})
+    for s in sources:   # 参考記事が公式のブログ・料金ページのことがあるので、そのサイトのトップも候補に入れる
+        p = urlsplit(s["url"])   # 11-05 OpusClip：opus.pro/blog を参考にしたのに公式サイトのリンクが付かなかった
+        cands.append({"url": f"{p.scheme}://{p.netloc}/",
+                      "text": "料金ページのサイトのトップ" if s.get("pricing") else f"参考記事「{s.get('title', '')}」のサイトのトップ"})
     try:
         cands += page_links(main_url)
     except Exception as e:  # noqa: BLE001  リンクが取れなくても記事は書ける
