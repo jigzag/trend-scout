@@ -1,0 +1,67 @@
+{
+  "title": "今週の新着AIツール4選：動画編集からアイデア整理まで",
+  "slug": "weekly-ai-tools-20261108",
+  "excerpt": "今週は、動画の編集や投稿を助けるRiverside Agents、考えを図にまとめるXmind 2027など4つを紹介。ネットにつながなくても使えるAIや、キャラクターと物語を作れるツールも取り上げます。",
+  "tools": [
+    "Riverside Agents",
+    "Xmind 2027",
+    "CuriousLM",
+    "Prelulu"
+  ],
+  "warnings": [],
+  "similarity": {
+    "ratio": 0.009,
+    "longest": 15,
+    "ok": true
+  },
+  "clarity": {
+    "words": [
+      "端末",
+      "プラン",
+      "利用枠",
+      "暗号化",
+      "出典",
+      "Android",
+      "メモリー",
+      "GB",
+      "チャット",
+      "無料オプション",
+      "クレジット"
+    ],
+    "sentences": [
+      "14日間の無料トライアルがあり、対象のAI機能は利用枠を消費します。",
+      "AIは内容に合う構造を選び、比較表に整理することもできます。",
+      "無料で利用できる選択肢があります。",
+      "登録は不要で、会話は暗号化して端末内に保存されます。",
+      "音声機能や日記も備え、端末内のWikipediaを使った回答には出典が示されます。",
+      "開発者は、メモリーが8 GB以上の端末での利用を勧めています。",
+      "無料オプションがあり、2000の無料クレジットが提供されます。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Riverside Agents",
+      "url": "https://www.producthunt.com/products/riverside-fm"
+    },
+    {
+      "title": "Xmind 2027",
+      "url": "https://www.producthunt.com/products/xmind"
+    },
+    {
+      "title": "CuriousLM",
+      "url": "https://www.producthunt.com/products/curiouslm"
+    },
+    {
+      "title": "Prelulu",
+      "url": "https://www.producthunt.com/products/prelulu"
+    }
+  ],
+  "affiliates": [],
+  "wordpress": {
+    "id": 85,
+    "link": "https://nocode-ai.net/weekly-ai-tools-20261108/",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=85&action=edit"
+  },
+  "published": true,
+  "created_at": "2026-11-08T11:08:08+09:00"
+}
