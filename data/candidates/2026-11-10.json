@@ -1,0 +1,103 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 8,
+    "monetizable": 8,
+    "buzz": 10.0,
+    "topic": "ClipsPal（AI動画編集）",
+    "total": 88,
+    "detail": {
+      "id": 0,
+      "summary": "ClipsPalは、会話型のトーキングヘッド動画（画面に向かって話す動画）を自動でカット・編集してくれるAIビデオエディタ。話の流れを解析して不要な間や繰り返しを除き、短尺クリップやSNS向けフォーマットに書き出せる。",
+      "why": "コードを書かない個人が、面倒な動画編集を最小限の操作で短時間に片付けられる点が実用的で読者の関心を引く。",
+      "usecase": "社内向け説明動画やYouTubeのトーク動画を撮っておき、編集作業を外注せずに短時間で複数の短尺クリップや字幕付き版を作る。営業や教育用の短い教材を量産するときにも便利。",
+      "angle": "日常の“話すだけ”を即コンテンツ化するAI編集の衝撃",
+      "products": [
+        "ClipsPal",
+        "Descript",
+        "CapCut",
+        "Runway",
+        "Adobe Premiere"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "ClipsPal",
+      "url": "https://www.producthunt.com/products/clipspal",
+      "summary": "AI video editor that edits your talking-head videos Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 9,
+    "monetizable": 8,
+    "buzz": 6.0,
+    "topic": "Genie 4（世界シミュレーション）",
+    "total": 84,
+    "detail": {
+      "id": 1,
+      "summary": "Genie 4はGoogle DeepMindが提案する新世代の“世界モデル”で、より現実感の高いリアルタイムシミュレーションを可能にする技術。物理挙動や因果関係を学習したモデルで、対話型エージェントや仮想環境のリアリズムを飛躍的に高める。",
+      "why": "プログラミング不要の読者でも、将来の生成AIが“ただの返答”から“現実に近い推論やシミュレーション”を提供する時代の入口を理解でき、仕事や生活の変化を語れるため価値がある。",
+      "usecase": "企画段階で“実際に起きそうな結果”を短時間でシミュレーションして意思決定に使う（イベントレイアウトや店頭動線の予測、動画演出のリアリティチェックなど）。また対話ボットがより現実的な助言を出すようになり、顧客対応や学習サポートの質が上がる。",
+      "angle": "言葉だけじゃないAIへ──Genie 4がもたらす“現実のシミュレーション”革命",
+      "products": [
+        "Google Gemini",
+        "DeepMind Genie",
+        "NVIDIA Omniverse",
+        "Runway"
+      ]
+    },
+    "item": {
+      "source": "Google DeepMind",
+      "title": "Genie 4: A new generation of world simulation",
+      "url": "https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/",
+      "summary": "Genie 4: our new world model unlocking unprecedented realism in real-time simulation.",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 6.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 8,
+    "monetizable": 6,
+    "buzz": 8.0,
+    "topic": "Watchflows（Mac自動化+AI）",
+    "total": 83,
+    "detail": {
+      "id": 2,
+      "summary": "WatchflowsはMac向けのビジュアル自動化ツールで、画面操作を記録・組み合わせ、AIを組み込んだワークフローを作れる。ノーコードで日常作業の自動化を視覚的に構築できるのが特徴。",
+      "why": "PC作業を効率化したい非エンジニアにとって、ショートカットや繰り返し業務を“見たまま”自動化できる点がすぐ役立つ話題だから。",
+      "usecase": "毎朝の定型レポート作成で複数アプリを開いてコピペする手順をワンクリックにしたり、動画や画像の簡単なバッチ処理、SNS用の投稿準備を自動化して時間を節約する。",
+      "angle": "画面を見せるだけで自動化完成――Mac作業が一発で片付く時代の到来",
+      "products": [
+        "Watchflows",
+        "BetterTouchTool",
+        "Alfred",
+        "Keyboard Maestro",
+        "Raycast"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Watchflows",
+      "url": "https://www.producthunt.com/products/watchflows",
+      "summary": "Visual automation for your Mac, with AI built in Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  }
+]
