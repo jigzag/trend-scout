@@ -1,0 +1,103 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 8,
+    "novelty": 7,
+    "monetizable": 5,
+    "buzz": 10.0,
+    "topic": "Shizuku-Duplex",
+    "total": 81,
+    "detail": {
+      "id": 0,
+      "summary": "Shizuku-Duplexは日本語のFull‑Duplex会話を目指した音声対話モデル。話し手と同時に応答を返す“自然な間合い”を重視しており、従来のラウンドトリップ型ではないリアルタイム会話体験を実現している。",
+      "why": "コードを書かない個人が、会話型のAIを“話して使う”時代の実用性や体験の差を説明すると読者の関心を引きやすいから。",
+      "usecase": "顧客対応の電話代行や、配信・ポッドキャストでの相互トーク、オンライン面談の同時翻訳的補助など、操作や設定が少なく“話すだけ”で便利になる場面で使える。社内ミーティングの会話補助（発話の要約や次アクション提示）にも応用可能。",
+      "angle": "日本語で“会話するだけ”が変わる—Shizukuのリアルタイム会話が仕事をラクにする理由",
+      "products": [
+        "Shizuku-Duplex",
+        "ElevenLabs",
+        "Voicemod",
+        "Zoom",
+        "OBS"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "Shizuku-Duplex：自然な間合いで話す日本語 Full-Duplex モデル",
+      "url": "https://shizuku.ai/blog/1/",
+      "summary": "",
+      "signal": 115,
+      "signal_label": "115users",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 7,
+    "novelty": 8,
+    "monetizable": 7,
+    "buzz": 8.0,
+    "topic": "Memorias（AI自伝/書籍化）",
+    "total": 78,
+    "detail": {
+      "id": 1,
+      "summary": "Memoriasは個人の物語やエピソードをAIが編集・構成して“本”や長めのテクストにまとめるAIバイオグラファー。会話やメモ、写真などからストーリーラインを作り、文章化してくれるサービス。",
+      "why": "文章を書くのが苦手な個人が、自分史や発信コンテンツを手軽に“語れる形”にできる点が読者に刺さるから。",
+      "usecase": "副業での自己ブランディング用に経歴や体験談をまとめて電子書籍にしたり、顧客の声やインタビュー記録を取材記事風に整えてSNS用に使うなど、原案をプロっぽく整形する場面で役立つ。",
+      "angle": "あなたの話が“1冊”になる時代：AIが書く個人史の作り方と活用法",
+      "products": [
+        "Memorias",
+        "Canva（電子書籍デザイン）",
+        "Reedsy（編集サポート）",
+        "KDP（Amazon出版）"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Memorias",
+      "url": "https://www.producthunt.com/products/memorias-3",
+      "summary": "An AI biographer that turns your stories into a book Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 8,
+    "novelty": 7,
+    "monetizable": 5,
+    "buzz": 7.0,
+    "topic": "Sage2（ライブ音声→構造化）",
+    "total": 73,
+    "detail": {
+      "id": 2,
+      "summary": "Sage2（Levanto Labs）はライブの会話を構造化データに変換し、即時アクション（タスク化・カレンダー追加・要点抽出）を行えるツール。話し言葉をその場でトリガーにして自動処理する点が特徴。",
+      "why": "会議や打ち合わせで“話しただけで仕事が進む”ワークフローを簡単に作れる点が、ノーコード志向の読者にとって実用的で驚きがあるから。",
+      "usecase": "チームミーティングやクライアントとの打ち合わせ中に出たTODOをその場でタスク化して共有したり、商談の重要事項を自動でCRMやNotionに記録する用途で使える。エバンジェリスト的に個人の生産性を大きく上げる。",
+      "angle": "会議で話すだけで仕事が動く？Sage2が示す“会話→自動化”の現実感",
+      "products": [
+        "Sage2（Levanto Labs）",
+        "Otter.ai",
+        "Fireflies.ai",
+        "Zapier",
+        "Notion"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Sage2 by Levanto Labs",
+      "url": "https://www.producthunt.com/products/sagecraft",
+      "summary": "Turn live talk into structured data and instant actions Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 7.0
+      }
+    }
+  }
+]
