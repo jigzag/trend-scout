@@ -1,0 +1,88 @@
+{
+  "title": "ClipsPal、すごいのは動画を切るだけで終わらないこと",
+  "slug": "clipspal-video-editing-and-repurposing",
+  "excerpt": "話している動画の言い直しや無音を自動でカットし、ショート動画や記事にも展開できるClipsPal。日本語への対応、買い切り価格、利用できるパソコンと日本での提供状況を紹介します。",
+  "category": "動画生成",
+  "tool_type": "app",
+  "official_url": "https://www.clipspal.com/video-editor-for-content-creators",
+  "download_url": "",
+  "chars": 2432,
+  "image_prompts": {
+    "featured": "An illustration of one recorded talking-head video transforming into a short vertical clip and a written article, connected by simple visual shapes. No text, logos, real app interfaces, or real people.",
+    "body": "An illustration of a person at a desk reviewing a talking-head recording on a computer, with visual symbols for trimmed pauses and a short video beside it. No text, logos, real app interfaces, or real people."
+  },
+  "similarity": {
+    "ratio": 0.015,
+    "longest": 39,
+    "ok": true
+  },
+  "warnings": [
+    "分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）",
+    "公式サイトの画面を撮れなかった: Page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.clipspal.com/video-editor-for-content-crea"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "SRT形式",
+      "MP4形式",
+      "Premiere Pro",
+      "DaVinci Resolve",
+      "x64",
+      "Apple Silicon",
+      "Intel",
+      "AMD",
+      "Claude Code",
+      "Codex",
+      "Gemini",
+      "Cursor",
+      "Grok",
+      "Claude Pro",
+      "買い切り"
+    ],
+    "sentences": [
+      "これは動画を切るだけでなく、話した内容をいろいろな形の発信に変えるための道具です。",
+      "ClipsPalは、自動で動画を短くするだけではありません。整えた動画を自分で直し、さらに別の発信へつなげられます。",
+      "Directorという機能には、変更したい内容をふだんの言葉で頼めます。",
+      "書き出しは、字幕付きのMP4形式の動画のほか、SRT形式の字幕データにも対応します。",
+      "Premiere ProやDaVinci Resolveという動画編集ソフトの編集画面に、編集内容を渡すこともできます。",
+      "動画や音声はパソコンの中に保持され、話した内容の文字起こしもパソコン内で行われます。",
+      "外部のAIを使う場合：文字起こししたテキストだけが外部に送られる",
+      "外部のAIには、Claude Code、Codex、OpenCode、Gemini、Cursor、Grokのいずれかを使えます。",
+      "Claude CodeにはClaude ProまたはMax、CodexにはChatGPTのプラン、GrokにはSuperGrokまたはX Premium+が必要です。",
+      "文字起こしの精度は、Intel搭載MacではApple Silicon搭載Macより、WindowsではMacより低くなります。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Dan Kulkov (@DanKulkov) — Creator of FounderPal, MakerBox | IndieMakerList",
+      "url": "https://indiemakerlist.com/p/dan-kulkov"
+    },
+    {
+      "title": "Video Editor for Content Creators | ClipsPal",
+      "url": "https://www.clipspal.com/video-editor-for-content-creators"
+    }
+  ],
+  "candidate": {
+    "title": "ClipsPal",
+    "url": "https://www.producthunt.com/products/clipspal"
+  },
+  "affiliates": [
+    "ココナラ"
+  ],
+  "images": {
+    "featured": 95,
+    "media": [
+      95,
+      96
+    ]
+  },
+  "held": false,
+  "wordpress": {
+    "id": 97,
+    "link": "https://nocode-ai.net/clipspal-video-editing-and-repurposing/",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=97&action=edit"
+  },
+  "published": true,
+  "model": "gpt-6.1-terra",
+  "created_at": "2026-11-10T01:28:51+09:00"
+}
