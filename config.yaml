@@ -100,6 +100,9 @@ article:
   llm:
     openai_model: gpt-6.1-terra   # 2026-11-03 KJ 選択（gpt-5-mini では文章の質が足りなかった。1記事 約50〜60円・週のまとめも同じ設定）
     openai_reasoning_effort: medium
+  # 細かい直し（予防線を削る・難しい言葉の言い換え・似すぎた段落の書き直し）だけ安いモデルに（2026-11-10 KJ「高いなぁ」）
+  light_llm:
+    openai_model: gpt-5-mini
 
 # ===== 今週の新着AIツールまとめ（全自動・毎週日曜の朝。python roundup.py） =====
 roundup:

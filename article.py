@@ -51,6 +51,8 @@ def llm_cfg(cfg: dict) -> dict:
 def build(cfg: dict, cand: dict, memo: str) -> dict:
     opt = cfg.get("article", {})
     lc = llm_cfg(cfg)
+    # 細かい直し（予防線・言い換え・似すぎ）は安いモデルで（2026-11-10 KJ）。書く・校閲は lc のまま
+    light = {**lc, **(opt.get("light_llm") or {})}
     item = cand["item"]
     topic = f"{item['title']}（{cand.get('detail', {}).get('summary', '')}）"
 
@@ -73,9 +75,9 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     outline = writer.make_outline(cfg["genre"], facts, memo, lc, cfg.get("categories"))
     body = writer.write_body(cfg["genre"], outline, facts, memo, opt, lc)
     body = writer.review(body, facts, memo, lc)
-    body = writer.trim_hedges(body, lc)
-    body, clarity = writer.clarify(body, lc)
-    body, sim = writer.fix_similarity(body, all_sources, opt, lc)
+    body = writer.trim_hedges(body, light)
+    body, clarity = writer.clarify(body, light)
+    body, sim = writer.fix_similarity(body, all_sources, opt, light)
     body = writer.tidy(body)
     body = writer.add_links(body, facts.get("official_url", ""), facts.get("download_url", ""), facts.get("tool_type", ""))
     warnings = writer.check_rules(body, memo, opt.get("min_chars", 3000), facts.get("tool_type", ""))
