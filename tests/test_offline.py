@@ -130,7 +130,7 @@ def test_full_run(tmp_path=Path(tempfile.gettempdir()) / "ts_run"):
         text = main.run(config_path=Path(main.__file__).parent / "config.yaml")
     assert sent["text"] == text
     assert "Kubernetes" not in text and "hiring" not in text
-    n_pick = text.count("■"); assert 3 <= n_pick <= 5  # top_n（11-10 3→5。テストの候補は4件まで）
+    n_pick = text.count("■"); assert 3 <= n_pick <= 5  # top_n
     assert "Qiita" in text  # 重複したMiniMax記事に also_on が付く
     assert not ("TTS beats" in text and "VoiceForge" in text)  # 同じ話題は1件だけ
     assert "utm_source" not in text
