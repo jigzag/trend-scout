@@ -1,0 +1,99 @@
+{
+  "title": "Shizuku-Duplex、すごいのは「会話が途切れない」こと",
+  "slug": "shizuku-duplex-continuous-conversation",
+  "excerpt": "日本語の音声対話モデル「Shizuku-Duplex」は、話を聞きながら相づちを打ち、検索中も会話を続けられます。従来の音声AIとの違いや、日本での利用情報、この先の可能性を紹介します。",
+  "category": "音声・ナレーション",
+  "tool_type": "web",
+  "official_url": "https://shizuku.ai/",
+  "download_url": "",
+  "chars": 1472,
+  "image_prompts": {
+    "featured": "A conceptual illustration of a person and a friendly abstract AI figure exchanging overlapping sound waves, suggesting a conversation that flows without pauses. No text, logos, real people, or app screens.",
+    "body": "An illustration of a person discussing a question with a friendly abstract AI while a separate magnifying glass symbolizes a search happening in the background. No text, logos, real people, or app screens."
+  },
+  "similarity": {
+    "ratio": 0.024,
+    "longest": 22,
+    "ok": true
+  },
+  "warnings": [
+    "個人がすぐ使えるツールではない可能性（ボツ推奨）: 個人がアカウントを作成して利用できるか、参考記事から確認できないため。",
+    "本文が短い（1472字）",
+    "分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "Shizuku-Duplex",
+      "Shizuku AI",
+      "音声対話モデル",
+      "土台として",
+      "Claude Opus 5.5",
+      "中央値",
+      "サーバー側",
+      "往復時間",
+      "応答内容の採点",
+      "対応OS",
+      "提供地域"
+    ],
+    "sentences": [
+      "今回紹介するShizuku-Duplexは、返事の速さだけでなく、会話そのものが途切れにくくなる可能性を感じさせる技術です。",
+      "ざっくり言うと 話を聞きながら相づちを打てる、相談相手みたいな技術です",
+      "Shizuku AIは2026年11月8日、日本語の音声対話モデル「Shizuku-Duplex」を発表しました。",
+      "Shizuku-Duplexは、人同士の雑談のように、相手の話を聞きながら声を出せます。",
+      "Shizuku-Duplexは、会話をする担当と、検索などを進める担当を分けています。",
+      "検索結果を待つ間も会話を続けられるので、途中で説明を足したり、相談を進めたりする使い方につながりそうです。",
+      "開発元の評価では、話し終わってから返答までの時間の中央値は 0.57秒 でした。",
+      "一方、同じ評価で雑談の自然さは 10点中6.2点 でした。",
+      "この評価は開発元が作成し、応答内容の採点にはClaude Opus 5.5というAIを使っており、返答時間はサーバー側の録音で測定され、通信にかかる往復時間を含んでいません。",
+      "個人向けの利用開始方法や対応OS、提供地域は明記されていません。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Shizuku-Duplex：自然な間合いで話す日本語 Full-Duplex モデル",
+      "url": "https://shizuku.ai/blog/1/"
+    },
+    {
+      "title": "相づち・割り込み対応の日本語AI「Shizuku-Duplex」発表 - PC Watch",
+      "url": "https://pc.watch.impress.co.jp/docs/news/2154838.html"
+    },
+    {
+      "title": "Shizuku AI Releases \"Shizuku-Duplex,\" a Japanese Speech Dialogue Model That Handles Both Backchanneling and Interruptions — BigGo Finance",
+      "url": "https://finance.biggo.com/news/a28e9788-3188-421e-b9bc-da2a12bbf740"
+    },
+    {
+      "title": "Shizuku-Duplex: Full-Duplex Japanese Voice vs GPT-Live | explainx.ai Blog | explainx.ai",
+      "url": "https://explainx.ai/blog/shizuku-duplex-japanese-full-duplex-voice-80ms-interaction-background-2026"
+    },
+    {
+      "title": "Shizuku AI Labs Launches Shizuku-Duplex Japanese Voice Model With…",
+      "url": "https://af.net/realtime/shizuku-ai-labs-launches-shizuku-duplex-japanese-voice-model-with-80-ms-ticks"
+    }
+  ],
+  "candidate": {
+    "title": "Shizuku-Duplex：自然な間合いで話す日本語 Full-Duplex モデル",
+    "url": "https://shizuku.ai/blog/1/"
+  },
+  "page_shot": "https://shizuku.ai/",
+  "affiliates": [
+    "ココナラ"
+  ],
+  "images": {
+    "featured": 91,
+    "media": [
+      91,
+      92,
+      93
+    ]
+  },
+  "held": true,
+  "wordpress": {
+    "id": 94,
+    "link": "https://nocode-ai.net/?p=94",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=94&action=edit"
+  },
+  "published": false,
+  "model": "gpt-6.1-terra",
+  "created_at": "2026-11-10T00:36:51+09:00"
+}
