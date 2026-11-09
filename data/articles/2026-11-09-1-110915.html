@@ -1,0 +1,63 @@
+<p class="pr-note">※本記事にはプロモーション（広告）が含まれる場合があります。</p>
+<p>こんにちは、zagです。</p>
+<p>音声AIに話しかけたとき、「まだ話の途中なのに返事が始まった」「相づちを打ったら会話が止まった」と、話す順番がかみ合わない感じが気になることはありませんか。</p>
+<p>今回の話は、AIが速く答えるだけでなく、<strong>聞きながら話し、会話の流れを合わせようとする</strong>技術についてです。</p>
+
+<div class="easy-box memo-box common-icon-box block-box">
+<p><strong>ざっくり言うと</strong></p>
+<ul>
+<li>相手の声を聞きながら話せる、日本語の音声AIです。</li>
+<li>「うん」という相づちと、話を止めたいときの声に、それぞれ応じようとします。</li>
+<li>自分は、話す順番が自然になれば、相談の相手としても親しみやすくなると思います。</li>
+<li>個人向けの利用開始方法や料金は、報道では確認できません。</li>
+</ul>
+</div>
+<p class="official-link">公式サイト：<a href="https://shizuku.ai/" target="_blank" rel="noopener">shizuku.ai</a></p>
+<figure class="wp-block-image size-large page-shot"><img src="https://nocode-ai.net/wp-content/uploads/2026/11/shizuku-duplex-natural-conversation-site.jpg" alt="shizuku.ai の画面"/><figcaption>出典：公式サイト（shizuku.ai）</figcaption></figure>
+
+<h2>「話し終わるのを待つ」だけじゃなくなる？</h2>
+<p>Shizuku AIは2026年11月8日、日本語で声のやり取りをするAIの仕組み「Shizuku-Duplex」を発表しました。声でやり取りするAIの、会話を支える技術です。</p>
+<p>注目したいのは、相手の声を聞きながら、自分も話せることです。電話のように、お互いの声が重なりうる会話をイメージすると分かりやすいですね。</p>
+<p>このように、聞くことと話すことを同時に行える方式を「Full-Duplex」（全二重）と呼びます。</p>
+
+<h3>聞きながら話せると、何が違う？</h3>
+<p>従来の方式の一つでは、相手が話し終わったことを確かめてから、次の作業を順番に進めます。</p>
+<ul>
+<li>声を言葉として認識する</li>
+<li>何と答えるかを考える</li>
+<li>答えを音声にする</li>
+</ul>
+<p>一方、Shizuku-Duplexは、話している間も相手の声を聞けます。途中で相手が出した声にも応じようとするところがポイントです。</p>
+<p>会話の自然さは、返事が速いだけでは決まりません。相手が話を止めたいのか、それとも相づちを打っただけなのかに合わせる「間」も大切なんですね。</p>
+
+<h2>相づちと割り込みに、どう応じる？</h2>
+<figure class="wp-block-image size-large"><img src="https://nocode-ai.net/wp-content/uploads/2026/11/shizuku-duplex-natural-conversation-body.jpg" alt="Shizuku-Duplex、すごいのは「話を聞きながら話せる」こと"/><figcaption>イメージ画像（AI生成）</figcaption></figure>
+<p>AIの話を聞きながら「うん」と言っただけなのに、毎回話を止められると困りますよね。反対に、「ちょっと待って」と伝えたときには、止まってほしいはずです。</p>
+<p>開発元の評価では、相手が割り込んだときに<strong>2秒以内に話すのを止めた割合は89％</strong>でした。一方、相づちに対して話すのを止めた割合は5％です。</p>
+<p>また、話す順番やタイミングに関する6つの評価項目のうち5つで、比べたFull-Duplex方式のモデルの中で最も良い結果でした。会話の流れが合いやすくなることが期待できます。もちろん、どんな会話でも完璧に対応できるとまでは言えません。</p>
+
+<h3>返事の速さと、答えの質は別の話</h3>
+<p>同じ評価では、相手が話し終わってから返事をするまでの時間の中央値は、Shizuku-Duplexが0.57秒、GPT-Liveが0.53秒でした。中央値は、測定結果を順番に並べたときに真ん中に来る値です。</p>
+<p>相手が話し終わったときの返答品質は、5点満点中Shizuku-Duplexが2.6点、GPT-Liveが4.0点でした。会話のタイミングと返答の質は、分けて見る必要がありそうですね。</p>
+<p>この評価は開発元が作成したもので、回答内容の採点には別のAI「Claude Opus 5.5」が使われています。</p>
+<p>また、返答時間の測定には条件の違いがあります。Shizuku-DuplexとGPT-Liveの数字には通信の往復にかかる時間が含まれませんが、GPT-RealtimeとGemini Liveの数字には含まれます。そのため、実際に使うときの待ち時間を数字だけで比べることはできません。</p>
+
+<h2>会話を続けながら、別の仕事も頼める</h2>
+<p>Shizuku-Duplexは、会話を担当する仕組みと、難しい依頼に会話とは別に対応する仕組みを組み合わせています。</p>
+<p>たとえるなら、会話の担当が別の担当に調べものを頼み、結果を待つ間も話を続けるようなイメージです。別の担当は、Web検索などの道具を使えます。</p>
+<p>話す内容は、声より少し先に「Inner Monologue」という文字で出されます。声や文字のほかに、キャラクターの動きを選ぶ「Action」も出せるため、動きのあるキャラクターとの会話につながりそうです。</p>
+
+<h2>AIキャラクター「しずく」に使う方針</h2>
+<p>開発元は、この技術をAIキャラクター「しずく」の開発に使う方針を示しています。キャラクターとのやり取りにどう生かされるのか、気になるところですね。</p>
+<p></p>
+
+<h2>ここからは自分の意見：会話の「間」が変わるかもしれません</h2>
+<p>音声AIに話しかけるとき、発言をきれいに区切ることを意識しすぎなくてよくなれば、相談や考えごとの相手として、ぐっと親しみやすくなると思います。</p>
+<p>たとえば、考えながら話している途中で言葉を足したり、相手の説明に短く相づちを打ったりする。そんなやり取りが自然になれば、AIを使うことへの構えも小さくなるかもしれません。</p>
+<p>ただし、会話が心地よいことと、答えが適切なことは別です。自然に話せるようになるのと一緒に、返答の質も伸びていくことを期待したいですね。</p>
+
+<h2>まとめ：注目したいのは会話の流れ</h2>
+<p>Shizuku-Duplexは、相手の声を聞きながら話し、相づちや割り込みに応じようとする、日本語で声のやり取りをするAIの仕組みです。</p>
+<p>開発元の評価では会話のタイミングに関する結果が注目される一方、返答の質には比較対象との差もありました。「しずく」の今後の展開も気になりますね。</p>
+<div class="affiliate-box blank-box"><p>自分で作るのが難しければ、プロに頼む方法もあります → <a href="https://px.a8.net/svt/ejp?a8mat=4BEPQ2+7E4S6Q+2PEO+1HLNLF" target="_blank" rel="sponsored noopener">ココナラ</a></p></div>
+<h2>参考にした情報</h2><ul><li><a href="https://shizuku.ai/blog/1/" target="_blank" rel="noopener">Shizuku-Duplex：自然な間合いで話す日本語 Full-Duplex モデル</a></li><li><a href="https://explainx.ai/blog/shizuku-duplex-japanese-full-duplex-voice-80ms-interaction-background-2026" target="_blank" rel="noopener">Shizuku-Duplex: Full-Duplex Japanese Voice vs GPT-Live | explainx.ai Blog | explainx.ai</a></li><li><a href="https://www.linkedin.com/posts/hao-wang-nlp_our-team-recently-released-shizuku-duplex-activity-7525037165693534208-0MZN" target="_blank" rel="noopener">Our team recently released Shizuku-Duplex, a Japanese full-duplex speech dialogue model developed in-house! In our Japanese conversational benchmarks, Shizuku-Duplex outperformed five other models… | Hao Wang</a></li><li><a href="https://doomers.ai/launches/shizuku-ai" target="_blank" rel="noopener">Shizuku AI Shizuku-Duplex launch, 8 Nov 2026: 262K views on X | Doomers AI</a></li></ul>

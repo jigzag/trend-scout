@@ -1,0 +1,87 @@
+{
+  "title": "Shizuku-Duplex、すごいのは「話を聞きながら話せる」こと",
+  "slug": "shizuku-duplex-natural-conversation",
+  "excerpt": "日本語の音声対話モデル「Shizuku-Duplex」は、相手の声を聞きながら話せます。相づちと割り込みをどう扱うのか、従来の音声AIとの違いや評価の注意点、日本での利用状況をやさしく紹介します。",
+  "category": "音声・ナレーション",
+  "tool_type": "web",
+  "official_url": "https://shizuku.ai/",
+  "download_url": "",
+  "chars": 2160,
+  "image_prompts": {
+    "featured": "An illustration of two overlapping sound waves meeting like a natural conversation, with a warm and approachable atmosphere. No text, logos, real app screens, or real people.",
+    "body": "An illustration of a person at a desk speaking with an abstract AI companion, with overlapping sound waves suggesting a flowing conversation. No text, logos, real app screens, or real people."
+  },
+  "similarity": {
+    "ratio": 0.026,
+    "longest": 24,
+    "ok": true
+  },
+  "warnings": [
+    "個人がすぐ使えるツールではない可能性（ボツ推奨）: 個人がアカウントを作成して利用できるか、参考記事から確認できないため。",
+    "体験したかのような表現: 実際に使うと"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "音声対話モデル",
+      "検知",
+      "処理",
+      "発話",
+      "指標",
+      "通信の往復時間",
+      "テキスト",
+      "出力",
+      "研究エンジニア"
+    ],
+    "sentences": [
+      "また、話す順番やタイミングに関する6つの指標のうち5つで、比較対象のFull-Duplexモデルの中では最良の結果でした。",
+      "Shizuku-DuplexとGPT-Liveには通信の往復時間を含まない一方、GPT-RealtimeとGemini Liveには含んでいるため、数字を比べる際は注意が必要です。",
+      "発話内容は、音声より少し先に「Inner Monologue」（発話内容を表すテキスト）として出力されます。",
+      "音声やテキストのほか、キャラクターの動きを選ぶ「Action」も出力します。",
+      "Shizuku AIの研究エンジニア、Hao Wang氏も、この開発に参加できたことへの喜びを投稿しています。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Shizuku-Duplex：自然な間合いで話す日本語 Full-Duplex モデル",
+      "url": "https://shizuku.ai/blog/1/"
+    },
+    {
+      "title": "Shizuku-Duplex: Full-Duplex Japanese Voice vs GPT-Live | explainx.ai Blog | explainx.ai",
+      "url": "https://explainx.ai/blog/shizuku-duplex-japanese-full-duplex-voice-80ms-interaction-background-2026"
+    },
+    {
+      "title": "Our team recently released Shizuku-Duplex, a Japanese full-duplex speech dialogue model developed in-house! In our Japanese conversational benchmarks, Shizuku-Duplex outperformed five other models… | Hao Wang",
+      "url": "https://www.linkedin.com/posts/hao-wang-nlp_our-team-recently-released-shizuku-duplex-activity-7525037165693534208-0MZN"
+    },
+    {
+      "title": "Shizuku AI Shizuku-Duplex launch, 8 Nov 2026: 262K views on X | Doomers AI",
+      "url": "https://doomers.ai/launches/shizuku-ai"
+    }
+  ],
+  "candidate": {
+    "title": "Shizuku-Duplex：自然な間合いで話す日本語 Full-Duplex モデル",
+    "url": "https://shizuku.ai/blog/1/"
+  },
+  "page_shot": "https://shizuku.ai/",
+  "affiliates": [
+    "ココナラ"
+  ],
+  "images": {
+    "featured": 87,
+    "media": [
+      87,
+      88,
+      89
+    ]
+  },
+  "held": true,
+  "wordpress": {
+    "id": 90,
+    "link": "https://nocode-ai.net/?p=90",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=90&action=edit"
+  },
+  "published": false,
+  "model": "gpt-6.1-terra",
+  "created_at": "2026-11-09T11:09:17+09:00"
+}
