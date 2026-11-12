@@ -1,0 +1,58 @@
+<p class="pr-note">※本記事にはプロモーション（広告）が含まれる場合があります。</p>
+<p>こんにちは、zagです。</p>
+<p>AIに質問したら、答えが思ったより長くて「ひと言で選んでくれればいいのに」と感じたことはありませんか。</p>
+<p>Googleが発表した「Gemini Decisions API（候補から答えを選ぶAIの仕組み）」は、そんな「文章を書く」より「選ぶ」仕事に注目した仕組みです。</p>
+<p>結論から言うと、新しいチャット相手の話ではなく、普段使うAIの裏側で「どれを選ぶか決める役割」を担う仕組みです。これにより、実際に使う場面でより適した処理につながる可能性があります。</p>
+
+<div class="easy-box memo-box common-icon-box block-box"><p><strong>ざっくり言うと</strong></p><ul><li>決まった候補から答えを選ぶ、仕分け係みたいなもの</li><li>長い文章を作らずに判断する、道具の裏方</li><li>無料で試せる枠があり、利用量に応じて料金がかかります。主にツールを作る人向け（一般の利用者は無理に導入する必要はありません）</li><li>普段のチャット画面ではなく、別のアプリやサービスの裏側から呼び出して使う仕組みで、あなたが普段使うサービスの応答が改善されることがあります</li></ul></div>
+<p class="official-link">公式サイト：<a href="https://aistudio.google.com/docs/decisions-api" target="_blank" rel="noopener">aistudio.google.com/docs/decisions-api</a></p>
+<figure class="wp-block-image size-large page-shot"><img src="https://nocode-ai.net/wp-content/uploads/2026/11/gemini-decisions-api-ai-choices-site.jpg" alt="aistudio.google.com の画面"/><figcaption>出典：公式サイト（aistudio.google.com）</figcaption></figure>
+
+<h2>AIが長く答えるより、選ぶことに特化した</h2>
+<p>Googleは2026年11月11日、Gemini Decisions APIを発表しました。「Gemini Decision 1（判断に特化したAI）」という判断に特化したAIを使い、決められた選択肢から答えを選んだり、基準に沿って採点したりする仕組みです。</p>
+<p>名前に入っているAPI（別のソフトから機能を呼び出す窓口）は、会話を楽しむためのチャット画面ではなく、別のソフトから裏で呼び出して使うための仕組みです。</p>
+<p>たとえば、受け取った質問に対して「短い回答向け」「じっくり考える処理向け」という候補を用意し、どちらに振り分けるかを判断させる。そんな裏方の仕事をイメージすると分かりやすいです。</p>
+
+<h2>自由に書くAIと、選択肢を選ぶAIは何が違う？</h2>
+<figure class="wp-block-image size-large"><img src="https://nocode-ai.net/wp-content/uploads/2026/11/gemini-decisions-api-ai-choices-body.jpg" alt="Googleの「Gemini Decisions API」、AIが答えを語るより「選ぶ」話"/><figcaption>イメージ画像（AI生成）</figcaption></figure>
+<p>テストにたとえると、答えを自分の言葉で書く問題と、用意された選択肢から選ぶ問題の違いに近いです。</p>
+<ul>
+<li>文章を作るAI：答えの文章を順番に書いていく</li>
+<li>Gemini Decision 1：用意された候補を一度の処理で採点して、選んだ結果を返す</li>
+</ul>
+<p>何かを説明してほしいなら文章が必要ですが、行き先を決めたいだけなら、長い説明より選んだ結果が役に立ちます。</p>
+
+<h3>画像や音声も、判断の材料にできる</h3>
+<p>判断に使えるのは文章だけではありません。画像、音声、動画、PDFも、単独または組み合わせて入力できます。</p>
+<p>たとえば、画像について「この候補のうち、どれに近いか」を選ばせるような使い方を考えられます。文章以外も材料にできることで、判断役を置ける場面が広がります。</p>
+
+<h3>同じ材料に、まとめて質問できる</h3>
+<p>同じ入力に対して、一度に最大1,000件の独立した質問を評価できます。資料をいくつもの観点でまとめてチェックできるので、作業を効率よく進められます。</p>
+<p>質問の形式には、はい・いいえで答えるもの、複数の候補から選ぶもの、決められた基準に沿って採点するものがあります。これらを一緒に渡すこともできます。</p>
+
+<h3>判断の目安も返ってくる</h3>
+<p>結果には、選択肢ごとの確率や判断の信頼度も付くため、どの答えがどれくらい確からしいのかの目安が分かり、後で確認するかどうか判断しやすくなります。</p>
+<p>ただし、その数字は正解を保証するものではありません。</p>
+<p>費用面では、Googleの共通の評価テストで、Gemini Decision 1をDecisions API経由で使った場合のコストが、Gemini 3.5 Flash-Lite（別の軽めのAIモデル）をInteractions API（チャット向けのやり取り用の仕組み）経由で使った場合の約5分の1だったとしています。運営コストが下がれば、サービス提供側の負担が軽くなり、利用者向けの価格や無料枠に影響する可能性があります。</p>
+
+<h2>いつ、どこで使える？ 料金と日本での提供は</h2>
+<p>発表時点で、Google AI Studio（GoogleのAIを試したり設定するウェブサービス）からGemini APIを通じて利用できます。利用するには、Google AI StudioでAPIキー（利用許可を証明する文字列）を取得します。</p>
+<p>料金は、入力100万トークンあたり$0.10です。トークン（AIが文章などを処理する際の細かな単位）は入力に対して課金され、出力分には課金されません。</p>
+<p>報道によると、Google AI Studioには無料枠もあります。OpenRouter（複数のAIをまとめて使えるサービス）でもGemini Decision 1を利用できます。</p>
+<p>日本から利用できるか、日本語に対応しているかは、発表時点の情報には明記されていません。</p>
+
+<h3>みんなの反応</h3>
+<p>Google for Developersの投稿には、Jev（別の製品名）との比較を知りたいというNouman Zahid氏のコメントが寄せられています。</p>
+<p>また、Eelke Burgers氏はVertex AI（Googleの企業向けAIサービス）やGemini Enterprise（企業向けの高機能版）で利用できるかを質問していました。どこまで利用先が広がるのかにも関心が向いているようです。</p>
+
+<h2>ここからは自分の意見：AIの裏方が変わるかもしれない</h2>
+<p>Googleによると、Gemini Notebook（AIを組み合わせて使うGoogleのツール）では、質問をどの種類のAIや、どの程度じっくり考える処理に振り分けるかを決めるために、この仕組みを利用しています。結果として、必要な処理に自動で振り分けられることで作業がスムーズになることが期待されます。</p>
+<p>ここからは自分の意見です。これは、新しいチャット相手が増えることよりも、<strong>利用者が意識しないところで、AIの仕事を仕分ける方法が変わる</strong>ことの方が大きい話だと思います。</p>
+<p>たとえば、普段のAIサービスに質問したとき、裏側の判断役が、短く答えればよい質問なのか、じっくり考えるべき質問なのかを選ぶ。使う人は複雑な設定を知らなくても、質問に合った処理につながるようになるかもしれません。</p>
+<p>将来は、こうした「まず選び、それから必要な仕事を任せる」仕組みが、さまざまなAIサービスの裏側でより身近になると自分は予想します。特に、道具の設定に時間をかけず、制作や事務作業を進めたい人にとって意味がある変化だと思います。</p>
+<p>目立つのは完成した文章や資料ですが、その手前で何を選ぶかも、使いやすさを左右する。自分はそこに注目しています。</p>
+
+<h2>まとめ：直接使う道具ではなく、AIの裏側を見る話</h2>
+<p>Gemini Decisions APIは、AIに長い答えを書かせるのではなく、決まった候補から選ばせるための仕組みです。</p>
+<p>コードを書かない人が、無理に導入を考える必要はありません。普段使っているAIサービスの裏側がどう変わるのかを眺めてみるだけでも、今回の発表を知る意味はあると思います。</p>
+<h2>参考にした情報</h2><ul><li><a href="https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/" target="_blank" rel="noopener">Gemini Decisions API: Fast, calibrated multimodal decisions</a></li><li><a href="https://www.eesel.ai/blog/gemini-decisions-api" target="_blank" rel="noopener">Gemini Decisions API (2026): how it works, pricing, vs OpenAI and Jev | eesel AI</a></li><li><a href="https://openrouter.ai/google/gemini-decision-1" target="_blank" rel="noopener">Gemini Decision 1 - API Pricing &amp; Providers | OpenRouter</a></li><li><a href="https://www.linkedin.com/posts/googledevelopers_introducing-the-gemini-decisions-api-powered-activity-7526352665165938689-R3XT" target="_blank" rel="noopener">Introducing the Gemini Decisions API Powered by our new Gemini Decision 1 model, the API is built for fast routing, tool selection, safety checks, and grading inside your apps and agents without… | Google for Developers | 13 comments</a></li></ul>

@@ -1,0 +1,94 @@
+{
+  "title": "Googleの「Gemini Decisions API」、AIが答えを語るより「選ぶ」話",
+  "slug": "gemini-decisions-api-ai-choices",
+  "excerpt": "GoogleのGemini Decisions APIは、AIに文章を書かせる代わりに、決まった選択肢の中から判断させる仕組みです。直接使うには開発が必要ですが、その違いと、身近なAIサービスへの可能性をやさしく紹介します。",
+  "category": "その他のAIツール",
+  "tool_type": "feature",
+  "official_url": "https://aistudio.google.com/docs/decisions-api",
+  "download_url": "",
+  "chars": 2815,
+  "image_prompts": {
+    "featured": "An illustration of a small luminous decision maker sorting colorful shapes into a few distinct paths, symbolizing AI choosing rather than writing. No text, logos, real app interfaces, or real people.",
+    "body": "An illustration of a person asking a question at a desk while a friendly abstract mechanism behind the scenes directs it toward different tools. No text, logos, real app interfaces, or real people."
+  },
+  "similarity": {
+    "ratio": 0.031,
+    "longest": 20,
+    "ok": true
+  },
+  "warnings": [
+    "コードを書く前提の話題で、読者（非エンジニア）に合わない可能性: APIを使って判断を実行するには、APIキーを取得し、PythonやJavaScript、RESTなどでリクエストを作成する必要がある。",
+    "分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "Gemini Decisions API",
+      "Gemini Decision 1",
+      "API",
+      "APIキー",
+      "トークン",
+      "Google AI Studio",
+      "OpenRouter",
+      "Interactions API",
+      "Gemini 3.5 Flash-Lite",
+      "Vertex AI",
+      "Gemini Enterprise",
+      "Gemini Notebook",
+      "Jev"
+    ],
+    "sentences": [
+      "結論から言うと、新しいチャット相手の話ではなく、AIサービスの裏側に置く「判断役」の話です。",
+      "無料で使える枠もあり、入力に応じた有料の料金もある。主に道具を作る人向け",
+      "普段の会話画面ではなく、別のソフトから呼び出して使う仕組み",
+      "同じ入力に対して、一度に最大1,000件の独立した質問を評価できます。",
+      "結果には、選択肢ごとの確率や、判断の信頼度も付きます。",
+      "費用面では、Googleの共通の評価テストで、Gemini Decision 1をDecisions API経由で使った場合のコストが、Gemini 3.5 Flash-LiteをInteractions API経由で使った場合の約5分の1だったとしています。",
+      "発表時点で、Google AI StudioからGemini APIを通じて利用できます。",
+      "料金は、入力100万トークンあたり$0.10です。",
+      "日本から利用できるか、日本語に対応しているかは、発表時点の情報には明記されていません。",
+      "コードを書かない人が、無理に導入を考える必要はありません。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/"
+    },
+    {
+      "title": "Gemini Decisions API (2026): how it works, pricing, vs OpenAI and Jev | eesel AI",
+      "url": "https://www.eesel.ai/blog/gemini-decisions-api"
+    },
+    {
+      "title": "Gemini Decision 1 - API Pricing & Providers | OpenRouter",
+      "url": "https://openrouter.ai/google/gemini-decision-1"
+    },
+    {
+      "title": "Introducing the Gemini Decisions API Powered by our new Gemini Decision 1 model, the API is built for fast routing, tool selection, safety checks, and grading inside your apps and agents without… | Google for Developers | 13 comments",
+      "url": "https://www.linkedin.com/posts/googledevelopers_introducing-the-gemini-decisions-api-powered-activity-7526352665165938689-R3XT"
+    }
+  ],
+  "candidate": {
+    "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
+    "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/"
+  },
+  "page_shot": "https://aistudio.google.com/docs/decisions-api",
+  "affiliates": [],
+  "images": {
+    "featured": 98,
+    "media": [
+      98,
+      99,
+      100
+    ]
+  },
+  "held": true,
+  "wordpress": {
+    "id": 101,
+    "link": "https://nocode-ai.net/?p=101",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=101&action=edit"
+  },
+  "published": false,
+  "model": "gpt-6.1-terra",
+  "created_at": "2026-11-12T11:41:06+09:00"
+}
