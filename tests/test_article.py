@@ -96,7 +96,7 @@ def fake_llm(prompt, cfg, max_tokens=4000, *a, **kw):
         return "```html\n" + BODY + "\n```"
     if "校閲者です" in prompt:
         return prompt.split("# 記事\n", 1)[1].split("\n\n# 出力")[0]
-    if "AIにくわしくない読者です" in prompt:
+    if "プログラミングをしない読者です" in prompt:
         assert "<" not in prompt.split("# 記事\n", 1)[1].split("\n\n# 出力")[0]   # タグを外して読ませる
         return json.dumps({"words": ["Plus"], "sentences": []}, ensure_ascii=False)
     if "分かるように直した完成版" in prompt:
@@ -336,7 +336,7 @@ def test_roundup(tmp=Path(tempfile.gettempdir()) / "ts_roundup"):
                                "items": [{"n": i, "heading": f"{nm}：できること", "body": f"<p>{nm}の説明です。</p>",
                                           "who": "こんな人に向いています：初めての人", "price": "無料"} for i, nm in enumerate(names, 1)],
                                "closing": "<p>気になるものから見てください。</p>", "image_featured": "desk"}, ensure_ascii=False)
-        if "AIにくわしくない読者です" in prompt:
+        if "プログラミングをしない読者です" in prompt:
             return json.dumps({"words": [], "sentences": []})
         raise AssertionError(prompt[:80])
     cfg_path = tmp / "config.yaml"

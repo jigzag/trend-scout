@@ -83,7 +83,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
     warnings = writer.check_rules(body, memo, opt.get("min_chars", 3000), facts.get("tool_type", ""))
     if not reader_fit:
         warnings.insert(0, f"個人がすぐ使えるツールではない可能性（ボツ推奨）: {fit_reason}")
-    if len(clarity["words"]) + len(clarity["sentences"]) >= 15:
+    if len(clarity["words"]) + len(clarity["sentences"]) >= 7:  # 11-12 上限を言葉3・文5にしたので15→7
         warnings.append("分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）")
     if needs_coding:
         warnings.insert(0, f"コードを書く前提の話題で、読者（非エンジニア）に合わない可能性: {coding_reason}")
