@@ -1,0 +1,98 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 8,
+    "novelty": 8,
+    "monetizable": 7,
+    "buzz": 10.0,
+    "topic": "Gemini Decisions API",
+    "total": 86,
+    "detail": {
+      "id": 0,
+      "summary": "Googleが発表した「Gemini Decisions API」は、マルチモーダルな大型モデル（Gemini Decision）を使い、素早く“選択（decision）”を出すAPI。推論の速さと出力の較正（calibration）を重視しており、判断を要するタスク向けの機能提供を想定している。",
+      "why": "非エンジニアの読者にとっては「AIが複数の候補を比較して最適な一手を示す」機能が今後のツールに組み込まれる意味が大きく、仕事の選択や提案作りが変わるため紹介価値が高い。",
+      "usecase": "会議資料で複数の施策案から最適案を提示して根拠もつける、動画や投稿のA/B案を自動評価して選ぶ、採算性・優先度の高いタスクを自動でランク付けするなど、日常の判断を速く・客観化したい場面で使える。非エンジニアでも、これを組み込んだSaaSを使えば即効果が得られる。",
+      "angle": "AIが“判断”を代わりにする時代：業務の意思決定が変わる理由",
+      "products": [
+        "Google Cloud (Gemini)",
+        "Airtable",
+        "Notion"
+      ]
+    },
+    "item": {
+      "source": "Google",
+      "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemini-decisions-api/",
+      "summary": "Meet the Gemini Decisions API, powered by our state-of-the-art model Gemini Decision for fast, calibrated multimodal decisions.",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 8,
+    "monetizable": 7,
+    "buzz": 6.7,
+    "topic": "Claude Whiteboards",
+    "total": 81,
+    "detail": {
+      "id": 1,
+      "summary": "Anthropicが公開したClaudeの新機能群「Claude Whiteboards」「Claude Sheets」「Claude Data（旧Dashboards）」は、チャット型AIの文脈で共同ボード・表計算・ダッシュボード連携を統合する試み。会話からビジュアル資料やデータビューをシームレスに生成・共有できる。",
+      "why": "ノーコードで資料作りや議事録→資料化→数値の可視化までを一本化できる点が、コードを書かない個人の作業効率を一気に上げるため記事に値する。",
+      "usecase": "週次報告でチャットに箇条を投げると自動でホワイトボード形式に落とし込み、簡易のスプレッドシートでKPIを整理してダッシュボード化。副業や個人事業のレポート作成、共同編集がラクになる。",
+      "angle": "チャットがそのままボードと表に変わる：Claudeの新しい作業フロー",
+      "products": [
+        "Anthropic Claude",
+        "Miro",
+        "Google Sheets"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "Claude Whiteboards, Claude Sheets, and Claude Data",
+      "url": "https://claude.com/resources/articles/sheets-whiteboards-data",
+      "summary": "Today we’re launching Claude Whiteboards and Claude Sheets in beta, and Claude Dashboards (opens in new tab) becomes generally available as Claude Data. Whiteboards is a shared board where your team b",
+      "signal": 24,
+      "signal_label": "24users",
+      "extra": {
+        "buzz": 6.7
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 8,
+    "novelty": 8,
+    "monetizable": 6,
+    "buzz": 8.0,
+    "topic": "Google Tabletop",
+    "total": 79,
+    "detail": {
+      "id": 2,
+      "summary": "Googleの実験プロジェクト「Tabletop AI」は、家族や友人、チーム向けに目的別の“カスタム共同ハブ”を自動生成するツール。計画・買い物・イベント運営などを視覚的にまとめ、コラボレーションを楽にするUIを生成するのが狙い。",
+      "why": "個人や小さなチームが“ツールを作る手間”なしに連携用のワークスペースを素早く用意できる点が、日常の雑務削減や発信準備の負担軽減に直結するため紹介価値がある。",
+      "usecase": "家族イベントの進行表や、サイドプロジェクトのタスクボード、SNS投稿カレンダーのテンプレート代わりに使い、手間なく共有と役割分担ができる。クリエイティブな共同作業の導線作りで便利。",
+      "angle": "面倒な共有スペースはAIが生成：Tabletopでコラボがもっと速く",
+      "products": [
+        "Google Tabletop (experiment)",
+        "Notion",
+        "Trello"
+      ]
+    },
+    "item": {
+      "source": "The Verge",
+      "title": "Google’s Tabletop AI experiment lets you build custom collaboration apps",
+      "url": "https://www.theverge.com/tech/1031526/google-tabletop-ai-experiment-waitlist-availability",
+      "summary": "Google has cooked up a new experimental AI tool called Tabletop that generates customized collaborative hubs to help you coordinate with family, and friends. The Tabletop platform shares some visual s",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  }
+]
