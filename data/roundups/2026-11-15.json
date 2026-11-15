@@ -1,0 +1,49 @@
+{
+  "title": "今週の新着AIツール3選：共同作業から人生の回想録づくりまで",
+  "slug": "weekly-ai-tools-collaboration-memoir-20261115",
+  "excerpt": "今週は、会話から共有ボードや表を作るClaude、旅行計画などの共同スペースを作るTabletop、音声インタビューで回想録をまとめるMemoriasを紹介します。料金や利用条件もチェック。",
+  "tools": [
+    "Claude の共同作業機能",
+    "Tabletop",
+    "Memorias"
+  ],
+  "warnings": [],
+  "similarity": {
+    "ratio": 0.0,
+    "longest": 0,
+    "ok": true
+  },
+  "clarity": {
+    "words": [
+      "認定クエリ",
+      "データコネクタ",
+      "従量制のクレジット"
+    ],
+    "sentences": [
+      "Claude Dataの認定クエリとライブ共有はベータ版で、データコネクタが必要です。",
+      "料金は従量制のクレジットで、サブスクリプションはありません。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Claude Whiteboards, Claude Sheets, and Claude Data",
+      "url": "https://claude.com/resources/articles/sheets-whiteboards-data"
+    },
+    {
+      "title": "Google’s Tabletop AI experiment lets you build custom collaboration apps",
+      "url": "https://www.theverge.com/tech/1031526/google-tabletop-ai-experiment-waitlist-availability"
+    },
+    {
+      "title": "Memorias",
+      "url": "https://www.producthunt.com/products/memorias-3"
+    }
+  ],
+  "affiliates": [],
+  "wordpress": {
+    "id": 104,
+    "link": "https://nocode-ai.net/weekly-ai-tools-collaboration-memoir-20261115/",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=104&action=edit"
+  },
+  "published": true,
+  "created_at": "2026-11-15T11:29:06+09:00"
+}
