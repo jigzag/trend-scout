@@ -48,6 +48,21 @@ def llm_cfg(cfg: dict) -> dict:
     return {**cfg["llm"], **(cfg.get("article", {}).get("llm") or {})}
 
 
+def recent_titles(n: int = 6) -> list[str]:
+    """最近作った記事のタイトル（タイトルの型が続かないように構成のAIに見せる）。"""
+    out = []
+    for p in sorted((BASE / "data" / "articles").glob("*.json"), reverse=True):
+        try:
+            t = json.loads(p.read_text(encoding="utf-8")).get("title", "")
+        except (OSError, ValueError):
+            continue
+        if t and t not in out:
+            out.append(t)
+        if len(out) >= n:
+            break
+    return out
+
+
 def build(cfg: dict, cand: dict, memo: str) -> dict:
     opt = cfg.get("article", {})
     lc = llm_cfg(cfg)
@@ -72,7 +87,7 @@ def build(cfg: dict, cand: dict, memo: str) -> dict:
         print("[article] 話題と関係ない参考記事を除外: " + ", ".join(dropped))
     needs_coding, coding_reason = facts.pop("needs_coding", False), facts.pop("coding_reason", "")
     reader_fit, fit_reason = facts.pop("reader_fit", True), facts.pop("fit_reason", "")
-    outline = writer.make_outline(cfg["genre"], facts, memo, lc, cfg.get("categories"))
+    outline = writer.make_outline(cfg["genre"], facts, memo, lc, cfg.get("categories"), recent_titles())
     body = writer.write_body(cfg["genre"], outline, facts, memo, opt, lc)
     body = writer.review(body, facts, memo, lc)
     body = writer.trim_hedges(body, light)
