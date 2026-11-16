@@ -1,0 +1,93 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 8,
+    "novelty": 9,
+    "monetizable": 9,
+    "buzz": 8.0,
+    "topic": "ChatGPT Wallet announcement",
+    "total": 86,
+    "detail": {
+      "id": 0,
+      "summary": "OpenAIがChatGPT内で購入を安全に完了できる決済機能「ChatGPT Wallet」を導入。エージェントがユーザーの承認を得て既存カード保護を利用しながら購入を代行できる仕組み。",
+      "why": "エージェントでの支払いを安全に自動化する変化は、AIに業務や制作の“実働”を任せたい非エンジニア読者にとって衝撃度が高く、実務利用のハードルが下がるため。",
+      "usecase": "動画素材や有料プラグイン、サブスク課金などのオンライン購入を、承認フローをはさみつつエージェントに代行させられるため、発注・購入の手間とミスが減る。経費精算前の仮購入や個人のサブスク管理でも役立つ。",
+      "angle": "AIが支払いまで代行する時代──ChatGPT Walletの仕事・生活への影響",
+      "products": [
+        "ChatGPT (OpenAI)",
+        "主要なクレジットカード/決済サービス"
+      ]
+    },
+    "item": {
+      "source": "OpenAI",
+      "title": "Introducing ChatGPT Wallet",
+      "url": "https://openai.com/index/introducing-chatgpt-wallet",
+      "summary": "Introducing ChatGPT Wallet, a secure way for agents in ChatGPT Work, Codex, and dots to complete purchases with user approval and existing card protections.",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  },
+  {
+    "relevance": 10,
+    "usecase": 9,
+    "novelty": 8,
+    "monetizable": 7,
+    "buzz": 7.0,
+    "topic": "Muse personal AI",
+    "total": 84,
+    "detail": {
+      "id": 1,
+      "summary": "Metaの個人用AIエージェント『Muse』が日本提供開始。日常のちょっとした調べ物やリマインド、雑多なタスクをエージェントに“雑に投げて”情報整理や思考の空白化に使う運用法を紹介する記事。",
+      "why": "高度な設定や会社システム不要で日常タスクの負担を下げる具体運用法を示せば、コードを書かない読者が即日取り入れられる実践的価値が高い。",
+      "usecase": "会議の事前調査、買い物リストや旅行プランの素案作成、SNS投稿のネタ出しなどをMuseに任せて頭の中を整理し、創作や本業に集中する運用ができる。",
+      "angle": "頭を空ける新習慣：Museに雑に任せて仕事と私生活を軽くする方法",
+      "products": [
+        "Meta Muse"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "Museに雑に投げて頭を空けておく - taxin.dev",
+      "url": "https://taxin.dev/articles/2026-11-15",
+      "summary": "2026年10月末にMeta社からパーソナルAIエージェント「Muse」の日本提供が開始されましたね。 私はリリースして数日経ったくらいから使い始めました。 仕事やエンジニアリングに関する内容ではなく、主にプライベートな調べ物やタスクをMuseに任せるようにしています。 「あれどうしてたっけ」「あれやらないと」と思った...",
+      "signal": 136,
+      "signal_label": "136users",
+      "extra": {
+        "buzz": 7.0
+      }
+    }
+  },
+  {
+    "relevance": 10,
+    "usecase": 9,
+    "novelty": 9,
+    "monetizable": 8,
+    "buzz": 2.5,
+    "topic": "Gemini 4 Hydrogen announcement",
+    "total": 79,
+    "detail": {
+      "id": 2,
+      "summary": "Googleが高速で低価格の新モデル『Gemini 4 Hydrogen』を発表。従来モデルより推論が速く、深さを選べるなど日常タスクでの効率向上が謳われている。無料ユーザーにも提供予定。",
+      "why": "応答速度とコスト効率が上がることで、非エンジニアの業務利用（資料作成、文字起こし、要約、エージェント活用）が現実的になり、体感が大きく変わる話題だから。",
+      "usecase": "ミーティングの議事録要約、長文の高速要約・校正、複数タスクを並列で回すアシスタント利用など、日常業務の時短と生産性向上に直結する。",
+      "angle": "速さと安さで仕事を変える：Gemini 4 Hydrogenがもたらす業務効率革命",
+      "products": [
+        "Google Gemini（アプリ/API）"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "Google、高速で低価格の「Gemini 4 Hydrogen」発表　無料ユーザーも利用可能",
+      "url": "https://www.itmedia.co.jp/news/article/2611/13/2000003162/",
+      "summary": "Googleは、AIエージェントによる作業や日常的なコーディングに向けた高速・高効率の新モデル「Gemini 4 Hydrogen」を発表した。「Gemini 3.8 Flash」の約2.5倍の速さでタスクを終え、推論の深さを4段階から選べる。APIやGeminiアプリなどで同日から順次提供している。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 2.5
+      }
+    }
+  }
+]
