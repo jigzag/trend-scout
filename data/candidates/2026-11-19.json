@@ -1,0 +1,98 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 9,
+    "monetizable": 8,
+    "buzz": 9.0,
+    "topic": "Genie-4",
+    "total": 90,
+    "detail": {
+      "id": 0,
+      "summary": "Google DeepMindが発表した大規模マルチモーダルモデル「Genie 4」が利用可能になったという話。テキストだけでなく画像・音声・動画への理解や生成精度の向上、リアルタイム応答などの強化が中心。",
+      "why": "大手が出した最新世代モデルの進化点は、非エンジニアの個人が日常的な制作・事務作業でAIを“より自然に・高品質に”使う判断基準になるため。",
+      "usecase": "社内資料のワンライナーを画像や簡易図に変換して説明資料を作る、動画や音声素材から要約とキャプションを一気に生成してSNS用短尺動画を作る、といった制作フロー短縮に直結する。日本語入力での応答品質や利用開始時期・アクセスの可否を確認することで導入判断ができる。",
+      "angle": "Genie 4で変わる「AIで作る資料・動画」の現場――今何ができる？",
+      "products": [
+        "Google Gemini/Genie 4",
+        "Bard（関連サービス）"
+      ]
+    },
+    "item": {
+      "source": "Google DeepMind",
+      "title": "Genie 4 is now available",
+      "url": "https://deepmind.google/blog/genie-4-is-now-available/",
+      "summary": "",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 9,
+    "novelty": 8,
+    "monetizable": 7,
+    "buzz": 8.0,
+    "topic": "Toone-no-code-automation",
+    "total": 81,
+    "detail": {
+      "id": 1,
+      "summary": "ProductHuntで注目のTooneは、Grokbotの会話型インターフェースとn8n/Zapierのノーコード自動化を組み合わせたようなツール。チャットをトリガーにして複数サービスを連携するワークフローを作れる点が特徴。",
+      "why": "コードを書かない個人が「会話感覚」で業務自動化を作れる可能性があり、日常の面倒な手作業を減らせるため記事価値がある。",
+      "usecase": "動画・資料制作で、チャットで指示すると素材収集→リネーム→クラウド保存→SNS投稿予約まで一連を自動化する、あるいは議事録チャットからタスクを自動で発行するなどのルーチンを非エンジニアが組める。",
+      "angle": "チャットで自動化を作る時代へ――Tooneが個人の作業負担を減らす理由",
+      "products": [
+        "Toone",
+        "Zapier",
+        "n8n",
+        "Make"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "Toone",
+      "url": "https://www.producthunt.com/products/toone",
+      "summary": "Grokbot meets n8n/zapier Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  },
+  {
+    "relevance": 8,
+    "usecase": 8,
+    "novelty": 7,
+    "monetizable": 6,
+    "buzz": 9.0,
+    "topic": "S.Space-agents-workspace",
+    "total": 77,
+    "detail": {
+      "id": 2,
+      "summary": "ProductHunt掲載のS.Spaceは、チームや個人の“AIエージェント”を一つのワークスペースで管理・共有するプラットフォーム。Agentを共有して業務分担したり、テンプレ化して再利用できる点を打ち出している。",
+      "why": "個人や小規模チームが複数のAIアシスタントを使い分ける運用の課題を解決しうるため、制作や事務でAIを多用する読者にとって有益な実例になる。",
+      "usecase": "動画編集やSNS運用で「スクリプト作成担当」「ハッシュタグ最適化担当」「サムネ案出し担当」など役割ごとのエージェントを作り、ワークスペースで共有して効率化する。外注指示のテンプレ化や引き継ぎも楽になる。",
+      "angle": "複数AIをまとめて使い倒す――S.Space流ワークスペース運用の実践法",
+      "products": [
+        "S.Space",
+        "Notion AI",
+        "ChatGPT/Claude/Gemini"
+      ]
+    },
+    "item": {
+      "source": "ProductHunt",
+      "title": "S.Space",
+      "url": "https://www.producthunt.com/products/s-space",
+      "summary": "Your team and everyone's AI agents, in one workspace Discussion | Link",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  }
+]
