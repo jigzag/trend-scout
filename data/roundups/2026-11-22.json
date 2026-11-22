@@ -1,0 +1,50 @@
+{
+  "title": "今週の新着AIツール4選：世界を作るAIから買い物代行まで",
+  "slug": "weekly-ai-tools-20261122",
+  "excerpt": "対話できる世界を生成するGenie 4、買い物を代行するChatGPT Wallet、自分専用アプリを作れるMuse、Gemini 4 Hydrogenを紹介します。料金や日本での提供状況もまとめました。",
+  "tools": [
+    "Genie 4",
+    "ChatGPT Wallet",
+    "Muse",
+    "Gemini 4 Hydrogen"
+  ],
+  "warnings": [],
+  "similarity": {
+    "ratio": 0.018,
+    "longest": 15,
+    "ok": true
+  },
+  "clarity": {
+    "words": [],
+    "sentences": [
+      "考える深さも4段階から選べます。",
+      "Geminiアプリの無料版では、入力内容に応じたモデルの自動選択を通じて利用でき、Google検索では全ユーザーが対象です。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Genie 4 is now available",
+      "url": "https://deepmind.google/blog/genie-4-is-now-available/"
+    },
+    {
+      "title": "Introducing ChatGPT Wallet",
+      "url": "https://openai.com/index/introducing-chatgpt-wallet"
+    },
+    {
+      "title": "Museに雑に投げて頭を空けておく - taxin.dev",
+      "url": "https://taxin.dev/articles/2026-11-15"
+    },
+    {
+      "title": "Google、高速で低価格の「Gemini 4 Hydrogen」発表　無料ユーザーも利用可能",
+      "url": "https://www.itmedia.co.jp/news/article/2611/13/2000003162/"
+    }
+  ],
+  "affiliates": [],
+  "wordpress": {
+    "id": 113,
+    "link": "https://nocode-ai.net/weekly-ai-tools-20261122/",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=113&action=edit"
+  },
+  "published": true,
+  "created_at": "2026-11-22T11:54:24+09:00"
+}
