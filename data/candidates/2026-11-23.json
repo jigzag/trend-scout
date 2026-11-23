@@ -1,0 +1,97 @@
+[
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 9,
+    "monetizable": 6,
+    "buzz": 2.5,
+    "topic": "Mac版 Gemini の computer use 機能（自動操作）",
+    "total": 76,
+    "detail": {
+      "id": 0,
+      "summary": "GoogleがMac向けGeminiアプリに、画面を認識してアプリを自動操作する「computer use」機能を追加。隔離されたバックグラウンドウィンドウで動き、ファイル操作やフォーム記入など複数ステップの業務を代行する。まず米国の有料プラン向けに英語で提供開始。",
+      "why": "非エンジニアの個人が、キーボードやマウス操作をAIに任せて日常の定型作業を劇的に短縮できる可能性があるため。",
+      "usecase": "大量の請求書PDFを所定フォルダにまとめて、必要なファイル名変更→指定Webフォームへのアップロード→送付メール作成といった複数ステップを人の介入少なく自動化できる。会議後の議事録ファイル分類や、社内申請フォームの連続入力にも使える。",
+      "angle": "Mac上でAIがあなたのアプリ操作まで代行する時代—仕事がどう変わるか",
+      "products": [
+        "Gemini（Mac版）",
+        "ChatGPT（Plus）"
+      ]
+    },
+    "item": {
+      "source": "ITmedia AI+",
+      "title": "Mac版「Gemini」にユーザーの代わりにアプリを操作する「computer use」機能追加　まず米国で",
+      "url": "https://www.itmedia.co.jp/news/article/2611/20/2000003356/",
+      "summary": "Googleは、Mac版「Gemini」アプリにAIが画面を認識してアプリを自動操作する「computer use」機能を追加した。隔離されたバックグラウンドウィンドウで動作するため、ユーザーの作業を妨げずにファイルやWebをまたいだ複数手順の業務を代行できる。まずは米国の有料プラン加入者向けに英語版から提供を始める。",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 2.5
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "usecase": 9,
+    "novelty": 9,
+    "monetizable": 6,
+    "buzz": 1.0,
+    "topic": "Gemini (Mac) の computer use 機能 (自動操作)",
+    "total": 72,
+    "detail": {
+      "id": 1,
+      "summary": "TechCrunch報道。GoogleのGeminiがMac上でファイル整理やフォーム入力などマルチステップのワークフローを実行できるAIエージェント機能を搭載。ユーザー操作を代行して作業を完了させることが狙い。",
+      "why": "単純作業の“手を動かす部分”をAIが肩代わりする点は、従来のチャット型AIとは体験も導入障壁も違い、読者にとって実用面でのインパクトが大きいから。",
+      "usecase": "在宅ワーカーが複数のクラウドサービスをまたいで行う日報作成や配布作業を、Geminiに学習させてまとめて実行させる。英語版でまずは試す形になるが、ワークフロー設計の知見は即役立つ。",
+      "angle": "画面を見て操作するAIが来た—Geminiで自動化できる仕事と導入時の注意点",
+      "products": [
+        "Gemini（Mac版）",
+        "Zapier",
+        "Make"
+      ]
+    },
+    "item": {
+      "source": "TechCrunch",
+      "title": "Google gives Gemini the ability to use your Mac for you",
+      "url": "https://techcrunch.com/2026/11/19/google-gives-gemini-the-ability-to-use-your-mac-for-you/",
+      "summary": "Google's latest update to Gemini brings an AI agent to the Mac that can organize files, fill out forms, and tackle multistep workflows.",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 1.0
+      }
+    }
+  },
+  {
+    "relevance": 6,
+    "usecase": 6,
+    "novelty": 6,
+    "monetizable": 4,
+    "buzz": 10.0,
+    "topic": "ブログAI臭さ対策（コンテンツ制作向け）",
+    "total": 67,
+    "detail": {
+      "id": 2,
+      "summary": "Qiita記事は、AIに書かせた文章が“AI臭い”＝無機的で面白みのないブログになりがちな現状を指摘し、手書きをやめたことで起きる品質低下への対処法を提案する内容。",
+      "why": "読者層はAIで楽をしたい一方で“人に読まれる文章”を失いたくないため、AI生成文章の品質向上や差別化の実践的アドバイスは高い関心を引くから。",
+      "usecase": "ブログやSNS発信で、AIを下書き作成に使いつつも「個人の経験や語り口」を残す具体的手順（プロンプト設計、後編集チェックリスト、感情や失敗談の差し込み方）を学んで発信品質を保てる。",
+      "angle": "AIで効率化しつつ“AI臭さ”を消す方法—読まれる個人発信の作り方",
+      "products": [
+        "ChatGPT（OpenAI）",
+        "Grammarly Premium",
+        "Hemingway Editor"
+      ]
+    },
+    "item": {
+      "source": "Qiita",
+      "title": "手書きをやめた途端、ブログが全部AI臭くなったあなたへ！ マシにする方法教えます",
+      "url": "https://qiita.com/minorun365/items/faa50b7662b86e1df29c?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
+      "summary": "友達のブログが AI slop だらけになって、がっかりしていませんか？ この1年でブログをAIに書かせる人が増えましたよね。学んだことを面白く書いていた友達まで、情報量ばかりのビジーな記事を出すようになり、読まなくなった人も多いのではないでしょうか。 とはいえ、アンチA...",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 10.0
+      }
+    }
+  }
+]
