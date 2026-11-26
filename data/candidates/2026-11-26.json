@@ -1,0 +1,98 @@
+[
+  {
+    "relevance": 8,
+    "usecase": 8,
+    "novelty": 8,
+    "monetizable": 5,
+    "buzz": 9.0,
+    "topic": "Meta Muse long-term use",
+    "total": 80,
+    "detail": {
+      "id": 0,
+      "summary": "MetaのパーソナルAIエージェント「Muse」を1ヶ月運用して見えた実用性とクセを、他のクラウド型エージェントと比較しつつ整理した報告。GrokBotやChatGPT Botsなどと併記して、Museの得意・不得意を具体的に示す。",
+      "why": "多種多様なクラウドAIエージェントの中で、実務で役立つものを選びたい非エンジニア読者にとって“現場で使えるか”が分かる実体験は価値が高いから。",
+      "usecase": "社内資料の下書き作成やメールの定型返信、SNS投稿のアイデア出しや動画台本のブラッシュアップなど、日々の制作・事務作業をMuseを相棒に回す実例を提示できる。特に権限やデータ連携が限定された環境での使い方が参考になる。",
+      "angle": "Museはどこまで“会話相棒”になれるのか──1ヶ月の実務評価",
+      "products": [
+        "Meta Muse",
+        "GrokBot (XAI)",
+        "ChatGPT Bots",
+        "Hermes Agent (Nous Research)"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "MetaのAIエージェント Museを1ヶ月使い倒してわかったこと | kinoko dev",
+      "url": "https://dev.sin5d.com/meta-muse-usage",
+      "summary": "XAIのGrokBot、Nous ResearchのHermes Aagent、OpenAIのChatGPT Bots、などなど、クラウドエージェントタイプのAIが百花繚乱中です。前回の記事でGrokBotについて詳しく書きましたので、今回はGrokBot以上によく使っているMeta社のMuseについてくわしく書いていこうと思います。 執筆時2026/11/25時点での情報なので状況...",
+      "signal": 70,
+      "signal_label": "70users",
+      "extra": {
+        "buzz": 9.0
+      }
+    }
+  },
+  {
+    "relevance": 9,
+    "usecase": 8,
+    "novelty": 8,
+    "monetizable": 7,
+    "buzz": 6.5,
+    "topic": "Gemini 4 Neon",
+    "total": 79,
+    "detail": {
+      "id": 1,
+      "summary": "GoogleのGemini 4ファミリー（Carbon/Argon/Neon/Hydrogen）の違いを、特性と想定利用シーンで1枚表に整理した解説。新モデルNeonの位置づけと、どのモデルを選べば日常業務が楽になるかを示す。",
+      "why": "Gemini 4は用途ごとに複数モデルが存在し、非エンジニアが“どれを使えばいいか”迷いやすい点をクリアにできるため。",
+      "usecase": "議事録の要約やメール下書きには軽量モデル、複雑な資料作成や表現力が必要なクリエイティブ仕事には上位モデルを使う、といった具体的な使い分けを提示できる。",
+      "angle": "Gemini 4の“どれを選ぶか”が一枚で分かる使い分けガイド",
+      "products": [
+        "Google Gemini 4",
+        "Google Cloud Agent Platform (Vertex AI)"
+      ]
+    },
+    "item": {
+      "source": "Qiita",
+      "title": "Gemini 4のCarbon・Argon・Neon・Hydrogen、結局どれを使う？使い分けを1枚の表にした",
+      "url": "https://qiita.com/N-Kyo/items/6156bc251e826cdbf92d?utm_campaign=popular_items&utm_medium=feed&utm_source=popular_items",
+      "summary": "はじめに 2026年11月18日、Gemini 4に新しいモデル「Gemini 4 Neon」が出ました。 Google Cloudでは、Agent Platform（旧Vertex AI）からGA（一般提供）として使えます。 これで、Gemini 4のモデルは、Carb...",
+      "signal": null,
+      "signal_label": "",
+      "extra": {
+        "buzz": 6.5
+      }
+    }
+  },
+  {
+    "relevance": 7,
+    "usecase": 6,
+    "novelty": 6,
+    "monetizable": 4,
+    "buzz": 8.0,
+    "topic": "MCP Skills",
+    "total": 65,
+    "detail": {
+      "id": 2,
+      "summary": "AIエージェントの共通接続仕様MCPに新機能『Skills over MCP』が登場し、単なるツール接続だけでなく“使い方のスキル”をエージェント経由で提供できるようになった点を解説。業務自動化やガイド付き操作の可能性を示す。",
+      "why": "エージェントが外部ツールを呼ぶだけでなく、ユーザーに操作ガイドや手順を渡せるようになるのは、非エンジニアの導入障壁を下げる重大な進化だから。",
+      "usecase": "社内でフローが複雑な定型作業（経費申請や資料テンプレ編集）を、エージェントがツール接続＋手順提示で代行・支援する使い方が想定される。導入時の学習コストを下げられる点を示す。",
+      "angle": "MCPの新機能で“AIがやり方まで教える”時代が来るのか",
+      "products": [
+        "Model Context Protocol (MCP)",
+        "Skills over MCP (β)",
+        "各種AIエージェントプラットフォーム"
+      ]
+    },
+    "item": {
+      "source": "はてブ",
+      "title": "MCPに新機能「Skills over MCP」登場。ツールとの接続だけでなく使い方のスキルもMCP経由で提供",
+      "url": "https://www.publickey1.jp/blog/26/mcpskills_over_mcpmcp.html",
+      "summary": "MCPに新機能「Skills over MCP」登場。ツールとの接続だけでなく使い方のスキルもMCP経由で提供 AIエージェントと外部ツールを接続する業界標準となっているMCP（Model Context Protocol）に、新機能として「Skills over MCP」がβ版として追加されました。 Skills over MCPを利用することで、AIエージェントはMCP経由でM...",
+      "signal": 68,
+      "signal_label": "68users",
+      "extra": {
+        "buzz": 8.0
+      }
+    }
+  }
+]
