@@ -1,0 +1,81 @@
+{
+  "title": "Metaの「Muse」は会話を分けても覚えている？ AIに前提を育てる話",
+  "slug": "meta-muse-side-chat-memory",
+  "excerpt": "MetaのMuseは、話題別のサイドチャットと共有される記憶が特徴のAI。日本語の文章への評価や無料・有料プラン、日本での提供状況から、毎回説明し直さずに頼めるAIの可能性を考えます。",
+  "category": "文章作成・チャットAI",
+  "tool_type": "web",
+  "official_url": "",
+  "download_url": "",
+  "chars": 1620,
+  "image_prompts": {
+    "featured": "Illustrate a collection of separate notebooks connected by softly glowing threads, suggesting shared memory across conversations. No text, logos, real app screens, or real people.",
+    "body": "Illustrate a person at a desk organizing writing ideas into several notebooks while a subtle luminous assistant connects related notes. No text, logos, real app screens, or real people."
+  },
+  "similarity": {
+    "ratio": 0.023,
+    "longest": 23,
+    "ok": true
+  },
+  "warnings": [
+    "意見の節がない（「ここからは自分の意見」の見出しがない）",
+    "分かりにくい言葉・文が多かった（直したが、難しい話題の可能性）"
+  ],
+  "memo": "",
+  "clarity": {
+    "words": [
+      "サイドチャット",
+      "メモリー",
+      "仮想マシン"
+    ],
+    "sentences": [
+      "MetaのMuseで自分が面白いと思ったのは、会話を整理しながら、文脈を育てていけるところです。",
+      "ノートは分かれていても、関連するページを参照できるようなイメージです。",
+      "その一方で、話題を分けても情報が完全に隔離されるわけではありません。",
+      "Museには、利用者ごとに隔離された仮想マシンが割り当てられます。",
+      "Museが見せているのは、会話を分けながら文脈を育て、継続して仕事を頼めるAIの可能性です。"
+    ]
+  },
+  "sources": [
+    {
+      "title": "MetaのAIエージェント Museを1ヶ月使い倒してわかったこと | kinoko dev",
+      "url": "https://dev.sin5d.com/meta-muse-usage"
+    },
+    {
+      "title": "AI秘書を比較｜Meta Muse・OpenAI dots・内製AI秘書を使い込んでわかったこと | AI Native（AIネイティブ）",
+      "url": "https://www.ai-native.jp/blog/personal-ai-secretary-meta-muse-dots-comparison"
+    },
+    {
+      "title": "Meta Museとは？日本での使い方・料金・できること【2026年10月】 – バイテックBLOG",
+      "url": "https://bytech.jp/blog/meta-muse"
+    },
+    {
+      "title": "Meta MuseとWonder AIとは？AIエージェントを解説 | AIエージェント | Gmelius",
+      "url": "https://gmelius.com/ja/blog/meta-muse-wonder-ai"
+    },
+    {
+      "title": "Meta Muse AI Agent Launches at $20-$100/Month [2026]",
+      "url": "https://shattered.io/meta-muse-ai-agent-launch-2026"
+    }
+  ],
+  "candidate": {
+    "title": "MetaのAIエージェント Museを1ヶ月使い倒してわかったこと | kinoko dev",
+    "url": "https://dev.sin5d.com/meta-muse-usage"
+  },
+  "affiliates": [],
+  "images": {
+    "featured": 114,
+    "media": [
+      114,
+      115
+    ]
+  },
+  "held": false,
+  "wordpress": {
+    "id": 116,
+    "link": "https://nocode-ai.net/meta-muse-side-chat-memory/",
+    "edit_url": "https://nocode-ai.net/wp-admin/post.php?post=116&action=edit"
+  },
+  "published": true,
+  "model": "gpt-6.1-terra",
+  "created_at": "2026-11-26T12:55:02+09:00"
+}
